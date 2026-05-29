@@ -105,6 +105,23 @@ body {
   opacity: 0.85;
 }
 
+/* ---- Playtest/balancing summary (win + lose screens) ---- */
+.playtest-summary {
+  max-width: 360px;
+  margin: 16px auto 0;
+  padding: 12px 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.18);
+  text-align: start;
+}
+
+.playtest-line {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
 /* ---- Lose screen answer review ---- */
 .answer-review {
   display: flex;

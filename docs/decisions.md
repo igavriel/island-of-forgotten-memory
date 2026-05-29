@@ -19,3 +19,4 @@ Locked-in design and technical decisions. Update when one changes.
 - Animations are CSS-only (no JS animation libraries) to keep the project simple and static.
 - Riddles carry optional image fields (hintImage, islandBackgroundImage, characterImage, loseImage), default null. Images are opt-in via CONFIG.USE_IMAGE_ASSETS (default false) and always fall back to the emoji/text placeholder if missing or off. Asset naming/workflow is documented in docs/assets.md.
 - Default island count is 5 (CONFIG.NUMBER_OF_ISLANDS), still configurable, drawn from a pool of at least 10 riddles.
+- Playtesting is manual and documented in docs/playtest.md; no analytics and no stored data (no localStorage). The win/lose screens display the run's settings to support balancing.

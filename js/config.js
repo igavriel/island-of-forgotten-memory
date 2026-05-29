@@ -23,4 +23,8 @@ const CONFIG = {
   // Debug mode. Must be false for the final presentation.
   // When true: the correct answer is shown and a developer skip/answer button appears.
   DEBUG_MODE: false,
+
+  // Playtest/balancing: true shows the correct answer on the lose screen (helps learning).
+  // Set false for a harder, no-hint loss screen.
+  SHOW_CORRECT_ANSWER_ON_LOSS: true,
 };

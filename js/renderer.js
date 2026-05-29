@@ -242,12 +242,15 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
     wrongRow.appendChild(createElement("span", "answer-value", riddle.options[chosenIndex]));
     review.appendChild(wrongRow);
   }
-  const correctRow = createElement("p", "answer-row answer-correct");
-  correctRow.appendChild(createElement("span", "answer-label", "התשובה הנכונה:"));
-  correctRow.appendChild(
-    createElement("span", "answer-value", riddle.options[riddle.correctIndex])
-  );
-  review.appendChild(correctRow);
+  // The correct answer is shown only when enabled (a balancing/playtest option).
+  if (CONFIG.SHOW_CORRECT_ANSWER_ON_LOSS) {
+    const correctRow = createElement("p", "answer-row answer-correct");
+    correctRow.appendChild(createElement("span", "answer-label", "התשובה הנכונה:"));
+    correctRow.appendChild(
+      createElement("span", "answer-value", riddle.options[riddle.correctIndex])
+    );
+    review.appendChild(correctRow);
+  }
   screen.appendChild(review);
 
   screen.appendChild(
@@ -263,6 +266,8 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
   screen.appendChild(
     createElement("p", "progress-detail", "זכרת נכון " + rememberedClues + " רמזים")
   );
+
+  screen.appendChild(buildPlaytestSummary(rememberedClues, totalIslands));
 
   const again = createElement("button", "main-button", "שחקו שוב");
   again.addEventListener("click", startGame);
@@ -289,11 +294,38 @@ function renderWinScreen(totalIslands) {
     createElement("p", "score", "ניקוד: " + totalIslands + " מתוך " + totalIslands)
   );
 
+  screen.appendChild(buildPlaytestSummary(totalIslands, totalIslands));
+
   const again = createElement("button", "main-button", "שחקו שוב");
   again.addEventListener("click", startGame);
   screen.appendChild(again);
 
   root.appendChild(screen);
+}
+
+// Lightweight playtest/balancing summary shown on the win and lose screens.
+// Always shows progress and map time; the hint-label and debug-mode lines are shown
+// in DEBUG_MODE only. Reports the settings used this run so testers can judge difficulty.
+// No data is stored.
+function buildPlaytestSummary(completedIslands, totalIslands) {
+  const box = createElement("div", "playtest-summary");
+  const seconds = Math.round(CONFIG.MAP_VIEW_TIME_MS / 1000);
+  function yesNo(value) {
+    return value ? "כן" : "לא";
+  }
+  box.appendChild(
+    createElement("p", "playtest-line", "השלמת " + completedIslands + " מתוך " + totalIslands + " איים")
+  );
+  box.appendChild(createElement("p", "playtest-line", "זמן צפייה במפה: " + seconds + " שניות"));
+
+  // These extra balancing details are shown only in debug mode.
+  if (CONFIG.DEBUG_MODE) {
+    box.appendChild(
+      createElement("p", "playtest-line", "רמזי טקסט הוצגו: " + yesNo(CONFIG.SHOW_HINT_LABELS_ON_MAP))
+    );
+    box.appendChild(createElement("p", "playtest-line", "מצב פיתוח: " + yesNo(CONFIG.DEBUG_MODE)));
+  }
+  return box;
 }
 
 // Runs a callback when an element's animation ends, with a fallback timeout if no event fires.

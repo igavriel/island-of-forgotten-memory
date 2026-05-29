@@ -19,6 +19,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Lose screen now shows the chosen wrong answer, the correct answer, progress ("הגעת לאי X מתוך Y"), and remembered-clue count ("זכרת נכון N רמזים"); win screen shows a final score.
 - Basic responsive layout for desktop and small screens.
 - Image-ready: optional image fields on every riddle (default null), an appendVisual renderer fallback, USE_IMAGE_ASSETS flag, asset folders, and an asset integration guide. Placeholder mode is unchanged.
+- Playtest/balancing: win and lose screens show a summary (islands completed + map time always; hint-labels and debug-mode lines in DEBUG_MODE only); SHOW_CORRECT_ANSWER_ON_LOSS flag; manual playtest log in docs/playtest.md. No stored data.
 
 ## Partially working
 

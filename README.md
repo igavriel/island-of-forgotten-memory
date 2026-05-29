@@ -99,6 +99,7 @@ lose / win -> play again -> start
 | `SHOW_HINT_LABELS_ON_MAP` | `true` | Show a text label next to the emoji on the map (final version: `false`) |
 | `USE_IMAGE_ASSETS` | `false` | Use image files where a riddle provides a path, with fallback to emoji/text placeholders. See [docs/assets.md](docs/assets.md) |
 | `DEBUG_MODE` | `false` | Debug mode: marks the correct answer and adds a skip button. **Must be `false` for the final presentation** |
+| `SHOW_CORRECT_ANSWER_ON_LOSS` | `true` | Show the correct answer on the lose screen (balancing option; see [docs/playtest.md](docs/playtest.md)) |
 
 ### Changing map time and island count
 
