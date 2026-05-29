@@ -58,9 +58,36 @@ function appendVisual(parent, src, placeholderEl, className, altText) {
   }
 }
 
+// Sets (or clears) the full-screen decorative background for the current screen, gated by
+// CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES. The image is preloaded so a missing/failed file
+// falls back cleanly to no background (the body's sea gradient shows and the screen still
+// works). Pass null/undefined to clear the background (screens without a background image).
+function setScreenBackground(src) {
+  const layer = document.getElementById("screen-bg");
+  if (!layer) {
+    return;
+  }
+  function clear() {
+    layer.style.backgroundImage = "";
+    layer.classList.remove("is-visible");
+  }
+  if (CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES && src) {
+    const probe = new Image();
+    probe.onload = function () {
+      layer.style.backgroundImage = "url('" + src + "')";
+      layer.classList.add("is-visible");
+    };
+    probe.onerror = clear;
+    probe.src = src;
+  } else {
+    clear();
+  }
+}
+
 // ---- Start screen ----
 function renderStartScreen() {
   const root = clearScreen();
+  setScreenBackground(CONFIG.START_SCREEN_IMAGE);
   const screen = createElement("section", "screen start-screen fade-in");
 
   screen.appendChild(createElement("div", "big-emoji", "🏴‍☠️"));
@@ -95,6 +122,9 @@ function renderStartScreen() {
 // Shows the selected riddles, in route order. This is the player's memory source.
 function renderMap(selectedRiddles) {
   const root = clearScreen();
+  // Full-screen parchment map background. The dynamic clues from selectedRiddles are still
+  // rendered on top in the map card below; if the image is missing the screen still works.
+  setScreenBackground(CONFIG.MAP_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen map-screen");
 
   const mapCard = createElement("div", "map-card map-reveal");
@@ -182,6 +212,7 @@ function renderMapBlowAway(callback) {
 // ---- Sailing-between-islands screen ----
 function renderSailing(islandNumber, totalIslands, callback) {
   const root = clearScreen();
+  setScreenBackground(null);
   const screen = createElement("section", "screen sailing-screen fade-in");
 
   screen.appendChild(createElement("h2", "title", "מפליגים לאי הבא..."));
@@ -204,6 +235,7 @@ function renderSailing(islandNumber, totalIslands, callback) {
 // ---- Island question screen ----
 function renderIsland(riddle, islandIndex, totalIslands) {
   const root = clearScreen();
+  setScreenBackground(null);
   const screen = createElement("section", "screen island-screen fade-in");
 
   const islandNumber = islandIndex + 1;
@@ -281,6 +313,7 @@ function renderIsland(riddle, islandIndex, totalIslands) {
 // chosenIndex is the original index of the wrong answer the player picked (may be undefined).
 function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
   const root = clearScreen();
+  setScreenBackground(null);
   const screen = createElement("section", "screen lose-screen fade-in");
 
   // Lose image if available, otherwise the emoji placeholder. Decorative => empty alt.
@@ -334,6 +367,7 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
 // ---- Win screen ----
 function renderWinScreen(totalIslands) {
   const root = clearScreen();
+  setScreenBackground(CONFIG.VICTORY_IMAGE);
   const screen = createElement("section", "screen win-screen fade-in");
 
   // Simple CSS-only celebration: a few falling confetti pieces behind the content.

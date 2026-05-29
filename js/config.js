@@ -36,6 +36,16 @@ const CONFIG = {
   // "parrot" riddles ship SVG placeholders; the rest fall back to emoji/text.
   USE_IMAGE_ASSETS: true,
 
+  // ---- Screen-level decorative placeholder images ----
+  // Optional background/decoration images for whole screens (separate from per-riddle
+  // images above). Gated by USE_SCREEN_PLACEHOLDER_IMAGES; if an image is missing or fails
+  // to load, the screen keeps its normal emoji/text layout. The dynamic map route clues are
+  // always rendered on top of the map background from selectedRiddles.
+  USE_SCREEN_PLACEHOLDER_IMAGES: true,
+  START_SCREEN_IMAGE: "assets/ui/start_screen_placeholder.svg",
+  MAP_BACKGROUND_IMAGE: "assets/map/treasure_map_placeholder.svg",
+  VICTORY_IMAGE: "assets/endings/victory_placeholder.svg",
+
   // Debug mode. Must be false for the final presentation.
   // When true: the correct answer is shown and a developer skip/answer button appears.
   DEBUG_MODE: false,

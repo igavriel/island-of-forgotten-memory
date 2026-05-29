@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="parchment treasure map background placeholder">
+  <defs>
+    <radialGradient id="parch" cx="0.5" cy="0.5" r="0.75">
+      <stop offset="0" stop-color="#f3e2c0"/>
+      <stop offset="1" stop-color="#e3c98f"/>
+    </radialGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#parch)"/>
+  <!-- worn edges -->
+  <rect x="0" y="0" width="1920" height="1080" fill="none" stroke="#b58a4a" stroke-width="44"/>
+  <rect x="60" y="60" width="1800" height="960" fill="none" stroke="#c9a96a" stroke-width="4" stroke-dasharray="8 14" opacity="0.6"/>
+  <!-- faint stains kept toward the edges -->
+  <g fill="#c9a96a" opacity="0.25">
+    <circle cx="180" cy="220" r="60"/>
+    <circle cx="1740" cy="900" r="80"/>
+    <circle cx="1700" cy="180" r="40"/>
+  </g>
+  <!-- island blobs near the 5 clue spots (edges, leaving the center clear) -->
+  <g fill="#cdb077" opacity="0.55">
+    <ellipse cx="300" cy="360" rx="120" ry="70"/>
+    <ellipse cx="700" cy="820" rx="140" ry="80"/>
+    <ellipse cx="1180" cy="300" rx="130" ry="75"/>
+    <ellipse cx="1560" cy="640" rx="140" ry="80"/>
+    <ellipse cx="980" cy="880" rx="120" ry="70"/>
+  </g>
+  <!-- dotted route connecting the 5 spots -->
+  <polyline points="300,360 700,820 980,880 1180,300 1560,640"
+            fill="none" stroke="#8a473e" stroke-width="8" stroke-dasharray="4 28" stroke-linecap="round"/>
+  <!-- 5 empty clue spots (no clue content baked in: clues are drawn by the game) -->
+  <g fill="none" stroke="#8a473e" stroke-width="7" stroke-dasharray="14 12">
+    <circle cx="300" cy="360" r="64"/>
+    <circle cx="700" cy="820" r="64"/>
+    <circle cx="980" cy="880" r="64"/>
+    <circle cx="1180" cy="300" r="64"/>
+    <circle cx="1560" cy="640" r="64"/>
+  </g>
+  <g fill="#8a473e" font-family="Arial, sans-serif" font-size="56" text-anchor="middle" opacity="0.5">
+    <text x="300" y="380">1</text>
+    <text x="700" y="840">2</text>
+    <text x="980" y="900">3</text>
+    <text x="1180" y="320">4</text>
+    <text x="1560" y="660">5</text>
+  </g>
+  <!-- compass rose (corner) -->
+  <g transform="translate(1640 240)" stroke="#8a473e" stroke-width="6" fill="none" opacity="0.6">
+    <circle r="80"/>
+    <path d="M0 -80 L18 0 L0 80 L-18 0 Z" fill="#8a473e"/>
+    <path d="M-80 0 L0 -18 L80 0 L0 18 Z" fill="#8a473e" opacity="0.5"/>
+  </g>
+  <!-- X marks the spot -->
+  <g stroke="#b8473e" stroke-width="10" opacity="0.7" stroke-linecap="round">
+    <path d="M420 940 l60 60 M480 940 l-60 60"/>
+  </g>
+</svg>

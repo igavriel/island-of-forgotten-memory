@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="victory celebration background placeholder">
+  <defs>
+    <radialGradient id="vglow" cx="0.5" cy="0.4" r="0.75">
+      <stop offset="0" stop-color="#1c6086"/>
+      <stop offset="1" stop-color="#0b3d5c"/>
+    </radialGradient>
+    <linearGradient id="vsea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e486a"/>
+      <stop offset="1" stop-color="#072c43"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#vglow)"/>
+  <!-- celebratory stars/confetti around the edges, center kept clear -->
+  <g fill="#e8b733">
+    <path d="M250 200 l16 48 50 0 -40 30 16 50 -42 -32 -42 32 16 -50 -40 -30 50 0 z"/>
+    <path d="M1650 180 l13 40 42 0 -34 25 13 42 -34 -26 -34 26 13 -42 -34 -25 42 0 z" opacity="0.9"/>
+    <circle cx="150" cy="520" r="9"/>
+    <circle cx="1780" cy="520" r="9"/>
+    <circle cx="420" cy="120" r="7"/>
+    <circle cx="1520" cy="120" r="7"/>
+  </g>
+  <g fill="#b8f0d4" opacity="0.6">
+    <circle cx="320" cy="360" r="7"/>
+    <circle cx="1620" cy="380" r="7"/>
+    <circle cx="120" cy="300" r="6"/>
+  </g>
+  <!-- sea -->
+  <path d="M0 820 q240 -40 480 0 t480 0 t480 0 t480 0 V1080 H0 Z" fill="url(#vsea)"/>
+  <!-- treasure chest + coins, anchored at the bottom so the center stays readable -->
+  <g transform="translate(960 880)">
+    <ellipse cx="0" cy="120" rx="320" ry="44" fill="#000" opacity="0.22"/>
+    <g fill="#e8b733" stroke="#b8901f" stroke-width="4">
+      <circle cx="-230" cy="120" r="34"/>
+      <circle cx="-150" cy="132" r="34"/>
+      <circle cx="210" cy="124" r="34"/>
+      <circle cx="280" cy="118" r="30"/>
+    </g>
+    <rect x="-200" y="-40" width="400" height="150" rx="14" fill="#7a5a2f" stroke="#5a4523" stroke-width="8"/>
+    <path d="M-200 -28 q200 -110 400 0 l0 30 q-200 -86 -400 0 z" fill="#8a6a2f" stroke="#5a4523" stroke-width="8"/>
+    <rect x="-120" y="0" width="240" height="110" fill="#5a4523"/>
+    <rect x="-120" y="0" width="240" height="40" fill="#3a2c16"/>
+    <rect x="-28" y="18" width="56" height="56" rx="6" fill="#e8b733"/>
+    <circle cx="0" cy="46" r="7" fill="#5a4523"/>
+    <g fill="#e8b733" stroke="#b8901f" stroke-width="4">
+      <circle cx="-60" cy="118" r="30"/>
+      <circle cx="0" cy="128" r="30"/>
+      <circle cx="80" cy="120" r="30"/>
+    </g>
+  </g>
+  <g fill="none" stroke="#e8b733" stroke-width="6" opacity="0.4" stroke-dasharray="26 20">
+    <rect x="40" y="40" width="1840" height="1000" rx="28"/>
+  </g>
+</svg>

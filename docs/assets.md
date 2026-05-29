@@ -33,6 +33,31 @@ assets/
   map/          # treasure map backgrounds/decorations
 ```
 
+## Two kinds of images
+
+1. **Per-riddle images** (`hintImage`, `islandBackgroundImage`, `characterImage`,
+   `loseImage` on each riddle) — described below. Used automatically when present.
+2. **Screen-level backgrounds** (full-screen 16:9 images) — configured in `js/config.js` and
+   gated by `USE_SCREEN_PLACEHOLDER_IMAGES`:
+   - `START_SCREEN_IMAGE` -> `assets/ui/start_screen_placeholder.svg` (start screen)
+   - `MAP_BACKGROUND_IMAGE` -> `assets/map/treasure_map_placeholder.svg` (memory/map phase)
+   - `VICTORY_IMAGE` -> `assets/endings/victory_placeholder.svg` (win screen)
+
+   These three are **16:9 full-screen background placeholders** (`viewBox="0 0 1920 1080"`),
+   designed with a readable center. They are rendered as a fixed full-screen layer behind the
+   game (`#screen-bg`, `background-size: cover`) by `setScreenBackground()` in the renderer;
+   text and buttons sit above them on translucent panels/cards, with a subtle scrim for
+   contrast. They are decorative only:
+   - The map background does **not** contain fixed clues. The selected route clues are still
+     rendered dynamically on top of it from `selectedRiddles` in the map card.
+   - The other screens (sailing, island, lose) clear the background and keep the normal
+     sea-gradient look.
+   - If a screen image is missing or fails to load, the layer stays empty and the screen still
+     works. Set `USE_SCREEN_PLACEHOLDER_IMAGES: false` to turn all three off.
+
+   To use final art later, just replace these three SVG files (or point the config paths at new
+   16:9 files); no renderer or layout changes are needed.
+
 ## Recommended naming
 
 Name files after the riddle `id` (see [js/riddles.js](../js/riddles.js)):

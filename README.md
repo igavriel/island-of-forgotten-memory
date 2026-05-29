@@ -101,6 +101,8 @@ lose / win -> play again -> start
 | `SHOW_COUNTDOWN_NUMBER` | `false` | Show a numeric "נותרו N שניות" countdown on the map timer bar |
 | `SHOW_HINT_LABELS_ON_MAP` | `true` | Show a text label next to the emoji on the map (final version: `false`) |
 | `USE_IMAGE_ASSETS` | `true` | Images are used automatically wherever a riddle provides a path (emoji/text fallback otherwise, or on load error). Set to `false` to force placeholder-only mode. See [docs/assets.md](docs/assets.md) |
+| `USE_SCREEN_PLACEHOLDER_IMAGES` | `true` | Show the 16:9 full-screen background images on the start, map, and win screens. Set to `false` to disable all three |
+| `START_SCREEN_IMAGE` / `MAP_BACKGROUND_IMAGE` / `VICTORY_IMAGE` | SVG paths | Full-screen 16:9 background for the start / map / win screens (set a path to `null` to disable just that one). See [docs/assets.md](docs/assets.md) |
 | `DEBUG_MODE` | `false` | Debug mode: marks the correct answer and adds a skip button. **Must be `false` for the final presentation** |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | `true` | Show the correct answer on the lose screen (balancing option; see [docs/playtest.md](docs/playtest.md)) |
 

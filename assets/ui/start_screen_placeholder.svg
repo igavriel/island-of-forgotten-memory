@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="pirate sea start background placeholder">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1b5878"/>
+      <stop offset="0.6" stop-color="#14618a"/>
+      <stop offset="1" stop-color="#0f4d70"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b3d5c"/>
+      <stop offset="1" stop-color="#072c43"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sky)"/>
+  <circle cx="1560" cy="230" r="120" fill="#e8b733" opacity="0.92"/>
+  <circle cx="1560" cy="230" r="160" fill="#e8b733" opacity="0.18"/>
+  <!-- clouds (kept away from the center) -->
+  <g fill="#ffffff" opacity="0.18">
+    <ellipse cx="300" cy="200" rx="160" ry="48"/>
+    <ellipse cx="430" cy="180" rx="120" ry="40"/>
+    <ellipse cx="1650" cy="470" rx="150" ry="44"/>
+  </g>
+  <!-- sea -->
+  <path d="M0 720 q240 -50 480 0 t480 0 t480 0 t480 0 V1080 H0 Z" fill="url(#sea)"/>
+  <g fill="#ffffff" opacity="0.10">
+    <path d="M0 800 q240 40 480 0 t480 0 t480 0 t480 0 V1080 H0 Z"/>
+  </g>
+  <!-- pirate ship, set to the left so the center stays readable -->
+  <g transform="translate(360 560)">
+    <path d="M-150 130 l300 0 -52 80 -196 0 Z" fill="#7a5a2f" stroke="#5a4523" stroke-width="6"/>
+    <rect x="-6" y="-150" width="12" height="280" fill="#5a4523"/>
+    <path d="M6 -140 l140 50 -140 50 Z" fill="#f3e2c0" stroke="#d8c089" stroke-width="4"/>
+    <path d="M-6 -140 l-120 44 120 44 Z" fill="#fdfbf5" stroke="#d8c089" stroke-width="4"/>
+    <path d="M6 -150 l0 -44 64 22 -64 22 Z" fill="#b8473e"/>
+    <circle cx="40" cy="-176" r="4" fill="#fdfbf5"/>
+  </g>
+  <!-- corner frame accents -->
+  <g fill="none" stroke="#e8b733" stroke-width="6" opacity="0.5" stroke-dasharray="26 20">
+    <rect x="40" y="40" width="1840" height="1000" rx="28"/>
+  </g>
+</svg>

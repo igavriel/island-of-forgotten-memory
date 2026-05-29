@@ -46,11 +46,34 @@ body {
 }
 
 .game {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+}
+
+/* ---- Full-screen decorative background layer ----
+   A fixed 16:9 placeholder image covering the viewport behind the game. Set per screen by
+   setScreenBackground() in js/renderer.js. When empty (or the image fails to load) the body's
+   sea gradient shows through, so every screen still works. */
+.screen-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Subtle scrim only when an image is shown, to keep overlaid text/buttons readable. */
+.screen-bg.is-visible::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 28, 43, 0.32);
 }
 
 /* ---- General screen ---- */
@@ -205,6 +228,8 @@ body {
 }
 
 /* ---- Treasure map ---- */
+/* The map card sits on top of the full-screen parchment background and stays opaque so the
+   dynamic route clues (rendered inside it from selectedRiddles) remain readable. */
 .map-card {
   background: var(--map-paper);
   color: var(--ink);
@@ -668,9 +693,16 @@ body {
   pointer-events: none;
 }
 
+/* The win screen sits over the full-screen victory image, so wrap its content in a
+   translucent panel for readability (mirrors the start-screen panel). */
 .win-screen {
   position: relative;
   overflow: hidden;
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
 }
 
 .confetti-piece {
