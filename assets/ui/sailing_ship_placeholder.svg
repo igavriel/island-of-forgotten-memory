@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 120" role="img" aria-label="pirate ship placeholder">
+  <!-- Simple pirate ship silhouette: hull, sails, flag. Transparent background. -->
+  <path d="M18 82 L142 82 L118 104 L42 104 Z" fill="#7a5a2f" stroke="#5a4523" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="77" y="24" width="7" height="60" fill="#5a4523"/>
+  <path d="M84 28 L84 78 L132 52 Z" fill="#f3e2c0" stroke="#d8c089" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M77 34 L77 74 L42 54 Z" fill="#fdfbf5" stroke="#d8c089" stroke-width="2" stroke-linejoin="round"/>
+  <path d="M80 24 L80 6 L112 15 L80 23 Z" fill="#b8473e"/>
+  <circle cx="106" cy="13" r="3.5" fill="#fdfbf5"/>
+  <path d="M30 82 Q80 72 130 82" fill="none" stroke="#5a4523" stroke-width="2" opacity="0.5"/>
+</svg>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="open sea sailing background placeholder">
+  <defs>
+    <linearGradient id="sailSky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a5578"/>
+      <stop offset="0.55" stop-color="#14618a"/>
+      <stop offset="1" stop-color="#0f4d70"/>
+    </linearGradient>
+    <linearGradient id="sailSea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b3d5c"/>
+      <stop offset="1" stop-color="#072c43"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#sailSky)"/>
+  <!-- sun toward the right edge (safe margin) -->
+  <circle cx="1680" cy="220" r="100" fill="#e8b733" opacity="0.88"/>
+  <circle cx="1680" cy="220" r="140" fill="#e8b733" opacity="0.14"/>
+  <!-- clouds kept to the sides; center/top sky kept clear for overlay text -->
+  <g fill="#ffffff" opacity="0.16">
+    <ellipse cx="240" cy="180" rx="150" ry="44"/>
+    <ellipse cx="380" cy="160" rx="110" ry="36"/>
+    <ellipse cx="1580" cy="420" rx="140" ry="40"/>
+  </g>
+  <!-- horizon and open sea -->
+  <path d="M0 680 q240 -36 480 0 t480 0 t480 0 t480 0 V1080 H0 Z" fill="url(#sailSea)"/>
+  <g fill="#ffffff" opacity="0.08">
+    <path d="M0 760 q240 32 480 0 t480 0 t480 0 t480 0 V1080 H0 Z"/>
+  </g>
+  <!-- distant land hints at far edges only (cover-safe margins) -->
+  <g opacity="0.55">
+    <ellipse cx="120" cy="700" rx="90" ry="28" fill="#3ba776"/>
+    <ellipse cx="120" cy="708" rx="70" ry="16" fill="#f3e2c0"/>
+    <ellipse cx="1820" cy="720" rx="80" ry="24" fill="#3ba776"/>
+  </g>
+  <!-- subtle wake path toward left destination (decorative, low contrast) -->
+  <path d="M320 820 Q960 780 1680 840" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.08" stroke-dasharray="12 24"/>
+  <g fill="none" stroke="#e8b733" stroke-width="6" opacity="0.35" stroke-dasharray="26 20">
+    <rect x="40" y="40" width="1840" height="1000" rx="28"/>
+  </g>
+</svg>

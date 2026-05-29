@@ -25,7 +25,7 @@ The game also works from `file://` because all data lives in JavaScript files (n
 ## File structure
 
 ```
-index.html          # Page shell, script load order, RTL layout
+index.html          # Page shell: #app letterbox, #game-viewport (16:9), #screen-bg, #screen
 README.md           # This file
 css/style.css       # Layout, RTL, and CSS animations
 js/config.js        # CONFIG — all settings
@@ -96,13 +96,14 @@ lose / win -> play again -> start
 | `NUMBER_OF_ISLANDS` | `5` | How many riddles are selected from the pool per game |
 | `MAP_VIEW_TIME_MS` | `10000` | Map display time in milliseconds (10 seconds) |
 | `WIND_TRANSITION_MS` | `1100` | Duration of the "wind blows the map away" transition |
-| `SAILING_TRANSITION_MS` | `1600` | Duration of the sailing animation between islands |
+| `SAILING_TRANSITION_MS` | `1800` | Duration of the sailing animation between islands |
 | `ANSWER_FEEDBACK_MS` | `420` | Short pressed/feedback moment after clicking an answer, before the screen changes |
 | `SHOW_COUNTDOWN_NUMBER` | `false` | Show a numeric "נותרו N שניות" countdown on the map timer bar |
 | `SHOW_HINT_LABELS_ON_MAP` | `true` | Show a text label next to the emoji on the map (final version: `false`) |
 | `USE_IMAGE_ASSETS` | `true` | Images are used automatically wherever a riddle provides a path (emoji/text fallback otherwise, or on load error). Set to `false` to force placeholder-only mode. See [docs/assets.md](docs/assets.md) |
-| `USE_SCREEN_PLACEHOLDER_IMAGES` | `true` | Show the 16:9 full-screen background images on the start, map, and win screens. Set to `false` to disable all three |
-| `START_SCREEN_IMAGE` / `MAP_BACKGROUND_IMAGE` / `VICTORY_IMAGE` | SVG paths | Full-screen 16:9 background for the start / map / win screens (set a path to `null` to disable just that one). See [docs/assets.md](docs/assets.md) |
+| `USE_SCREEN_PLACEHOLDER_IMAGES` | `true` | Show the 16:9 full-screen background images on the start, map, sailing, and win screens. Set to `false` to disable all four |
+| `START_SCREEN_IMAGE` / `MAP_BACKGROUND_IMAGE` / `SAILING_BACKGROUND_IMAGE` / `VICTORY_IMAGE` | SVG paths | 16:9 backgrounds inside `#game-viewport` (`contain`). See [docs/assets.md](docs/assets.md) |
+| `SAILING_SHIP_IMAGE` / `SAILING_DESTINATION_ISLAND_IMAGE` | SVG paths | Ship and destination island on the sailing transition screen (emoji fallback if disabled or missing). See [docs/assets.md](docs/assets.md) |
 | `DEBUG_MODE` | `false` | Debug mode: marks the correct answer and adds a skip button. **Must be `false` for the final presentation** |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | `true` | Show the correct answer on the lose screen (balancing option; see [docs/playtest.md](docs/playtest.md)) |
 
@@ -122,7 +123,8 @@ const CONFIG = {
 
 All animations are CSS-only. The main transitions are: start panel fade-in, map reveal with
 a pulsing "memorize" cue, wind blow-away (the strongest transition, with a clear "the map is
-gone" message), sailing between islands, island/character entrance, answer hover, answer
+gone" message), sailing between islands (ship crosses right-to-left toward a destination
+island with a wave-like CSS motion), island/character entrance, answer hover, answer
 press with a correct/wrong feedback flash, and a win celebration (trophy pop + confetti).
 
 To adjust speed, edit the timing values in `js/config.js`

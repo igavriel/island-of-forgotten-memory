@@ -16,8 +16,8 @@ const CONFIG = {
   //
   // How long the "wind blows the map away" transition lasts (the strongest transition).
   WIND_TRANSITION_MS: 1100,
-  // Duration of the sailing animation between islands.
-  SAILING_TRANSITION_MS: 1600,
+  // Duration of the sailing animation between islands (ship CSS animation + JS timeout).
+  SAILING_TRANSITION_MS: 1800,
   // Short pressed/feedback moment after clicking an answer, before the screen changes.
   ANSWER_FEEDBACK_MS: 420,
 
@@ -43,8 +43,15 @@ const CONFIG = {
   // always rendered on top of the map background from selectedRiddles.
   USE_SCREEN_PLACEHOLDER_IMAGES: true,
   START_SCREEN_IMAGE: "assets/ui/start_screen_placeholder.svg",
-  MAP_BACKGROUND_IMAGE: "assets/map/treasure_map_placeholder.svg",
+  MAP_BACKGROUND_IMAGE: "assets/map/treasure_map_placeholder.png",
   VICTORY_IMAGE: "assets/endings/victory_placeholder.svg",
+  // Full-screen 16:9 sea scene for the sailing transition (same #screen-bg layer as above).
+  SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background_placeholder.svg",
+
+  // Sailing transition placeholders (ship + destination island). Used on the sailing screen;
+  // fall back to ⛵ / 🏝️ emoji when missing or when USE_IMAGE_ASSETS is false.
+  SAILING_SHIP_IMAGE: "assets/ui/sailing_ship_placeholder.png",
+  SAILING_DESTINATION_ISLAND_IMAGE: "assets/ui/destination_island_placeholder.png",
 
   // Debug mode. Must be false for the final presentation.
   // When true: the correct answer is shown and a developer skip/answer button appears.

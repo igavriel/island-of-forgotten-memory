@@ -25,6 +25,9 @@
   --fade-ms: 380ms;
   --map-reveal-ms: 560ms;
   --island-enter-ms: 460ms;
+
+  /* Letterbox area outside the 16:9 game viewport (when the browser window is not 16:9). */
+  --letterbox-bg: #071827;
 }
 
 * {
@@ -33,23 +36,70 @@
 
 html,
 body {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100%;
 }
 
 body {
+  overflow: hidden;
   font-family: "Segoe UI", "Arial Hebrew", Arial, sans-serif;
   color: var(--white);
-  background: linear-gradient(180deg, var(--sea-deep), var(--sea));
-  background-attachment: fixed;
+  background: var(--letterbox-bg);
   cursor: url("../assets/ui/pirate_hook_cursor.svg") 6 6, pointer;
+}
+
+/* ---- 16:9 game viewport ----
+   The browser window can be any size; the game scene stays 16:9 and letterboxes inside it.
+   All backgrounds, UI, map clues, and sailing sprites are positioned inside #game-viewport. */
+#app {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--letterbox-bg);
+}
+
+#game-viewport {
+  position: relative;
+  width: min(100vw, calc(100vh * 16 / 9));
+  width: min(100vw, calc(100dvh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  height: min(100dvh, calc(100vw * 9 / 16));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--sea-deep), var(--sea));
+}
+
+#screen-bg,
+#screen {
+  position: absolute;
+  inset: 0;
+}
+
+#screen-bg {
+  z-index: 0;
+  pointer-events: none;
+}
+
+#screen {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 3.5%;
 }
 
 /* Custom pirate hook cursor across the game. Hotspot (6 6) = hook tip (top-left of SVG).
    Fallback: pointer if the SVG fails to load. To disable, remove this rule and the
    matching cursor declarations on buttons below, or override with cursor: pointer. */
-#game,
+#app,
+#game-viewport,
+#screen,
 button,
 .main-button,
 .option-button,
@@ -57,25 +107,10 @@ button,
   cursor: url("../assets/ui/pirate_hook_cursor.svg") 6 6, pointer;
 }
 
-.game {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-/* ---- Full-screen decorative background layer ----
-   A fixed 16:9 placeholder image behind the game, scaled to fit the viewport in proportion
-   (contain: full image visible, no cropping). Set per screen by setScreenBackground() in
-   js/renderer.js. When empty (or the image fails to load) the body's sea gradient shows
-   through, so every screen still works. */
-.screen-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+/* ---- Full-screen 16:9 art backgrounds ----
+   Backgrounds fill the 16:9 #game-viewport (not the full browser window).
+   contain preserves aspect ratio with no distortion and no cropping. */
+.fullscreen-art-background {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -92,7 +127,7 @@ button,
 /* ---- General screen ---- */
 .screen {
   width: 100%;
-  max-width: 640px;
+  max-width: min(640px, 92%);
   text-align: center;
 }
 
@@ -428,34 +463,104 @@ button,
   padding: 8px 14px;
 }
 
-/* ---- Sailing ---- */
-.sea {
-  position: relative;
-  height: 120px;
-  margin-top: 16px;
-  overflow: hidden;
-  border-radius: 14px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.18));
-}
-
-.ship {
+/* ---- Sailing transition ----
+   Background on #screen-bg; ship + island sprites live in .sailing-scene inside the viewport.
+   Positions use % of #game-viewport, not the browser window. */
+.sailing-screen {
   position: absolute;
-  top: 28px;
-  font-size: 3.4rem;
-  /* Sails across the sea (RTL feel: starts off-screen right, exits left).
-     Crossing duration is driven by CONFIG.SAILING_TRANSITION_MS so the ship reaches
-     the far side just as the screen advances. */
-  animation: sail var(--sail-ms) ease-in-out forwards, bob 1.2s ease-in-out infinite;
-}
-
-.waves {
-  position: absolute;
-  bottom: 8px;
-  inset-inline: 0;
+  inset: 0;
+  max-width: none;
+  width: 100%;
   text-align: center;
-  font-size: 1.7rem;
-  letter-spacing: 4px;
-  animation: bob 1.6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.sailing-scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* Shared sailing layout: island anchor + ship dock derived from the same sizes. */
+  --sailing-island-left: 2%;
+  --sailing-island-size: clamp(144px, 40%, 336px);
+  --sailing-ship-size: clamp(80px, 22%, 200px);
+  /* Ship stops overlapping the island shore (not at a fixed % in the middle). */
+  --sailing-ship-dock-left: calc(
+    var(--sailing-island-left) + var(--sailing-island-size) - var(--sailing-ship-size) * 0.75
+  );
+}
+
+.sailing-message {
+  position: absolute;
+  top: 9%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: min(92%, 640px);
+  margin: 0;
+  font-size: clamp(1.1rem, 2.8vmin, 1.75rem);
+  font-weight: bold;
+  line-height: 1.35;
+  text-shadow:
+    0 2px 10px rgba(0, 0, 0, 0.85),
+    0 0 28px rgba(7, 28, 43, 0.65),
+    0 1px 0 rgba(0, 0, 0, 0.5);
+}
+
+.sailing-progress {
+  position: absolute;
+  top: 16%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  margin: 0;
+  font-size: clamp(0.85rem, 2vmin, 1.1rem);
+  font-weight: bold;
+  opacity: 0.92;
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(7, 28, 43, 0.55);
+}
+
+.destination-island {
+  position: absolute;
+  left: var(--sailing-island-left);
+  bottom: 12%;
+  z-index: 1;
+}
+
+.destination-island-img {
+  display: block;
+  width: var(--sailing-island-size);
+  height: auto;
+  pointer-events: none;
+}
+
+.destination-island-emoji {
+  display: block;
+  font-size: clamp(5.6rem, 16vmin, 9.6rem);
+  line-height: 1;
+}
+
+.sailing-ship {
+  position: absolute;
+  bottom: 26%;
+  z-index: 2;
+  /* Sails from the right edge toward the island on the left (see sailing-ship-wave). */
+  animation: sailing-ship-wave var(--sail-ms) ease-out forwards;
+}
+
+.sailing-ship-img {
+  display: block;
+  width: var(--sailing-ship-size);
+  height: auto;
+  pointer-events: none;
+}
+
+.sailing-ship-emoji {
+  display: block;
+  font-size: clamp(3rem, 9vmin, 5.5rem);
+  line-height: 1;
 }
 
 /* ---- Animations ---- */
@@ -518,23 +623,27 @@ button,
   }
 }
 
-@keyframes bob {
-  0%,
-  100% {
+/* Ship crosses the sea and docks at the island on the left (--sailing-ship-dock-left). */
+@keyframes sailing-ship-wave {
+  0% {
+    left: 105%;
     transform: translateY(0);
   }
+  25% {
+    left: 72%;
+    transform: translateY(-12px);
+  }
   50% {
-    transform: translateY(-8px);
+    left: 48%;
+    transform: translateY(8px);
   }
-}
-
-/* Ship sails from the right edge across to the left. */
-@keyframes sail {
-  from {
-    right: -20%;
+  75% {
+    left: calc(var(--sailing-ship-dock-left) + 12%);
+    transform: translateY(-10px);
   }
-  to {
-    right: 100%;
+  100% {
+    left: var(--sailing-ship-dock-left);
+    transform: translateY(0);
   }
 }
 
@@ -762,13 +871,17 @@ button,
   .memorize-cue,
   .character-enter,
   .trophy-celebrate,
-  .ship,
-  .waves,
+  .sailing-ship,
   .option-button,
   .option-button.answer-correct-flash,
   .option-button.answer-wrong-flash {
     animation: none !important;
     transition: none !important;
+  }
+  /* Show ship docked beside the island when motion is reduced. */
+  .sailing-ship {
+    left: var(--sailing-ship-dock-left);
+    transform: translateY(0);
   }
   .confetti {
     display: none !important;
@@ -777,8 +890,8 @@ button,
 
 /* ---- Small-screen adjustments ---- */
 @media (max-width: 480px) {
-  .game {
-    padding: 16px;
+  #screen {
+    padding: 2.5%;
   }
   .options {
     grid-template-columns: 1fr;

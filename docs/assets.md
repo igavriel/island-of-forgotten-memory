@@ -36,7 +36,7 @@ assets/
 ## Custom cursor
 
 - **Asset:** `assets/ui/pirate_hook_cursor.svg` (48×48, transparent, hook tip at top-left).
-- **Applied in:** [css/style.css](../css/style.css) on `body`, `#game`, and all buttons
+- **Applied in:** [css/style.css](../css/style.css) on `body`, `#app`, `#game-viewport`, `#screen`, and all buttons
   (`.main-button`, `.option-button`, `.debug-button`):
   `cursor: url("../assets/ui/pirate_hook_cursor.svg") 6 6, pointer;`
 - **Hotspot:** `6 6` aligns with the hook tip. If clicks feel offset, change those two
@@ -45,6 +45,75 @@ assets/
   `cursor: pointer` on `body` / `button`.
 - **Replace:** drop in a new SVG at the same path (keep a clear tip and update the hotspot),
   or point the `url(...)` at a new file.
+
+## Full-screen background rules
+
+All screen-level 16:9 backgrounds (start, map, sailing, victory) and per-riddle
+`islandBackgroundImage` / `loseImage` render on `#screen-bg` **inside `#game-viewport`**
+(not the full browser window). Styled with `.fullscreen-art-background` in
+[css/style.css](../css/style.css):
+
+| Property | Value | Purpose |
+| -------- | ----- | ------- |
+| `background-size` | `contain` | Fill the 16:9 viewport without distortion or cropping |
+| `background-position` | `center` | Center the image |
+| `background-repeat` | `no-repeat` | Single image |
+
+## 16:9 game viewport
+
+The game uses a letterboxed 16:9 viewport so backgrounds always display at the correct
+aspect ratio:
+
+```
+#app (full window, flex center, letterbox color)
+  └── #game-viewport (exactly 16:9, fits inside window)
+        ├── #screen-bg (background images)
+        └── #screen (UI root — renderer injects screens here)
+```
+
+- **Sizing:** `width: min(100vw, calc(100dvh * 16 / 9))` and
+  `height: min(100dvh, calc(100vw * 9 / 16))` with `aspect-ratio: 16 / 9`.
+- **Letterboxing:** when the browser window is wider or taller than 16:9, neutral bars appear
+  outside the viewport (`--letterbox-bg` in `:root`, default `#071827`). Change that variable
+  in [css/style.css](../css/style.css) to adjust the outer color.
+- **Backgrounds:** because `#game-viewport` is already 16:9, `contain` shows the full SVG with
+  no stretch and no crop. Do not size backgrounds against `100vw`/`100vh` directly.
+- **UI:** map clues, sailing ship/island sprites, and text overlays are positioned relative to
+  `#game-viewport` (percentages), not the browser window.
+
+**Authoring SVG placeholders:** use `viewBox="0 0 1920 1080"`. Safe margins are still good
+practice but `contain` inside a 16:9 viewport will show the full image.
+
+**Adjust sizing mode:** edit `.fullscreen-art-background` in `css/style.css` — `contain`
+(default) vs `cover` (only if you accept edge cropping on the viewport).
+
+## Sailing transition placeholders
+
+Between islands the game shows a short sailing screen (`renderSailing` in
+[js/renderer.js](../js/renderer.js)) with a full-screen sea background plus foreground sprites.
+
+- **Background:** `assets/ui/sailing_background_placeholder.svg` — configured as
+  `CONFIG.SAILING_BACKGROUND_IMAGE` (same `#screen-bg` / `.fullscreen-art-background` rules as
+  start/map/win).
+- **Ship:** `assets/ui/sailing_ship_placeholder.svg` — configured as `CONFIG.SAILING_SHIP_IMAGE`.
+- **Destination island:** `assets/ui/destination_island_placeholder.svg` — configured as
+  `CONFIG.SAILING_DESTINATION_ISLAND_IMAGE`.
+- **Text:** Hebrew message and progress render as plain text over the sky (`text-shadow` only —
+  no panel/card).
+- **Timing:** `CONFIG.SAILING_TRANSITION_MS` (default `1800` ms). This value drives both the
+  JavaScript `setTimeout` that advances to the next island and the CSS `--sail-ms` variable
+  used by the `.sailing-ship` animation (`applyAnimationTimings` at startup). Change it in
+  one place in [js/config.js](../js/config.js) to speed up or slow down the crossing.
+- **Motion:** the ship moves right-to-left (RTL feel: starts off-screen right, stops near the
+  island on the left). Vertical bobbing is a **sine-like wave approximated with CSS
+  keyframes** (`@keyframes sailing-ship-wave` in [css/style.css](../css/style.css)), not a true
+  mathematical sine path.
+- **Fallback:** if `USE_IMAGE_ASSETS` is false or an SVG fails to load, the ship falls back to
+  ⛵ and the island to 🏝️ (via `appendVisual`); the transition still runs. If
+  `USE_SCREEN_PLACEHOLDER_IMAGES` is false or the sailing background fails, the body sea
+  gradient shows through.
+- **Replace later:** swap in final art at the same paths (or update the config keys); keep
+  transparent backgrounds on foreground sprites and safe margins on 16:9 backgrounds.
 
 ## Two kinds of images
 
@@ -63,22 +132,20 @@ assets/
    gated by `USE_SCREEN_PLACEHOLDER_IMAGES`:
    - `START_SCREEN_IMAGE` -> `assets/ui/start_screen_placeholder.svg` (start screen)
    - `MAP_BACKGROUND_IMAGE` -> `assets/map/treasure_map_placeholder.svg` (memory/map phase)
+   - `SAILING_BACKGROUND_IMAGE` -> `assets/ui/sailing_background_placeholder.svg` (sailing transition)
    - `VICTORY_IMAGE` -> `assets/endings/victory_placeholder.svg` (win screen)
 
-   These three are **16:9 full-screen background placeholders** (`viewBox="0 0 1920 1080"`),
-   designed with a readable center. They are rendered as a fixed full-screen layer behind the
-   game (`#screen-bg`, `background-size: contain` — full image visible, proportional fit) by `setScreenBackground()` in the renderer;
-   text and buttons sit above them on translucent panels/cards, with a subtle scrim for
-   contrast. They are decorative only:
+   They are rendered on `#screen-bg` inside `#game-viewport` (`.fullscreen-art-background`,
+   `background-size: contain`) by `setScreenBackground()`. Start/map/win text sits on translucent
+   panels; the sailing message is plain text over the sky (`text-shadow` only). Decorative only:
    - The map background does **not** contain fixed clues. The selected route clues are still
      rendered dynamically on top of it from `selectedRiddles` in the map card.
    - The island and lose screens use the current riddle's full-screen background when it has
-     one (see per-riddle images above), otherwise the sea gradient. The sailing screen always
-     uses the sea gradient.
+     one (see per-riddle images above), otherwise the viewport fallback gradient shows.
    - If a screen image is missing or fails to load, the layer stays empty and the screen still
-     works. Set `USE_SCREEN_PLACEHOLDER_IMAGES: false` to turn all three off.
+     works. Set `USE_SCREEN_PLACEHOLDER_IMAGES: false` to turn all four off.
 
-   To use final art later, just replace these three SVG files (or point the config paths at new
+   To use final art later, just replace these SVG files (or point the config paths at new
    16:9 files); no renderer or layout changes are needed.
 
 ## Recommended naming
@@ -136,9 +203,7 @@ In [js/config.js](../js/config.js):
 - Keep file sizes small; everything loads from disk with no build step.
 - Inline images are sized by minimal CSS classes in [css/style.css](../css/style.css):
   `.map-clue-image` (map clue) and `.character-image` (character portrait).
-- Full-screen background images (`islandBackgroundImage`, `loseImage`, and the three
-  screen-level images) are drawn by the fixed `#screen-bg` layer with `background-size: contain`
-  (proportional fit, no cropping),
-  so author them at 16:9 with a readable center.
+- Full-screen background images are drawn by `#screen-bg` inside `#game-viewport` with
+  `background-size: contain` (no distortion, no crop within the 16:9 viewport).
 - Alt text: informative inline images (map clues, characters) use the riddle's label/name.
   Full-screen backgrounds are decorative and set via CSS, so they need no alt text.

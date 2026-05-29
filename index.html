@@ -7,11 +7,15 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
-    <!-- Full-screen decorative background layer (set per screen by renderer.js). -->
-    <div id="screen-bg" class="screen-bg" aria-hidden="true"></div>
-
-    <!-- All screens are injected into #game by renderer.js -->
-    <main id="game" class="game"></main>
+    <!-- Outer wrapper: letterboxes when the browser window is not 16:9. -->
+    <main id="app">
+      <!-- Inner 16:9 game viewport — all backgrounds and UI are positioned here. -->
+      <section id="game-viewport">
+        <div id="screen-bg" class="screen-bg fullscreen-art-background" aria-hidden="true"></div>
+        <!-- All screens are injected into #screen by renderer.js -->
+        <section id="screen" class="screen-root"></section>
+      </section>
+    </main>
 
     <!-- Load order matters: data and helpers first, then state, rendering, and finally bootstrap -->
     <script src="js/config.js"></script>

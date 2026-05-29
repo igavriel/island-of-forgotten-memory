@@ -2,9 +2,9 @@
 // Responsible for all DOM rendering. Holds no game state and decides no flow.
 // The flow functions (gameState.js) call the render* functions here.
 
-// The root element into which all screens are injected.
+// The root element into which all screens are injected (#screen inside #game-viewport).
 function getRoot() {
-  return document.getElementById("game");
+  return document.getElementById("screen");
 }
 
 // Pushes the configurable transition timings into CSS custom properties, so the CSS
@@ -58,12 +58,11 @@ function appendVisual(parent, src, placeholderEl, className, altText) {
   }
 }
 
-// Sets (or clears) the full-screen background for the current screen. The image is preloaded
-// so a missing/failed file falls back cleanly to no background (the body's sea gradient shows
-// and the screen still works). Pass null/undefined to clear the background.
-// "enabled" is the toggle that allows the image: it defaults to CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES
-// for the decorative screen images (start/map/win); per-riddle backgrounds (island/lose) pass
-// CONFIG.USE_IMAGE_ASSETS instead, so they follow the same on/off rule as other riddle images.
+// Sets (or clears) the full-screen background for the current screen (#screen-bg inside
+// #game-viewport). The image is preloaded so a missing/failed file falls back cleanly.
+// Pass null/undefined to clear the background.
+// "enabled" defaults to CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES for screen-level images;
+// per-riddle backgrounds (island/lose) pass CONFIG.USE_IMAGE_ASSETS instead.
 function setScreenBackground(src, enabled) {
   const layer = document.getElementById("screen-bg");
   if (!layer) {
@@ -72,12 +71,18 @@ function setScreenBackground(src, enabled) {
   const allow = enabled === undefined ? CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES : enabled;
   function clear() {
     layer.style.backgroundImage = "";
+    layer.style.backgroundSize = "";
+    layer.style.backgroundPosition = "";
+    layer.style.backgroundRepeat = "";
     layer.classList.remove("is-visible");
   }
   if (allow && src) {
     const probe = new Image();
     probe.onload = function () {
       layer.style.backgroundImage = "url('" + src + "')";
+      layer.style.backgroundSize = "contain";
+      layer.style.backgroundPosition = "center";
+      layer.style.backgroundRepeat = "no-repeat";
       layer.classList.add("is-visible");
     };
     probe.onerror = clear;
@@ -215,23 +220,48 @@ function renderMapBlowAway(callback) {
 // ---- Sailing-between-islands screen ----
 function renderSailing(islandNumber, totalIslands, callback) {
   const root = clearScreen();
-  setScreenBackground(null);
+  // Full-screen 16:9 sea background (same #screen-bg layer as start/map/win).
+  setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen sailing-screen fade-in");
 
-  screen.appendChild(createElement("h2", "title", "מפליגים לאי הבא..."));
-  screen.appendChild(
-    createElement("p", "subtitle", "אי " + islandNumber + " מתוך " + totalIslands)
+  // Transparent overlay for ship + island sprites (background is on #screen-bg).
+  const scene = createElement("div", "sailing-scene");
+
+  const islandWrap = createElement("div", "destination-island");
+  const islandPlaceholder = createElement("span", "destination-island-emoji", "🏝️");
+  appendVisual(
+    islandWrap,
+    CONFIG.SAILING_DESTINATION_ISLAND_IMAGE,
+    islandPlaceholder,
+    "destination-island-img",
+    ""
   );
+  scene.appendChild(islandWrap);
 
-  // The sea holds a ship that sails across the waves (animated in CSS).
-  const sea = createElement("div", "sea");
-  sea.appendChild(createElement("div", "ship", "⛵"));
-  sea.appendChild(createElement("div", "waves", "🌊🌊🌊🌊🌊🌊🌊"));
-  screen.appendChild(sea);
+  const shipWrap = createElement("div", "sailing-ship");
+  const shipPlaceholder = createElement("span", "sailing-ship-emoji", "⛵");
+  appendVisual(
+    shipWrap,
+    CONFIG.SAILING_SHIP_IMAGE,
+    shipPlaceholder,
+    "sailing-ship-img",
+    ""
+  );
+  scene.appendChild(shipWrap);
 
+  screen.appendChild(scene);
+  // Plain text over the sky area — no panel/card; readability via text-shadow in CSS.
+  screen.appendChild(createElement("p", "sailing-message", "מפליגים אל האי הבא..."));
+  screen.appendChild(
+    createElement(
+      "p",
+      "sailing-progress",
+      "אי " + islandNumber + " מתוך " + totalIslands
+    )
+  );
   root.appendChild(screen);
 
-  // Move to the island question after the configured sailing time.
+  // Move to the island question after the configured sailing time (--sail-ms in CSS).
   setTimeout(callback, CONFIG.SAILING_TRANSITION_MS);
 }
 
