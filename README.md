@@ -3,6 +3,8 @@
 A point-and-click pirate memory game, in Hebrew with an RTL layout.
 The site is fully static: HTML, CSS, and vanilla JavaScript — no server, no npm, and no build step.
 
+**Play online:** [https://igavriel.github.io/island-of-forgotten-memory/](https://igavriel.github.io/island-of-forgotten-memory/)
+
 > The game UI is in Hebrew. This README is in English, but the code comments and on-screen text are intentionally kept as-is (comments in English, UI in Hebrew).
 
 ## Project goal
@@ -17,8 +19,9 @@ an island-specific lose screen and a progress score. Completing all islands show
 
 No installation, server, or build tools required.
 
-1. **The simple way:** open `index.html` directly in a browser (double-click / `file://`).
-2. **Static hosting:** upload the whole folder to GitHub Pages or any static hosting provider, then open the URL.
+1. **Play online:** open the [live game](https://igavriel.github.io/island-of-forgotten-memory/) in your browser.
+2. **The simple way:** open `index.html` directly in a browser (double-click / `file://`).
+3. **Static hosting:** upload the whole folder to GitHub Pages or any static hosting provider, then open the URL.
 
 The game also works from `file://` because all data lives in JavaScript files (no use of `fetch()`).
 
