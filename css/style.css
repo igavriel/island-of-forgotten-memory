@@ -232,6 +232,41 @@ body {
   font-size: 0.95rem;
 }
 
+/* ---- Future image assets (used only when CONFIG.USE_IMAGE_ASSETS is true) ---- */
+/* Minimal safe sizing; refine when real assets arrive. */
+.map-clue-image {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+}
+
+.island-background {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin: 0 auto;
+}
+
+.character-image {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.lose-image {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  object-fit: contain;
+  border-radius: 12px;
+  margin: 0 auto;
+}
+
 /* Map viewing time bar */
 .timer-bar {
   margin-top: 20px;

@@ -18,6 +18,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - UX polish: start-screen panel, map reveal, wind blow-away with "הרוח העיפה את המפה!" message, ship sailing across waves, larger answer buttons with hover/pressed feedback, visible keyboard focus.
 - Lose screen now shows the chosen wrong answer, the correct answer, and progress; win screen shows a final score.
 - Basic responsive layout for desktop and small screens.
+- Image-ready: optional image fields on every riddle (default null), an appendVisual renderer fallback, USE_IMAGE_ASSETS flag, asset folders, and an asset integration guide. Placeholder mode is unchanged.
 
 ## Partially working
 
@@ -25,7 +26,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Not implemented yet
 
-- Real images (using emoji/text placeholders for now).
+- Real image files (the data model and renderer are ready; placeholders still used by default).
 - Sound effects.
 
 ## Known limitations
@@ -36,4 +37,4 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Current prototype goal
 
-Done: solid loop plus UX/animation polish, fully static. Next focus is preparing optional image fields in the riddle schema so real assets can drop in later.
+Done: solid loop, UX/animation polish, and image-asset readiness, all fully static. Next focus is integrating real images from Nitzan (set USE_IMAGE_ASSETS true and fill paths) per docs/assets.md.

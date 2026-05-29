@@ -2,10 +2,11 @@
 
 Prioritized. Check before changing code; update when priorities change.
 
-Done so far: full loop verified (stabilization phase); UX and CSS animation polish (this phase).
+Done so far: full loop verified; UX and CSS animation polish; image-asset preparation
+(optional image fields, renderer fallback, USE_IMAGE_ASSETS flag, asset folders, docs/assets.md).
 
-1. Prepare optional image fields in riddle data (hintImage, islandBackgroundImage, characterImage, loseImage).
-2. Replace emoji/text placeholders with real assets later.
+1. Integrate real images from Nitzan: add files under assets/, set the riddle paths, and turn on USE_IMAGE_ASSETS (see docs/assets.md).
+2. Optional: set SHOW_HINT_LABELS_ON_MAP false for image-only map clues once art is in.
 3. Optional: balance the source correctIndex values (display is already shuffled, so this is cosmetic).
 4. Optional: add sound effects.
 5. Optional: respect prefers-reduced-motion for the animations.

@@ -26,6 +26,26 @@ function createElement(tag, className, text) {
   return el;
 }
 
+// Appends an <img> when image mode is on and a source path is set; otherwise appends
+// the emoji/text placeholder. If the image fails to load (missing/renamed file), the
+// placeholder is swapped back in, so the prototype never shows a broken image.
+// altText: meaningful description for informative images (e.g. a hint label),
+//          or "" for decorative images (backgrounds, lose art).
+function appendVisual(parent, src, placeholderEl, className, altText) {
+  if (CONFIG.USE_IMAGE_ASSETS && src) {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = altText || "";
+    img.className = className;
+    img.addEventListener("error", function () {
+      img.replaceWith(placeholderEl);
+    });
+    parent.appendChild(img);
+  } else {
+    parent.appendChild(placeholderEl);
+  }
+}
+
 // ---- Start screen ----
 function renderStartScreen() {
   const root = clearScreen();
@@ -76,9 +96,11 @@ function renderMap(selectedRiddles) {
     const item = createElement("li", "map-clue");
 
     const number = createElement("span", "clue-number", index + 1);
-    const emoji = createElement("span", "clue-emoji", riddle.hintEmoji);
     item.appendChild(number);
-    item.appendChild(emoji);
+
+    // Image clue if available (image mode on), otherwise the emoji placeholder.
+    const emoji = createElement("span", "clue-emoji", riddle.hintEmoji);
+    appendVisual(item, riddle.hintImage, emoji, "map-clue-image", riddle.hintLabel);
 
     // The label is shown only if enabled in the config. The final version shows a visual clue only.
     if (CONFIG.SHOW_HINT_LABELS_ON_MAP) {
@@ -150,11 +172,15 @@ function renderIsland(riddle, islandIndex, totalIslands) {
   screen.appendChild(
     createElement("p", "progress", "אי " + islandNumber + " מתוך " + totalIslands)
   );
-  screen.appendChild(createElement("div", "big-emoji", "🏝️"));
+  // Island background image if available, otherwise the emoji placeholder. Decorative => empty alt.
+  const islandPlaceholder = createElement("div", "big-emoji", "🏝️");
+  appendVisual(screen, riddle.islandBackgroundImage, islandPlaceholder, "island-background", "");
   screen.appendChild(createElement("h2", "island-title", riddle.islandTitle));
 
   const character = createElement("div", "character-box");
-  character.appendChild(createElement("div", "character-emoji", "🧑‍✈️"));
+  // Character image if available, otherwise the emoji placeholder. Named by characterName for alt.
+  const characterPlaceholder = createElement("div", "character-emoji", "🧑‍✈️");
+  appendVisual(character, riddle.characterImage, characterPlaceholder, "character-image", riddle.characterName);
   character.appendChild(createElement("p", "character-name", riddle.characterName));
   character.appendChild(createElement("p", "question", riddle.question));
   screen.appendChild(character);
@@ -202,7 +228,9 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
   const root = clearScreen();
   const screen = createElement("section", "screen lose-screen fade-in");
 
-  screen.appendChild(createElement("div", "big-emoji", "💀"));
+  // Lose image if available, otherwise the emoji placeholder. Decorative => empty alt.
+  const losePlaceholder = createElement("div", "big-emoji", "💀");
+  appendVisual(screen, riddle.loseImage, losePlaceholder, "lose-image", "");
   screen.appendChild(createElement("h2", "title", riddle.failTitle));
   screen.appendChild(createElement("p", "subtitle", riddle.failText));
 

@@ -34,8 +34,18 @@ js/utils.js         # Fisher-Yates shuffle and route selection
 js/gameState.js     # Game state and game flow
 js/renderer.js      # DOM rendering (all screens)
 js/main.js          # Game bootstrap
-assets/             # Images/sounds for future versions
+docs/               # Progress docs + asset integration guide (docs/assets.md)
+assets/             # Image assets (placeholders for now)
+  hints/            #   map clue images
+  islands/          #   island background images
+  characters/       #   questioner images
+  endings/          #   lose/win images
+  ui/               #   shared UI images
+  map/              #   treasure map backgrounds
 ```
+
+Images are optional and off by default (`CONFIG.USE_IMAGE_ASSETS = false`); the game uses
+emoji/text placeholders. To add real images later, see [docs/assets.md](docs/assets.md).
 
 Separation of concerns: `config` (settings), `riddles` (content), `utils` (helpers), `gameState` (state/flow),
 `renderer` (rendering), `main` (bootstrap). The game engine does not depend on any specific riddle content.
@@ -87,6 +97,7 @@ lose / win -> play again -> start
 | `MAP_VIEW_TIME_MS` | `10000` | Map display time in milliseconds (10 seconds) |
 | `SAILING_TIME_MS` | `1800` | Duration of the sailing animation |
 | `SHOW_HINT_LABELS_ON_MAP` | `true` | Show a text label next to the emoji on the map (final version: `false`) |
+| `USE_IMAGE_ASSETS` | `false` | Use image files where a riddle provides a path, with fallback to emoji/text placeholders. See [docs/assets.md](docs/assets.md) |
 | `DEBUG_MODE` | `false` | Debug mode: marks the correct answer and adds a skip button. **Must be `false` for the final presentation** |
 
 ### Changing map time and island count

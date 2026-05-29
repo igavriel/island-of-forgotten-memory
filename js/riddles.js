@@ -15,14 +15,23 @@
 //   failTitle          - the lose screen title
 //   failText           - the lose screen text
 //
-// Future image fields (optional, to be added later):
-//   hintImage, islandBackgroundImage, characterImage, loseImage
+// Optional image fields (default null; used only when CONFIG.USE_IMAGE_ASSETS is true,
+// with automatic fallback to the emoji/text placeholder if the file is missing):
+//   hintImage             - clue image on the map        (suggested: assets/hints/<id>.png)
+//   islandBackgroundImage - island background image      (suggested: assets/islands/<id>.png)
+//   characterImage        - the questioner's image       (suggested: assets/characters/<id>.png)
+//   loseImage             - lose screen image            (suggested: assets/endings/lose_<id>.png)
+// To connect an image: drop the file in the folder above and set the matching field to its path.
 
 const RIDDLES = [
   {
     id: "gold",
     hintEmoji: "🪙",
     hintLabel: "מטבע זהב",
+    hintImage: null, // e.g. "assets/hints/gold.png"
+    islandBackgroundImage: null, // e.g. "assets/islands/gold.png"
+    characterImage: null, // e.g. "assets/characters/gold.png"
+    loseImage: null, // e.g. "assets/endings/lose_gold.png"
     question: "איזה אוצר נצנץ על מפת האי?",
     options: ["מטבע זהב", "פנינה כחולה", "יהלום ירוק", "כתר כסף"],
     correctIndex: 0,
@@ -35,6 +44,10 @@ const RIDDLES = [
     id: "parrot",
     hintEmoji: "🦜",
     hintLabel: "תוכי",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "איזו חיה ישבה על הכתף של שודד הים במפה?",
     options: ["דג", "תוכי", "חתול", "נחש"],
     correctIndex: 1,
@@ -47,6 +60,10 @@ const RIDDLES = [
     id: "anchor",
     hintEmoji: "⚓",
     hintLabel: "עוגן",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "מה החזיק את הספינה במקום ליד החוף?",
     options: ["חבל", "עוגן", "סלע", "גשר"],
     correctIndex: 1,
@@ -59,6 +76,10 @@ const RIDDLES = [
     id: "skull",
     hintEmoji: "💀",
     hintLabel: "גולגולת",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "איזה סמל סימן את אי הסכנה במפה?",
     options: ["לב", "כוכב", "גולגולת", "ירח"],
     correctIndex: 2,
@@ -71,6 +92,10 @@ const RIDDLES = [
     id: "compass",
     hintEmoji: "🧭",
     hintLabel: "מצפן",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "באיזה כלי השתמשו כדי למצוא את הכיוון במפה?",
     options: ["מצפן", "משקפת", "פנס", "מפתח"],
     correctIndex: 0,
@@ -83,6 +108,10 @@ const RIDDLES = [
     id: "lighthouse",
     hintEmoji: "🗼",
     hintLabel: "מגדלור",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "מה האיר לספינות בלילה ליד האי?",
     options: ["ירח", "מגדלור", "מדורה", "כוכב"],
     correctIndex: 1,
@@ -95,6 +124,10 @@ const RIDDLES = [
     id: "bottle",
     hintEmoji: "🍾",
     hintLabel: "בקבוק",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "מה צף על המים עם מסר בתוכו?",
     options: ["תיבה", "בקבוק", "כדור", "נעל"],
     correctIndex: 1,
@@ -107,6 +140,10 @@ const RIDDLES = [
     id: "chest",
     hintEmoji: "🧰",
     hintLabel: "תיבת אוצר",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "היכן הוסתר האוצר הגדול ביותר במפה?",
     options: ["במערה", "בתיבת אוצר", "על עץ", "מתחת לסירה"],
     correctIndex: 1,
@@ -119,6 +156,10 @@ const RIDDLES = [
     id: "crab",
     hintEmoji: "🦀",
     hintLabel: "סרטן",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "איזה יצור הסתובב על החול האדום במפה?",
     options: ["צב", "סרטן", "צדפה", "כוכב ים"],
     correctIndex: 1,
@@ -131,6 +172,10 @@ const RIDDLES = [
     id: "key",
     hintEmoji: "🗝️",
     hintLabel: "מפתח",
+    hintImage: null,
+    islandBackgroundImage: null,
+    characterImage: null,
+    loseImage: null,
     question: "מה פתח את שער המערה הנסתרת במפה?",
     options: ["מפתח", "פטיש", "חבל", "אבן"],
     correctIndex: 0,

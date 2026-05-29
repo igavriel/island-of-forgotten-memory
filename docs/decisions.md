@@ -17,3 +17,4 @@ Locked-in design and technical decisions. Update when one changes.
 - The first prototype uses emoji/text placeholders.
 - The loss screen reveals the player's wrong answer and the correct answer (learning feedback). This does not change the rules: a wrong answer still ends the game.
 - Animations are CSS-only (no JS animation libraries) to keep the project simple and static.
+- Riddles carry optional image fields (hintImage, islandBackgroundImage, characterImage, loseImage), default null. Images are opt-in via CONFIG.USE_IMAGE_ASSETS (default false) and always fall back to the emoji/text placeholder if missing or off. Asset naming/workflow is documented in docs/assets.md.

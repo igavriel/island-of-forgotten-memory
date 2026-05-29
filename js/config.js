@@ -16,6 +16,10 @@ const CONFIG = {
   // Final version: false to show a visual clue only.
   SHOW_HINT_LABELS_ON_MAP: true,
 
+  // false keeps the emoji/text prototype. true uses image assets where a riddle
+  // provides a path (with automatic fallback to the emoji/text placeholder).
+  USE_IMAGE_ASSETS: false,
+
   // Debug mode. Must be false for the final presentation.
   // When true: the correct answer is shown and a developer skip/answer button appears.
   DEBUG_MODE: false,
