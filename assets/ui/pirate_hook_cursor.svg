@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" role="img" aria-label="pirate hook cursor">
+  <!-- Handle (bottom-right). Hook tip is at the top-left (~6,6) for the CSS hotspot. -->
+  <rect x="27" y="33" width="12" height="12" rx="2.5" fill="#7a5a2f" stroke="#2a2118" stroke-width="1.5"/>
+  <rect x="29" y="35" width="8" height="8" rx="1.5" fill="#e8b733"/>
+  <!-- Hook: silver curve from handle up/left to a sharp tip -->
+  <path
+    d="M31 33
+       C31 24, 26 16, 18 11
+       C13 8, 9 6, 6 6
+       L3 4
+       L5 9
+       C8 9, 12 11, 16 14
+       C22 19, 26 26, 27 33
+       Z"
+    fill="#b8c0c8"
+    stroke="#2a2118"
+    stroke-width="1.5"
+    stroke-linejoin="round"
+  />
+  <!-- Highlight on the hook for readability on dark backgrounds -->
+  <path
+    d="M28 30 C27 23, 22 17, 16 13 C12 10, 9 8, 7 7"
+    fill="none"
+    stroke="#e8eef2"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    opacity="0.85"
+  />
+</svg>

@@ -29,9 +29,22 @@ assets/
   islands/      # island background images (per riddle)
   characters/   # questioner images       (per riddle)
   endings/      # lose/win images
-  ui/           # shared UI images (buttons, frames, icons)
+  ui/           # shared UI images (buttons, frames, icons, cursor)
   map/          # treasure map backgrounds/decorations
 ```
+
+## Custom cursor
+
+- **Asset:** `assets/ui/pirate_hook_cursor.svg` (48×48, transparent, hook tip at top-left).
+- **Applied in:** [css/style.css](../css/style.css) on `body`, `#game`, and all buttons
+  (`.main-button`, `.option-button`, `.debug-button`):
+  `cursor: url("../assets/ui/pirate_hook_cursor.svg") 6 6, pointer;`
+- **Hotspot:** `6 6` aligns with the hook tip. If clicks feel offset, change those two
+  numbers in every cursor rule in `css/style.css` to match the tip's x/y in the SVG.
+- **Disable:** remove or comment out the cursor rules in `css/style.css`, or override with
+  `cursor: pointer` on `body` / `button`.
+- **Replace:** drop in a new SVG at the same path (keep a clear tip and update the hotspot),
+  or point the `url(...)` at a new file.
 
 ## Two kinds of images
 
@@ -54,7 +67,7 @@ assets/
 
    These three are **16:9 full-screen background placeholders** (`viewBox="0 0 1920 1080"`),
    designed with a readable center. They are rendered as a fixed full-screen layer behind the
-   game (`#screen-bg`, `background-size: cover`) by `setScreenBackground()` in the renderer;
+   game (`#screen-bg`, `background-size: contain` — full image visible, proportional fit) by `setScreenBackground()` in the renderer;
    text and buttons sit above them on translucent panels/cards, with a subtle scrim for
    contrast. They are decorative only:
    - The map background does **not** contain fixed clues. The selected route clues are still
@@ -124,7 +137,8 @@ In [js/config.js](../js/config.js):
 - Inline images are sized by minimal CSS classes in [css/style.css](../css/style.css):
   `.map-clue-image` (map clue) and `.character-image` (character portrait).
 - Full-screen background images (`islandBackgroundImage`, `loseImage`, and the three
-  screen-level images) are drawn by the fixed `#screen-bg` layer with `background-size: cover`,
+  screen-level images) are drawn by the fixed `#screen-bg` layer with `background-size: contain`
+  (proportional fit, no cropping),
   so author them at 16:9 with a readable center.
 - Alt text: informative inline images (map clues, characters) use the riddle's label/name.
   Full-screen backgrounds are decorative and set via CSS, so they need no alt text.
