@@ -36,9 +36,11 @@ function createElement(tag, className, text) {
   return el;
 }
 
-// Appends an <img> when image mode is on and a source path is set; otherwise appends
-// the emoji/text placeholder. If the image fails to load (missing/renamed file), the
-// placeholder is swapped back in, so the prototype never shows a broken image.
+// Appends an <img> when the riddle provides a source path; otherwise appends the emoji/text
+// placeholder. So images are used automatically wherever they exist, and everything else
+// falls back to the placeholder. If the image fails to load (missing/renamed file), the
+// placeholder is swapped back in, so the game never shows a broken image. CONFIG.USE_IMAGE_ASSETS
+// is an optional override: set it to false to force placeholder-only mode (ignore all paths).
 // altText: meaningful description for informative images (e.g. a hint label),
 //          or "" for decorative images (backgrounds, lose art).
 function appendVisual(parent, src, placeholderEl, className, altText) {

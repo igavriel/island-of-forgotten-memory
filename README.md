@@ -100,7 +100,7 @@ lose / win -> play again -> start
 | `ANSWER_FEEDBACK_MS` | `420` | Short pressed/feedback moment after clicking an answer, before the screen changes |
 | `SHOW_COUNTDOWN_NUMBER` | `false` | Show a numeric "נותרו N שניות" countdown on the map timer bar |
 | `SHOW_HINT_LABELS_ON_MAP` | `true` | Show a text label next to the emoji on the map (final version: `false`) |
-| `USE_IMAGE_ASSETS` | `false` | Use image files where a riddle provides a path, with fallback to emoji/text placeholders. See [docs/assets.md](docs/assets.md) |
+| `USE_IMAGE_ASSETS` | `true` | Images are used automatically wherever a riddle provides a path (emoji/text fallback otherwise, or on load error). Set to `false` to force placeholder-only mode. See [docs/assets.md](docs/assets.md) |
 | `DEBUG_MODE` | `false` | Debug mode: marks the correct answer and adds a skip button. **Must be `false` for the final presentation** |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | `true` | Show the correct answer on the lose screen (balancing option; see [docs/playtest.md](docs/playtest.md)) |
 

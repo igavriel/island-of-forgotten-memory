@@ -29,11 +29,12 @@ const CONFIG = {
   // Final version: false to show a visual clue only.
   SHOW_HINT_LABELS_ON_MAP: true,
 
-  // false keeps the emoji/text prototype. true uses image assets where a riddle
-  // provides a path (with automatic fallback to the emoji/text placeholder).
-  // Currently only the "gold" and "parrot" riddles ship SVG placeholders; set this
-  // to true to preview image mode (other riddles fall back to emoji/text).
-  USE_IMAGE_ASSETS: false,
+  // Images are used automatically wherever a riddle provides a path; any riddle without
+  // a path (or whose file fails to load) falls back to the emoji/text placeholder.
+  // This master switch is an optional override: set it to false to force placeholder-only
+  // mode (ignore all image paths), e.g. for testing. Currently only the "gold" and
+  // "parrot" riddles ship SVG placeholders; the rest fall back to emoji/text.
+  USE_IMAGE_ASSETS: true,
 
   // Debug mode. Must be false for the final presentation.
   // When true: the correct answer is shown and a developer skip/answer button appears.

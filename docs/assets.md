@@ -11,9 +11,10 @@ The image pipeline has been proven with temporary SVG placeholders:
   under `assets/hints`, `assets/islands`, `assets/characters`, `assets/endings`).
 - All other riddles intentionally keep their image fields `null` and fall back to the
   emoji/text placeholders (this is the supported "mixed mode").
-- `CONFIG.USE_IMAGE_ASSETS` is `false` by default, so the prototype opens in placeholder
-  mode. To preview/test image mode, set it to `true` (see below); `gold` and `parrot` then
-  render their SVGs while every other riddle keeps showing emoji/text.
+- Images are used automatically wherever a riddle provides a path. `CONFIG.USE_IMAGE_ASSETS`
+  defaults to `true` and is an optional override: set it to `false` to force placeholder-only
+  mode (ignore all image paths) for testing. With the default, `gold` and `parrot` render
+  their SVGs while every other riddle keeps showing emoji/text.
 - These SVGs are temporary developer placeholders, not final art. Full art integration
   (real images for all riddles) is future work.
 
@@ -68,17 +69,19 @@ This is exactly how the `gold` and `parrot` riddles are wired today (see
 [js/riddles.js](../js/riddles.js)). File names can follow the riddle `id` or be more
 descriptive (e.g. `gold_chest.svg`); only the path in the riddle field needs to match.
 
-## Switch from placeholders to image mode
+## Image mode and the placeholder override
+
+Images are used automatically wherever a riddle provides a path, so you can add them
+gradually: fill a riddle's path and it renders; riddles left `null` (or any file that fails
+to load) keep showing the emoji/text placeholder (no broken images).
 
 In [js/config.js](../js/config.js):
 
-- `USE_IMAGE_ASSETS: true` — use images wherever a riddle provides a path. Any riddle field
-  left `null`, or any file that fails to load, automatically falls back to the emoji/text
-  placeholder (no broken images).
+- `USE_IMAGE_ASSETS: true` (default) — use images wherever a path exists, with automatic
+  emoji/text fallback otherwise.
+- `USE_IMAGE_ASSETS: false` — optional override that forces placeholder-only mode (ignores
+  all image paths), handy for testing the fallback look.
 - `SHOW_HINT_LABELS_ON_MAP: false` — optional, for final image-only map clues (hides the text labels).
-
-You can add images gradually: set `USE_IMAGE_ASSETS: true` and fill paths one riddle at a
-time; the rest keep showing placeholders until you add their files.
 
 ## Notes
 
