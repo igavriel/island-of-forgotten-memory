@@ -1,0 +1,42 @@
+---
+description: Core concept and hard technical constraints for the pirate memory game
+alwaysApply: true
+---
+
+# Pirate Memory Game — Core Constraints
+
+A static HTML5 point-and-click pirate memory game in Hebrew (RTL).
+
+## Concept
+
+Player sees a treasure map with visual memory clues for a configurable time (default 10s).
+Wind blows the map away (cannot be reopened). Player sails between randomized islands.
+Each island character asks a 4-choice question based on one map clue. Correct → next island.
+Wrong → island-specific lose screen with progress. All islands cleared → win screen.
+
+## Hard constraints (NEVER violate)
+
+- Static HTML site only. No backend, server, database, npm, build step, bundler, or framework.
+- No React, Vue, Angular, Vite, Next.js, or TypeScript.
+- Only `index.html`, CSS, vanilla JavaScript, and static assets.
+- Must run by opening `index.html` directly via `file://`.
+- Must also work on GitHub Pages / any static host.
+- Do NOT use `fetch()` for local JSON (breaks `file://`). Store game data in `.js` files.
+
+## File structure (do not over-engineer)
+
+```
+index.html
+css/style.css
+js/config.js      # CONFIG settings
+js/riddles.js     # RIDDLES pool
+js/utils.js       # shuffle, helpers
+js/renderer.js    # DOM rendering
+js/gameState.js   # state + transitions
+js/main.js        # wiring / entry
+README.md
+```
+
+Prefer clear functions with meaningful names. Avoid complex abstractions. Keep it
+understandable for a WEB course assignment. Separate config, riddle data, state,
+rendering, and utilities.

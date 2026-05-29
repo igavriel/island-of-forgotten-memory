@@ -1,0 +1,248 @@
+// renderer.js
+// Responsible for all DOM rendering. Holds no game state and decides no flow.
+// The flow functions (gameState.js) call the render* functions here.
+
+// The root element into which all screens are injected.
+function getRoot() {
+  return document.getElementById("game");
+}
+
+// Clears the screen and returns the root element.
+function clearScreen() {
+  const root = getRoot();
+  root.innerHTML = "";
+  return root;
+}
+
+// Small helper to create an element with a class and text.
+function createElement(tag, className, text) {
+  const el = document.createElement(tag);
+  if (className) {
+    el.className = className;
+  }
+  if (text !== undefined && text !== null) {
+    el.textContent = text;
+  }
+  return el;
+}
+
+// ---- Start screen ----
+function renderStartScreen() {
+  const root = clearScreen();
+  const screen = createElement("section", "screen start-screen fade-in");
+
+  screen.appendChild(createElement("div", "big-emoji", "🏴‍☠️"));
+  screen.appendChild(createElement("h1", "title", "אי הזיכרון האבוד"));
+  screen.appendChild(
+    createElement(
+      "p",
+      "subtitle",
+      "הביטו היטב במפת האוצר! לאחר מספר שניות הרוח תעיף אותה, ותצטרכו לזכור את הרמזים כדי לעבור בין האיים."
+    )
+  );
+
+  const info = createElement(
+    "p",
+    "hint-text",
+    "מספר איים: " +
+      CONFIG.NUMBER_OF_ISLANDS +
+      "  •  זמן צפייה במפה: " +
+      Math.round(CONFIG.MAP_VIEW_TIME_MS / 1000) +
+      " שניות"
+  );
+  screen.appendChild(info);
+
+  const startButton = createElement("button", "main-button", "התחילו את ההרפתקה");
+  startButton.addEventListener("click", startGame);
+  screen.appendChild(startButton);
+
+  root.appendChild(screen);
+}
+
+// ---- Treasure map ----
+// Shows the selected riddles, in route order. This is the player's memory source.
+function renderMap(selectedRiddles) {
+  const root = clearScreen();
+  const screen = createElement("section", "screen map-screen");
+
+  const mapCard = createElement("div", "map-card map-reveal");
+  mapCard.appendChild(createElement("h2", "map-title", "🗺️ מפת האוצר"));
+  mapCard.appendChild(
+    createElement("p", "map-subtitle", "זכרו את הרמזים לפי הסדר!")
+  );
+
+  const route = createElement("ol", "map-route");
+  selectedRiddles.forEach(function (riddle, index) {
+    const item = createElement("li", "map-clue");
+
+    const number = createElement("span", "clue-number", index + 1);
+    const emoji = createElement("span", "clue-emoji", riddle.hintEmoji);
+    item.appendChild(number);
+    item.appendChild(emoji);
+
+    // The label is shown only if enabled in the config. The final version shows a visual clue only.
+    if (CONFIG.SHOW_HINT_LABELS_ON_MAP) {
+      item.appendChild(createElement("span", "clue-label", riddle.hintLabel));
+    }
+
+    route.appendChild(item);
+  });
+  mapCard.appendChild(route);
+
+  // Visual timer bar that empties over the map viewing time.
+  const timerBar = createElement("div", "timer-bar");
+  const timerFill = createElement("div", "timer-fill");
+  timerFill.style.animationDuration = CONFIG.MAP_VIEW_TIME_MS + "ms";
+  timerBar.appendChild(timerFill);
+  mapCard.appendChild(timerBar);
+
+  screen.appendChild(mapCard);
+  root.appendChild(screen);
+}
+
+// Wind animation that blows the map away, then calls the callback when done.
+function renderMapBlowAway(callback) {
+  const mapCard = document.querySelector(".map-card");
+  if (!mapCard) {
+    callback();
+    return;
+  }
+  mapCard.classList.remove("map-reveal");
+  mapCard.classList.add("map-blow-away");
+  runAfterAnimation(mapCard, callback, 1200);
+}
+
+// ---- Sailing-between-islands screen ----
+function renderSailing(islandNumber, totalIslands, callback) {
+  const root = clearScreen();
+  const screen = createElement("section", "screen sailing-screen fade-in");
+
+  screen.appendChild(createElement("div", "sailing-boat", "⛵"));
+  screen.appendChild(createElement("h2", "title", "מפליגים לאי הבא..."));
+  screen.appendChild(
+    createElement("p", "subtitle", "אי " + islandNumber + " מתוך " + totalIslands)
+  );
+
+  const waves = createElement("div", "waves", "🌊🌊🌊🌊🌊");
+  screen.appendChild(waves);
+
+  root.appendChild(screen);
+
+  // Move to the island question after the configured sailing time.
+  setTimeout(callback, CONFIG.SAILING_TIME_MS);
+}
+
+// ---- Island question screen ----
+function renderIsland(riddle, islandIndex, totalIslands) {
+  const root = clearScreen();
+  const screen = createElement("section", "screen island-screen fade-in");
+
+  const islandNumber = islandIndex + 1;
+  screen.appendChild(
+    createElement("p", "progress", "אי " + islandNumber + " מתוך " + totalIslands)
+  );
+  screen.appendChild(createElement("div", "big-emoji", "🏝️"));
+  screen.appendChild(createElement("h2", "island-title", riddle.islandTitle));
+
+  const character = createElement("div", "character-box");
+  character.appendChild(createElement("div", "character-emoji", "🧑‍✈️"));
+  character.appendChild(createElement("p", "character-name", riddle.characterName));
+  character.appendChild(createElement("p", "question", riddle.question));
+  screen.appendChild(character);
+
+  // Build options preserving the original index, then shuffle the display.
+  const options = buildShuffledOptions(riddle.options);
+  const optionsBox = createElement("div", "options");
+  options.forEach(function (option) {
+    const button = createElement("button", "option-button", option.text);
+
+    // In debug mode, mark the correct answer.
+    if (CONFIG.DEBUG_MODE && option.originalIndex === riddle.correctIndex) {
+      button.classList.add("debug-correct");
+      button.textContent = option.text + "  ✓";
+    }
+
+    // On click, pass the original index, not the display index.
+    button.addEventListener("click", function () {
+      button.classList.add("clicked");
+      answerCurrentIsland(option.originalIndex);
+    });
+
+    optionsBox.appendChild(button);
+  });
+  screen.appendChild(optionsBox);
+
+  // Developer tool: skip/answer-correctly button. Documented as false for the final presentation.
+  if (CONFIG.DEBUG_MODE) {
+    const debugBox = createElement("div", "debug-box");
+    debugBox.appendChild(
+      createElement("p", "debug-note", "מצב פיתוח פעיל — התשובה הנכונה מסומנת ב-✓")
+    );
+    const skipButton = createElement("button", "debug-button", "דלג (תשובה נכונה)");
+    skipButton.addEventListener("click", debugAnswerCorrectly);
+    debugBox.appendChild(skipButton);
+    screen.appendChild(debugBox);
+  }
+
+  root.appendChild(screen);
+}
+
+// ---- Lose screen ----
+function renderLoseScreen(riddle, reachedIsland, totalIslands) {
+  const root = clearScreen();
+  const screen = createElement("section", "screen lose-screen fade-in");
+
+  screen.appendChild(createElement("div", "big-emoji", "💀"));
+  screen.appendChild(createElement("h2", "title", riddle.failTitle));
+  screen.appendChild(createElement("p", "subtitle", riddle.failText));
+  screen.appendChild(
+    createElement(
+      "p",
+      "progress",
+      "הגעת לאי " + reachedIsland + " מתוך " + totalIslands
+    )
+  );
+
+  const again = createElement("button", "main-button", "שחקו שוב");
+  again.addEventListener("click", startGame);
+  screen.appendChild(again);
+
+  root.appendChild(screen);
+}
+
+// ---- Win screen ----
+function renderWinScreen(totalIslands) {
+  const root = clearScreen();
+  const screen = createElement("section", "screen win-screen fade-in");
+
+  screen.appendChild(createElement("div", "big-emoji", "🏆"));
+  screen.appendChild(createElement("h2", "title", "מצאת את האוצר!"));
+  screen.appendChild(
+    createElement(
+      "p",
+      "subtitle",
+      "עברת את כל " + totalIslands + " האיים בזכות זיכרון מצוין!"
+    )
+  );
+
+  const again = createElement("button", "main-button", "שחקו שוב");
+  again.addEventListener("click", startGame);
+  screen.appendChild(again);
+
+  root.appendChild(screen);
+}
+
+// Runs a callback when an element's animation ends, with a fallback timeout if no event fires.
+function runAfterAnimation(element, callback, fallbackMs) {
+  let done = false;
+  function finish() {
+    if (done) {
+      return;
+    }
+    done = true;
+    element.removeEventListener("animationend", finish);
+    callback();
+  }
+  element.addEventListener("animationend", finish);
+  setTimeout(finish, fallbackMs);
+}

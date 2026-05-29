@@ -1,0 +1,28 @@
+---
+description: Hebrew RTL rendering, placeholders, and display config
+globs: index.html,js/renderer.js,css/style.css
+alwaysApply: false
+---
+
+# Rendering & Hebrew RTL
+
+- ALL user-facing game text must be Hebrew.
+- Page must use RTL layout: `<html lang="he" dir="rtl">`.
+- First version: use emoji/text placeholders instead of real images.
+- Final design will use image-only map clues. Support a toggle:
+  `CONFIG.SHOW_HINT_LABELS_ON_MAP`
+  - prototype: `true` (show emoji + label)
+  - later: `false` (visual clue only)
+
+## Answer shuffling (critical)
+
+- Answer buttons MAY be shuffled for display.
+- If shuffled, preserve the ORIGINAL option index on each button.
+- On click, pass the ORIGINAL option index to game state.
+- NEVER compare the shuffled display index directly to `correctIndex`.
+
+```javascript
+// ✅ keep original index when shuffling
+const shuffled = shuffle(options.map((text, originalIndex) => ({ text, originalIndex })));
+button.onclick = () => answer(item.originalIndex); // compare originalIndex vs correctIndex
+```

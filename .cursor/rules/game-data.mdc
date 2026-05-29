@@ -1,0 +1,34 @@
+---
+description: Game data, CONFIG, and riddle schema conventions
+globs: js/config.js,js/riddles.js,js/gameState.js
+alwaysApply: false
+---
+
+# Game Data Rules
+
+- `RIDDLES` is a POOL of possible riddles, NOT a fixed island sequence.
+- `CONFIG.NUMBER_OF_ISLANDS` controls how many riddles are selected per run.
+- At game start: select and shuffle `NUMBER_OF_ISLANDS` riddles from the pool.
+- The treasure map must display the exact selected riddles in the exact route order.
+- NEVER hardcode specific riddle content in the game engine — read it from data.
+
+## Riddle schema (required fields)
+
+```javascript
+{
+  id: "compass",
+  hintEmoji: "🧭",
+  hintLabel: "מצפן",
+  question: "לאן מצביע המצפן?",
+  options: ["צפון", "דרום", "מזרח", "מערב"],
+  correctIndex: 0,
+  islandTitle: "אי המצפן",
+  characterName: "רב החובל",
+  failTitle: "טעית!",
+  failText: "המצפן הצביע צפונה..."
+}
+```
+
+## Optional image fields (add later, keep optional)
+
+`hintImage`, `islandBackgroundImage`, `characterImage`, `loseImage`.

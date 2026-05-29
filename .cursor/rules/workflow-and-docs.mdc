@@ -1,0 +1,36 @@
+---
+description: Git workflow, incremental commits, and README requirements
+alwaysApply: true
+---
+
+# Workflow
+
+- Work in small steps. Before major changes, explain the plan.
+- Do NOT rewrite the whole project unless explicitly asked.
+- Preserve existing behavior unless the user asks to change it.
+
+## Suggested commit sequence (small commits)
+
+1. Add project scaffold
+2. Add config and riddle data
+3. Add random route selection
+4. Add map timer
+5. Add island question flow
+6. Add win/lose screens
+7. Add debug mode
+8. Add basic animations
+
+## README requirements
+
+README.md must explain:
+
+- project goal
+- how to run (open `index.html` directly + static hosting / GitHub Pages)
+- file structure
+- game flow
+- configuration options (`NUMBER_OF_ISLANDS`, map time, `SHOW_HINT_LABELS_ON_MAP`, `DEBUG_MODE`)
+- how to add riddles (extend the `RIDDLES` pool with the required schema)
+- how to replace placeholders with images later (optional image fields)
+
+Include a plain-text flow explanation (always). A Mermaid diagram is optional and
+must NOT be the only diagram, since Mermaid may not render everywhere.

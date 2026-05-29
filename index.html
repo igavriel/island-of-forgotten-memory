@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>אי הזיכרון האבוד</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <!-- All screens are injected into #game by renderer.js -->
+    <main id="game" class="game"></main>
+
+    <!-- Load order matters: data and helpers first, then state, rendering, and finally bootstrap -->
+    <script src="js/config.js"></script>
+    <script src="js/riddles.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/gameState.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>

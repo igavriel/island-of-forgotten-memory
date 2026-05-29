@@ -1,0 +1,364 @@
+/* style.css
+   Layout, RTL, and simple animations.
+   The animations are CSS-only and easy to change or disable
+   (remove the animation class names to turn them off). */
+
+:root {
+  --sea-deep: #0b3d5c;
+  --sea: #14618a;
+  --sand: #f3e2c0;
+  --map-paper: #f0dca8;
+  --map-edge: #b58a4a;
+  --gold: #e8b733;
+  --ink: #2a2118;
+  --white: #fdfbf5;
+  --correct: #3ba776;
+  --danger: #b8473e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+body {
+  font-family: "Segoe UI", "Arial Hebrew", Arial, sans-serif;
+  color: var(--white);
+  background: linear-gradient(180deg, var(--sea-deep), var(--sea));
+  background-attachment: fixed;
+}
+
+.game {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ---- General screen ---- */
+.screen {
+  width: 100%;
+  max-width: 640px;
+  text-align: center;
+}
+
+.title {
+  font-size: 2rem;
+  margin: 12px 0;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.hint-text {
+  opacity: 0.8;
+  font-size: 0.95rem;
+}
+
+.big-emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+
+.progress {
+  display: inline-block;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: bold;
+}
+
+/* ---- Main buttons ---- */
+.main-button {
+  margin-top: 22px;
+  font-size: 1.15rem;
+  font-family: inherit;
+  color: var(--ink);
+  background: var(--gold);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 28px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 #b8901f;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.main-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #b8901f;
+}
+
+.main-button:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #b8901f;
+}
+
+/* ---- Treasure map ---- */
+.map-card {
+  background: var(--map-paper);
+  color: var(--ink);
+  border: 6px solid var(--map-edge);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.map-title {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.map-subtitle {
+  margin: 6px 0 18px;
+  font-weight: bold;
+}
+
+.map-route {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.map-clue {
+  background: var(--white);
+  border: 2px dashed var(--map-edge);
+  border-radius: 12px;
+  padding: 12px 16px;
+  min-width: 96px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.clue-number {
+  background: var(--map-edge);
+  color: var(--white);
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.clue-emoji {
+  font-size: 2.4rem;
+}
+
+.clue-label {
+  font-weight: bold;
+  font-size: 0.95rem;
+}
+
+/* Map viewing time bar */
+.timer-bar {
+  margin-top: 20px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.timer-fill {
+  height: 100%;
+  width: 100%;
+  background: var(--danger);
+  transform-origin: right center; /* empties right-to-left, suited to RTL */
+  animation-name: drain;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+/* ---- Character and question ---- */
+.character-box {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  padding: 18px;
+  margin: 18px 0;
+}
+
+.character-emoji {
+  font-size: 3rem;
+}
+
+.character-name {
+  font-weight: bold;
+  margin: 4px 0;
+}
+
+.question {
+  font-size: 1.25rem;
+  margin: 10px 0 0;
+}
+
+.island-title {
+  margin: 6px 0 0;
+}
+
+/* ---- Answer buttons ---- */
+.options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.option-button {
+  font-family: inherit;
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--white);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.option-button:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold);
+  background: #fff4d6;
+}
+
+.option-button:active,
+.option-button.clicked {
+  transform: scale(0.96);
+  background: #ffe9a8;
+}
+
+.option-button.debug-correct {
+  border-color: var(--correct);
+}
+
+/* ---- Debug box ---- */
+.debug-box {
+  margin-top: 18px;
+  padding: 12px;
+  border: 1px dashed var(--gold);
+  border-radius: 10px;
+}
+
+.debug-note {
+  margin: 0 0 8px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.debug-button {
+  font-family: inherit;
+  cursor: pointer;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--white);
+  border-radius: 8px;
+  padding: 8px 14px;
+}
+
+/* ---- Sailing ---- */
+.sailing-boat {
+  font-size: 4rem;
+  animation: bob 1.2s ease-in-out infinite;
+}
+
+.waves {
+  font-size: 1.6rem;
+  letter-spacing: 4px;
+  margin-top: 10px;
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+/* ---- Animations ---- */
+
+/* General reveal/fade-in */
+.fade-in {
+  animation: fadeIn 0.4s ease both;
+}
+
+/* Map reveal */
+.map-reveal {
+  animation: mapReveal 0.6s ease both;
+}
+
+/* Wind blows the map away */
+.map-blow-away {
+  animation: blowAway 1s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes mapReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.85) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Move left (wind direction) with rotation and fade-out */
+@keyframes blowAway {
+  from {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-140%) rotate(-18deg);
+  }
+}
+
+@keyframes drain {
+  from {
+    transform: scaleX(1);
+  }
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* ---- Small-screen adjustments ---- */
+@media (max-width: 480px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+  .title {
+    font-size: 1.6rem;
+  }
+}

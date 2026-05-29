@@ -1,0 +1,33 @@
+---
+description: Gameplay flow, debug mode, and animations
+globs: js/gameState.js,js/main.js,js/config.js,css/style.css
+alwaysApply: false
+---
+
+# Gameplay Flow
+
+- Map view time must be configurable (default 10s).
+- Player CANNOT reopen the map after it blows away.
+- Correct answer → advance to next island.
+- Wrong answer → immediately show lose screen.
+- Lose screen must show progress (e.g. "אי 3 מתוך 5").
+- Completing all selected islands → win screen.
+- Always provide a restart / play-again flow.
+
+## Debug mode
+
+- `CONFIG.DEBUG_MODE` toggles debugging aids.
+- When true: reveal the correct answer; optionally a dev button to skip/auto-answer.
+- Document that `DEBUG_MODE` must be `false` for the final presentation.
+
+## Animations (CSS only)
+
+Use simple, readable CSS animations that are easy to disable/change:
+
+- map opening / reveal
+- wind blowing the map away
+- sailing transition between islands
+- answer button hover
+- answer button click feedback
+
+Avoid JS-driven animation libraries. Keep effects minimal.
