@@ -328,10 +328,15 @@ function buildPlaytestSummary(completedIslands, totalIslands) {
   return box;
 }
 
-// Runs a callback when an element's animation ends, with a fallback timeout if no event fires.
+// Runs a callback when an element's own animation ends, with a fallback timeout if no event fires.
+// Ignores animationend events that bubble up from child elements (e.g. the map timer bar),
+// so the callback is not triggered early by an unrelated child animation.
 function runAfterAnimation(element, callback, fallbackMs) {
   let done = false;
-  function finish() {
+  function finish(event) {
+    if (event && event.target !== element) {
+      return;
+    }
     if (done) {
       return;
     }
