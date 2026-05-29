@@ -1,6 +1,6 @@
 ---
 description: Game data, CONFIG, and riddle schema conventions
-globs: js/config.js,js/riddles.js,js/gameState.js
+globs: config/config.js,config/riddles.js,js/gameState.js
 alwaysApply: false
 ---
 

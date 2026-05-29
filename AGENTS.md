@@ -12,12 +12,12 @@ This project is a static HTML5 Hebrew RTL point-and-click memory game.
 
 ## Architecture
 Use simple modular files:
-- config.js for settings
-- riddles.js for riddle data
-- utils.js for helpers
-- renderer.js for DOM rendering
-- gameState.js for game flow
-- main.js for startup
+- config/config.js for settings
+- config/riddles.js for riddle data
+- js/utils.js for helpers
+- js/renderer.js for DOM rendering
+- js/gameState.js for game flow
+- js/main.js for startup
 
 Keep code readable, explicit, and suitable for a WEB course assignment.
 

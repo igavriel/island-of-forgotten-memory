@@ -28,8 +28,8 @@ Wrong → island-specific lose screen with progress. All islands cleared → win
 ```
 index.html
 css/style.css
-js/config.js      # CONFIG settings
-js/riddles.js     # RIDDLES pool
+config/config.js      # CONFIG settings
+config/riddles.js     # RIDDLES pool
 js/utils.js       # shuffle, helpers
 js/renderer.js    # DOM rendering
 js/gameState.js   # state + transitions

@@ -103,7 +103,7 @@ Between islands the game shows a short sailing screen (`renderSailing` in
 - **Timing:** `CONFIG.SAILING_TRANSITION_MS` (default `1800` ms). This value drives both the
   JavaScript `setTimeout` that advances to the next island and the CSS `--sail-ms` variable
   used by the `.sailing-ship` animation (`applyAnimationTimings` at startup). Change it in
-  one place in [js/config.js](../js/config.js) to speed up or slow down the crossing.
+  one place in [config/config.js](../config/config.js) to speed up or slow down the crossing.
 - **Motion:** the ship moves right-to-left (RTL feel: starts off-screen right, stops near the
   island on the left). Vertical bobbing is a **sine-like wave approximated with CSS
   keyframes** (`@keyframes sailing-ship-wave` in [css/style.css](../css/style.css)), not a true
@@ -128,7 +128,7 @@ Between islands the game shows a short sailing screen (`renderSailing` in
    screen-level images below, so they should be authored at 16:9 (`viewBox="0 0 1920 1080"`)
    with a readable center. Riddles without these paths fall back to the sea gradient, and the
    island/lose emoji markers always show.
-2. **Screen-level backgrounds** (full-screen 16:9 images) — configured in `js/config.js` and
+2. **Screen-level backgrounds** (full-screen 16:9 images) — configured in `config/config.js` and
    gated by `USE_SCREEN_PLACEHOLDER_IMAGES`:
    - `START_SCREEN_IMAGE` -> `assets/ui/start_screen_placeholder.svg` (start screen)
    - `MAP_BACKGROUND_IMAGE` -> `assets/map/treasure_map_placeholder.svg` (memory/map phase)
@@ -150,7 +150,7 @@ Between islands the game shows a short sailing screen (`renderSailing` in
 
 ## Recommended naming
 
-Name files after the riddle `id` (see [js/riddles.js](../js/riddles.js)):
+Name files after the riddle `id` (see [config/riddles.js](../config/riddles.js)):
 
 | Field                   | Folder              | Suggested file name      |
 | ----------------------- | ------------------- | ------------------------ |
@@ -164,7 +164,7 @@ Example for the `gold` riddle: `assets/hints/gold.png`, `assets/islands/gold.png
 
 ## Connect an image to a riddle
 
-In [js/riddles.js](../js/riddles.js), set the matching field on the riddle to the file path
+In [config/riddles.js](../config/riddles.js), set the matching field on the riddle to the file path
 (fields default to `null`, which means "use the emoji/text placeholder"):
 
 ```javascript
@@ -181,7 +181,7 @@ In [js/riddles.js](../js/riddles.js), set the matching field on the riddle to th
 ```
 
 This is exactly how the `gold` and `parrot` riddles are wired today (see
-[js/riddles.js](../js/riddles.js)). File names can follow the riddle `id` or be more
+[config/riddles.js](../config/riddles.js)). File names can follow the riddle `id` or be more
 descriptive (e.g. `gold_chest.svg`); only the path in the riddle field needs to match.
 
 ## Image mode and the placeholder override
@@ -190,7 +190,7 @@ Images are used automatically wherever a riddle provides a path, so you can add 
 gradually: fill a riddle's path and it renders; riddles left `null` (or any file that fails
 to load) keep showing the emoji/text placeholder (no broken images).
 
-In [js/config.js](../js/config.js):
+In [config/config.js](../config/config.js):
 
 - `USE_IMAGE_ASSETS: true` (default) — use images wherever a path exists, with automatic
   emoji/text fallback otherwise.

@@ -2,6 +2,8 @@
 
 ## 2026-05-29
 
+- Moved game settings and riddle data from `js/` to `config/config.js` and `config/riddles.js`. Updated `index.html` script tags and documentation paths.
+
 - Added a fixed 16:9 responsive game viewport (`#app` letterbox + `#game-viewport`). Backgrounds and all UI (map clues, sailing ship/island, text) are positioned inside the viewport, not the full browser window. Non-16:9 windows show neutral letterboxing (`--letterbox-bg`). Backgrounds use `background-size: contain` (no distortion, no cropping). `#screen` replaces `#game` as the render root.
 
 - Unified full-screen 16:9 background rules: shared `.fullscreen-art-background` on `#screen-bg` with `background-size: cover`, `background-position: center`, `background-repeat: no-repeat` (replaces `contain`). Applies to start, map, sailing, victory, and per-riddle island/lose backgrounds. Added `assets/ui/sailing_background_placeholder.svg` and `CONFIG.SAILING_BACKGROUND_IMAGE`; sailing now uses the shared background layer. Sailing message is plain text over the sky with `text-shadow` (no panel/card). Ship animation stops near the destination island (ease-out, no exit off-screen). Foreground ship/island sprites unchanged. No gameplay changes.

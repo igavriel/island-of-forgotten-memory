@@ -1,6 +1,6 @@
 ---
 description: Gameplay flow, debug mode, and animations
-globs: js/gameState.js,js/main.js,js/config.js,css/style.css
+globs: js/gameState.js,js/main.js,config/config.js,css/style.css
 alwaysApply: false
 ---
 

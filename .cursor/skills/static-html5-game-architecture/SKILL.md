@@ -17,12 +17,12 @@ Use this skill whenever modifying game structure, adding screens, changing game 
 2. Do not introduce npm, bundlers, frameworks, servers, or databases.
 3. Use plain script tags and global modules/files.
 4. Keep responsibilities separated:
-   - `config.js`: game settings
-   - `riddles.js`: content/data
-   - `utils.js`: helper functions
-   - `gameState.js`: game flow and state transitions
-   - `renderer.js`: DOM rendering
-   - `main.js`: startup/bootstrap
+   - `config/config.js`: game settings
+   - `config/riddles.js`: content/data
+   - `js/utils.js`: helper functions
+   - `js/gameState.js`: game flow and state transitions
+   - `js/renderer.js`: DOM rendering
+   - `js/main.js`: startup/bootstrap
 5. The game engine must not depend on specific riddle content.
 6. The riddle pool must be separate from the selected route.
 7. The selected route is generated at game start.

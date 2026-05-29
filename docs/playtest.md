@@ -5,14 +5,14 @@ here by hand. The win/lose screens show the settings used in each run to make th
 
 ## How to run a playtest
 
-1. Set the difficulty knobs in [../js/config.js](../js/config.js) (see settings below).
+1. Set the difficulty knobs in [../config/config.js](../config/config.js) (see settings below).
 2. Open [../index.html](../index.html) directly in a browser.
 3. Play a full run (win or lose). The end screen always shows islands completed and map view
    time. Set `DEBUG_MODE: true` to also see whether hint labels were shown and whether debug
    mode was on. Set it back to `false` for normal play.
 4. Record a row in the table below.
 
-## Balancing settings (js/config.js)
+## Balancing settings (config/config.js)
 
 | Setting | Effect |
 | --- | --- |

@@ -1,6 +1,6 @@
 ---
 name: pirate-memory-riddle-content
-description: Create and maintain riddle data for the pirate memory game. Use when adding, editing, or reviewing riddles in riddles.js, designing map clues, or balancing question difficulty.
+description: Create and maintain riddle data for the pirate memory game. Use when adding, editing, or reviewing riddles in config/riddles.js, designing map clues, or balancing question difficulty.
 ---
 
 # Pirate Memory Riddle Content

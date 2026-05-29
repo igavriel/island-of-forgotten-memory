@@ -27,9 +27,10 @@ The game also works from `file://` because all data lives in JavaScript files (n
 ```
 index.html          # Page shell: #app letterbox, #game-viewport (16:9), #screen-bg, #screen
 README.md           # This file
+config/
+  config.js         # CONFIG — all settings
+  riddles.js        # RIDDLES — the riddle pool (data only)
 css/style.css       # Layout, RTL, and CSS animations
-js/config.js        # CONFIG — all settings
-js/riddles.js       # RIDDLES — the riddle pool (data only)
 js/utils.js         # Fisher-Yates shuffle and route selection
 js/gameState.js     # Game state and game flow
 js/renderer.js      # DOM rendering (all screens)
@@ -89,7 +90,7 @@ question --(wrong)--> lose (island X of Y)
 lose / win -> play again -> start
 ```
 
-## Configuration options (`js/config.js`)
+## Configuration options (`config/config.js`)
 
 | Setting | Default | Description |
 |---------|---------|-------------|
@@ -109,7 +110,7 @@ lose / win -> play again -> start
 
 ### Changing map time and island count
 
-Edit `js/config.js`:
+Edit `config/config.js`:
 
 ```javascript
 const CONFIG = {
@@ -127,7 +128,7 @@ gone" message), sailing between islands (ship crosses right-to-left toward a des
 island with a wave-like CSS motion), island/character entrance, answer hover, answer
 press with a correct/wrong feedback flash, and a win celebration (trophy pop + confetti).
 
-To adjust speed, edit the timing values in `js/config.js`
+To adjust speed, edit the timing values in `config/config.js`
 (`WIND_TRANSITION_MS`, `SAILING_TRANSITION_MS`, `ANSWER_FEEDBACK_MS`). These are pushed into
 CSS custom properties at startup so the JS flow and CSS visuals stay in sync. Purely cosmetic
 durations (fade, map reveal, island entrance) live as `--fade-ms` / `--map-reveal-ms` /
@@ -139,7 +140,7 @@ is clear). Final visual art is still future work.
 
 ## How to add a riddle
 
-Add a new object to the `RIDDLES` array in `js/riddles.js`. No other file needs to change —
+Add a new object to the `RIDDLES` array in `config/riddles.js`. No other file needs to change —
 the engine selects riddles from the pool automatically.
 
 ```javascript
