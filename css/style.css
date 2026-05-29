@@ -14,6 +14,17 @@
   --white: #fdfbf5;
   --correct: #3ba776;
   --danger: #b8473e;
+
+  /* ---- Transition/animation timings ----
+     --wind-ms, --sail-ms and --answer-feedback-ms are overwritten at startup from CONFIG
+     (see applyAnimationTimings in js/renderer.js); the values here are sensible fallbacks.
+     The remaining durations are purely cosmetic and tuned directly in CSS. */
+  --wind-ms: 1100ms;
+  --sail-ms: 1600ms;
+  --answer-feedback-ms: 420ms;
+  --fade-ms: 380ms;
+  --map-reveal-ms: 560ms;
+  --island-enter-ms: 460ms;
 }
 
 * {
@@ -415,8 +426,10 @@ body {
   position: absolute;
   top: 28px;
   font-size: 3.4rem;
-  /* Sails across the sea (RTL feel: starts off-screen right, exits left). */
-  animation: sail 2s ease-in-out forwards, bob 1.2s ease-in-out infinite;
+  /* Sails across the sea (RTL feel: starts off-screen right, exits left).
+     Crossing duration is driven by CONFIG.SAILING_TRANSITION_MS so the ship reaches
+     the far side just as the screen advances. */
+  animation: sail var(--sail-ms) ease-in-out forwards, bob 1.2s ease-in-out infinite;
 }
 
 .waves {
@@ -433,17 +446,17 @@ body {
 
 /* General reveal/fade-in */
 .fade-in {
-  animation: fadeIn 0.4s ease both;
+  animation: fadeIn var(--fade-ms) ease both;
 }
 
 /* Map reveal */
 .map-reveal {
-  animation: mapReveal 0.6s ease both;
+  animation: mapReveal var(--map-reveal-ms) ease both;
 }
 
-/* Wind blows the map away */
+/* Wind blows the map away (duration driven by CONFIG.WIND_TRANSITION_MS) */
 .map-blow-away {
-  animation: blowAway 1s ease-in forwards;
+  animation: blowAway var(--wind-ms) ease-in forwards;
 }
 
 @keyframes fadeIn {
@@ -529,6 +542,202 @@ body {
   100% {
     opacity: 1;
     transform: translateX(0) scale(1);
+  }
+}
+
+/* ---- Memory cue + optional countdown (map screen) ---- */
+/* Gentle pulse that signals "memorize this now" without distracting from the clues. */
+.memorize-cue {
+  animation: memorizePulse 1.6s ease-in-out infinite;
+}
+
+@keyframes memorizePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.countdown-number {
+  margin: 14px 0 0;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--danger);
+}
+
+/* ---- Island arrival entrance ---- */
+/* The character/question card rises and fades in so the island clearly "arrives". */
+.character-enter {
+  animation: islandEnter var(--island-enter-ms) ease both;
+}
+
+@keyframes islandEnter {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ---- Answer feedback ---- */
+/* While the short feedback moment plays, block further clicks on the options. */
+.options.locked {
+  pointer-events: none;
+}
+
+/* Positive flash for a correct pick. */
+.option-button.answer-correct-flash {
+  animation: answerCorrect var(--answer-feedback-ms) ease both;
+  border-color: var(--correct);
+}
+
+/* Final-feeling shake for a wrong pick. */
+.option-button.answer-wrong-flash {
+  animation: answerWrong var(--answer-feedback-ms) ease both;
+  border-color: var(--danger);
+}
+
+@keyframes answerCorrect {
+  0% {
+    background: #ffe9a8;
+  }
+  50% {
+    background: #b8f0d4;
+    transform: translateY(-2px) scale(1.03);
+  }
+  100% {
+    background: #b8f0d4;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes answerWrong {
+  0%,
+  100% {
+    transform: translateX(0);
+    background: #f5c6c2;
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  60% {
+    transform: translateX(-5px);
+  }
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+/* ---- Win celebration ---- */
+/* Trophy pops in with a bounce, stronger than a normal success. */
+.trophy-celebrate {
+  animation: trophyPop 0.9s cubic-bezier(0.18, 1.4, 0.4, 1) both;
+}
+
+@keyframes trophyPop {
+  0% {
+    transform: scale(0.2) rotate(-12deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.18) rotate(6deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+/* Lightweight CSS-only confetti: a row of pieces that fall once across the win screen. */
+.confetti {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.win-screen {
+  position: relative;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -16px;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: confettiFall 2.2s ease-in forwards;
+}
+
+.confetti-piece:nth-child(odd) {
+  background: var(--gold);
+}
+.confetti-piece:nth-child(even) {
+  background: var(--correct);
+}
+.confetti-piece:nth-child(3n) {
+  background: var(--danger);
+}
+.confetti-piece:nth-child(1) { left: 6%; animation-delay: 0s; }
+.confetti-piece:nth-child(2) { left: 14%; animation-delay: 0.2s; }
+.confetti-piece:nth-child(3) { left: 22%; animation-delay: 0.45s; }
+.confetti-piece:nth-child(4) { left: 31%; animation-delay: 0.1s; }
+.confetti-piece:nth-child(5) { left: 40%; animation-delay: 0.35s; }
+.confetti-piece:nth-child(6) { left: 48%; animation-delay: 0.05s; }
+.confetti-piece:nth-child(7) { left: 57%; animation-delay: 0.5s; }
+.confetti-piece:nth-child(8) { left: 65%; animation-delay: 0.18s; }
+.confetti-piece:nth-child(9) { left: 73%; animation-delay: 0.4s; }
+.confetti-piece:nth-child(10) { left: 82%; animation-delay: 0.12s; }
+.confetti-piece:nth-child(11) { left: 90%; animation-delay: 0.3s; }
+.confetti-piece:nth-child(12) { left: 96%; animation-delay: 0.22s; }
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(420px) rotate(380deg);
+    opacity: 0;
+  }
+}
+
+/* ---- Reduced motion ----
+   Respect the OS/browser "reduce motion" setting: turn off decorative movement while
+   keeping the game fully playable. The map timer bar (.timer-fill) is intentionally left
+   running because it communicates the remaining viewing time. JS flow timers are unaffected. */
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .map-reveal,
+  .map-blow-away,
+  .wind-message,
+  .memorize-cue,
+  .character-enter,
+  .trophy-celebrate,
+  .ship,
+  .waves,
+  .option-button,
+  .option-button.answer-correct-flash,
+  .option-button.answer-wrong-flash {
+    animation: none !important;
+    transition: none !important;
+  }
+  .confetti {
+    display: none !important;
   }
 }
 

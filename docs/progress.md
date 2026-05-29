@@ -16,6 +16,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Debug mode (answer reveal + skip button + console reminder).
 - Riddle pool validated: 10 riddles, each with exactly 4 options and a valid correctIndex.
 - UX polish: start-screen panel, map reveal, wind blow-away with "הרוח העיפה את המפה!" message, ship sailing across waves, larger answer buttons with hover/pressed feedback, visible keyboard focus.
+- Animation/transition tuning (Phase 7B): configurable timings (WIND_TRANSITION_MS, SAILING_TRANSITION_MS, ANSWER_FEEDBACK_MS) synced into CSS variables at startup; pulsing "memorize" map cue; clearer "map cannot be reopened" wind message; island/character entrance; answer feedback flash (green pulse correct / red shake wrong) with a brief click lock; win celebration (trophy pop + confetti); optional numeric countdown (SHOW_COUNTDOWN_NUMBER); and prefers-reduced-motion support that keeps the game playable.
 - Lose screen now shows the chosen wrong answer, the correct answer, progress ("הגעת לאי X מתוך Y"), and remembered-clue count ("זכרת נכון N רמזים"); win screen shows a final score.
 - Basic responsive layout for desktop and small screens.
 - Image-ready: optional image fields on every riddle (default null), an appendVisual renderer fallback, USE_IMAGE_ASSETS flag, asset folders, and an asset integration guide. Placeholder mode is unchanged.
@@ -24,7 +25,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Partially working
 
-- Animations are intentionally simple (CSS-only); fine for the prototype.
+- Animations are intentionally simple (CSS-only) and now tuned (Phase 7B), with reduced-motion support; fine for the prototype.
 
 ## Not implemented yet
 

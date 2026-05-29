@@ -7,6 +7,16 @@ function getRoot() {
   return document.getElementById("game");
 }
 
+// Pushes the configurable transition timings into CSS custom properties, so the CSS
+// animations and the JS flow timers share a single source of truth (CONFIG). Called once
+// at startup. Other (purely cosmetic) durations stay as fixed values in the stylesheet.
+function applyAnimationTimings() {
+  const root = document.documentElement;
+  root.style.setProperty("--wind-ms", CONFIG.WIND_TRANSITION_MS + "ms");
+  root.style.setProperty("--sail-ms", CONFIG.SAILING_TRANSITION_MS + "ms");
+  root.style.setProperty("--answer-feedback-ms", CONFIG.ANSWER_FEEDBACK_MS + "ms");
+}
+
 // Clears the screen and returns the root element.
 function clearScreen() {
   const root = getRoot();
@@ -87,8 +97,9 @@ function renderMap(selectedRiddles) {
 
   const mapCard = createElement("div", "map-card map-reveal");
   mapCard.appendChild(createElement("h2", "map-title", "🗺️ מפת האוצר"));
+  // The pulsing cue makes the memory phase feel intentional: "memorize this now".
   mapCard.appendChild(
-    createElement("p", "map-subtitle", "זכרו את הרמזים לפי הסדר!")
+    createElement("p", "map-subtitle memorize-cue", "זכרו את הרמזים לפי הסדר!")
   );
 
   const route = createElement("ol", "map-route");
@@ -111,6 +122,13 @@ function renderMap(selectedRiddles) {
   });
   mapCard.appendChild(route);
 
+  // Optional numeric countdown (kept off by default for a calmer look).
+  if (CONFIG.SHOW_COUNTDOWN_NUMBER) {
+    const countdown = createElement("p", "countdown-number", "");
+    mapCard.appendChild(countdown);
+    startCountdown(countdown, CONFIG.MAP_VIEW_TIME_MS);
+  }
+
   // Visual timer bar that empties over the map viewing time.
   const timerBar = createElement("div", "timer-bar");
   const timerFill = createElement("div", "timer-fill");
@@ -120,6 +138,22 @@ function renderMap(selectedRiddles) {
 
   screen.appendChild(mapCard);
   root.appendChild(screen);
+}
+
+// Updates a "נותרו N שניות" countdown once per second. Self-clears when the element
+// leaves the DOM (e.g. the map blew away), so no timer is left running.
+function startCountdown(element, totalMs) {
+  const endTime = Date.now() + totalMs;
+  function tick() {
+    if (!document.body.contains(element)) {
+      clearInterval(intervalId);
+      return;
+    }
+    const secondsLeft = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+    element.textContent = "נותרו " + secondsLeft + " שניות";
+  }
+  tick();
+  const intervalId = setInterval(tick, 250);
 }
 
 // Wind animation that blows the map away, then calls the callback when done.
@@ -135,10 +169,12 @@ function renderMapBlowAway(callback) {
   mapCard.classList.add("map-blow-away");
 
   const screen = mapCard.closest(".screen") || getRoot();
-  const message = createElement("div", "wind-message", "💨 הרוח העיפה את המפה!");
+  // Clear reminder that the map is gone for good and cannot be reopened.
+  const message = createElement("div", "wind-message", "💨 הרוח העיפה את המפה! אי אפשר לפתוח אותה שוב");
   screen.appendChild(message);
 
-  runAfterAnimation(mapCard, callback, 1200);
+  // Fallback slightly longer than the wind transition, in case animationend never fires.
+  runAfterAnimation(mapCard, callback, CONFIG.WIND_TRANSITION_MS + 150);
 }
 
 // ---- Sailing-between-islands screen ----
@@ -160,7 +196,7 @@ function renderSailing(islandNumber, totalIslands, callback) {
   root.appendChild(screen);
 
   // Move to the island question after the configured sailing time.
-  setTimeout(callback, CONFIG.SAILING_TIME_MS);
+  setTimeout(callback, CONFIG.SAILING_TRANSITION_MS);
 }
 
 // ---- Island question screen ----
@@ -177,7 +213,8 @@ function renderIsland(riddle, islandIndex, totalIslands) {
   appendVisual(screen, riddle.islandBackgroundImage, islandPlaceholder, "island-background", "");
   screen.appendChild(createElement("h2", "island-title", riddle.islandTitle));
 
-  const character = createElement("div", "character-box");
+  // The character card gets a small entrance animation so the island "arrives" clearly.
+  const character = createElement("div", "character-box character-enter");
   // Character image if available, otherwise the emoji placeholder. Named by characterName for alt.
   const characterPlaceholder = createElement("div", "character-emoji", "🧑‍✈️");
   appendVisual(character, riddle.characterImage, characterPlaceholder, "character-image", riddle.characterName);
@@ -188,6 +225,9 @@ function renderIsland(riddle, islandIndex, totalIslands) {
   // Build options preserving the original index, then shuffle the display.
   const options = buildShuffledOptions(riddle.options);
   const optionsBox = createElement("div", "options");
+
+  // Guard so only the first click counts during the short feedback moment.
+  let answered = false;
   options.forEach(function (option) {
     const button = createElement("button", "option-button", option.text);
 
@@ -199,8 +239,21 @@ function renderIsland(riddle, islandIndex, totalIslands) {
 
     // On click, pass the original index, not the display index.
     button.addEventListener("click", function () {
+      if (answered) {
+        return;
+      }
+      answered = true;
+
+      // Positive vs final feedback, computed via the original index (never the display index).
+      const isCorrect = option.originalIndex === riddle.correctIndex;
       button.classList.add("clicked");
-      answerCurrentIsland(option.originalIndex);
+      button.classList.add(isCorrect ? "answer-correct-flash" : "answer-wrong-flash");
+      // Lock the panel so the player feels the click before the screen changes.
+      optionsBox.classList.add("locked");
+
+      setTimeout(function () {
+        answerCurrentIsland(option.originalIndex);
+      }, CONFIG.ANSWER_FEEDBACK_MS);
     });
 
     optionsBox.appendChild(button);
@@ -281,7 +334,16 @@ function renderWinScreen(totalIslands) {
   const root = clearScreen();
   const screen = createElement("section", "screen win-screen fade-in");
 
-  screen.appendChild(createElement("div", "big-emoji", "🏆"));
+  // Simple CSS-only celebration: a few falling confetti pieces behind the content.
+  const confetti = createElement("div", "confetti");
+  confetti.setAttribute("aria-hidden", "true");
+  for (let i = 0; i < 12; i++) {
+    confetti.appendChild(createElement("span", "confetti-piece"));
+  }
+  screen.appendChild(confetti);
+
+  // The trophy gets a celebratory pop/bounce (stronger than a normal success).
+  screen.appendChild(createElement("div", "big-emoji trophy-celebrate", "🏆"));
   screen.appendChild(createElement("h2", "title", "מצאת את האוצר!"));
   screen.appendChild(
     createElement(

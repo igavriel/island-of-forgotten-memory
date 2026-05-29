@@ -95,7 +95,10 @@ lose / win -> play again -> start
 |---------|---------|-------------|
 | `NUMBER_OF_ISLANDS` | `5` | How many riddles are selected from the pool per game |
 | `MAP_VIEW_TIME_MS` | `10000` | Map display time in milliseconds (10 seconds) |
-| `SAILING_TIME_MS` | `1800` | Duration of the sailing animation |
+| `WIND_TRANSITION_MS` | `1100` | Duration of the "wind blows the map away" transition |
+| `SAILING_TRANSITION_MS` | `1600` | Duration of the sailing animation between islands |
+| `ANSWER_FEEDBACK_MS` | `420` | Short pressed/feedback moment after clicking an answer, before the screen changes |
+| `SHOW_COUNTDOWN_NUMBER` | `false` | Show a numeric "נותרו N שניות" countdown on the map timer bar |
 | `SHOW_HINT_LABELS_ON_MAP` | `true` | Show a text label next to the emoji on the map (final version: `false`) |
 | `USE_IMAGE_ASSETS` | `false` | Use image files where a riddle provides a path, with fallback to emoji/text placeholders. See [docs/assets.md](docs/assets.md) |
 | `DEBUG_MODE` | `false` | Debug mode: marks the correct answer and adds a skip button. **Must be `false` for the final presentation** |
@@ -112,6 +115,23 @@ const CONFIG = {
   // ...
 };
 ```
+
+### Animations and timing
+
+All animations are CSS-only. The main transitions are: start panel fade-in, map reveal with
+a pulsing "memorize" cue, wind blow-away (the strongest transition, with a clear "the map is
+gone" message), sailing between islands, island/character entrance, answer hover, answer
+press with a correct/wrong feedback flash, and a win celebration (trophy pop + confetti).
+
+To adjust speed, edit the timing values in `js/config.js`
+(`WIND_TRANSITION_MS`, `SAILING_TRANSITION_MS`, `ANSWER_FEEDBACK_MS`). These are pushed into
+CSS custom properties at startup so the JS flow and CSS visuals stay in sync. Purely cosmetic
+durations (fade, map reveal, island entrance) live as `--fade-ms` / `--map-reveal-ms` /
+`--island-enter-ms` in `:root` in `css/style.css`.
+
+The game respects the OS/browser **reduced-motion** setting: decorative animations are turned
+off while the game stays fully playable (the map timer bar still drains so the remaining time
+is clear). Final visual art is still future work.
 
 ## How to add a riddle
 

@@ -7,5 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (CONFIG.DEBUG_MODE) {
     console.log("DEBUG_MODE is active — turn it off before the final submission.");
   }
+  // Sync the configurable transition timings into CSS before the first screen renders.
+  applyAnimationTimings();
   showStartScreen();
 });
