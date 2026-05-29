@@ -99,6 +99,12 @@ body {
   margin: 14px 0 0;
 }
 
+.progress-detail {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  opacity: 0.85;
+}
+
 /* ---- Lose screen answer review ---- */
 .answer-review {
   display: flex;

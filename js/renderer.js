@@ -258,6 +258,12 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
     )
   );
 
+  // Clues remembered correctly = islands cleared before failing (never negative).
+  const rememberedClues = Math.max(0, reachedIsland - 1);
+  screen.appendChild(
+    createElement("p", "progress-detail", "זכרת נכון " + rememberedClues + " רמזים")
+  );
+
   const again = createElement("button", "main-button", "שחקו שוב");
   again.addEventListener("click", startGame);
   screen.appendChild(again);

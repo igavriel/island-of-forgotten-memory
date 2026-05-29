@@ -4,7 +4,7 @@
 
 const CONFIG = {
   // How many islands (riddles) are selected from the riddle pool each game.
-  NUMBER_OF_ISLANDS: 3,
+  NUMBER_OF_ISLANDS: 5,
 
   // How long the treasure map is shown to the player, in milliseconds (10 seconds).
   MAP_VIEW_TIME_MS: 10000,

@@ -93,7 +93,7 @@ lose / win -> play again -> start
 
 | Setting | Default | Description |
 |---------|---------|-------------|
-| `NUMBER_OF_ISLANDS` | `3` | How many riddles are selected from the pool per game |
+| `NUMBER_OF_ISLANDS` | `5` | How many riddles are selected from the pool per game |
 | `MAP_VIEW_TIME_MS` | `10000` | Map display time in milliseconds (10 seconds) |
 | `SAILING_TIME_MS` | `1800` | Duration of the sailing animation |
 | `SHOW_HINT_LABELS_ON_MAP` | `true` | Show a text label next to the emoji on the map (final version: `false`) |
