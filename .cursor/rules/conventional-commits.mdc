@@ -1,0 +1,56 @@
+---
+description: Use Conventional Commits for all commit messages
+alwaysApply: true
+---
+
+# Conventional Commits
+
+All commit messages must follow the Conventional Commits format.
+
+## Format
+
+```
+<type>(<optional scope>): <short summary>
+
+<optional body>
+
+<optional footer>
+```
+
+- Summary: imperative mood, lower case, no trailing period, <= 72 chars.
+- Leave a blank line before the body and before any footer.
+- Use the body to explain the "why", not the "what".
+
+## Allowed types
+
+- `feat` - a new feature
+- `fix` - a bug fix
+- `docs` - documentation only (e.g. README, docs/)
+- `style` - formatting/CSS/visual changes with no logic change
+- `refactor` - code change that neither fixes a bug nor adds a feature
+- `perf` - performance improvement
+- `test` - adding or fixing tests
+- `chore` - tooling, config, or maintenance
+- `build` / `ci` - build system or CI changes
+
+## Scope
+
+Optional, lower case, project area. Examples for this game: `map`, `riddles`,
+`gamestate`, `renderer`, `css`, `config`, `docs`.
+
+## Breaking changes
+
+Add `!` after the type/scope and a `BREAKING CHANGE:` footer.
+
+## Examples
+
+```
+feat(renderer): reveal correct answer on the lose screen
+fix(gamestate): pass original option index when answering
+docs: record UX polish phase in changelog
+style(css): enlarge answer buttons and add focus styles
+chore(config): keep DEBUG_MODE false for final build
+feat(config)!: rename MAP_VIEW_TIME_MS to MAP_VIEW_MS
+
+BREAKING CHANGE: update references to the renamed config key.
+```
