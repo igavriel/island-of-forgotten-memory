@@ -36,7 +36,16 @@ assets/
 ## Two kinds of images
 
 1. **Per-riddle images** (`hintImage`, `islandBackgroundImage`, `characterImage`,
-   `loseImage` on each riddle) — described below. Used automatically when present.
+   `loseImage` on each riddle) — described below. Used automatically when present (gated by
+   `USE_IMAGE_ASSETS`). Two of these render inline and two render as full-screen backgrounds:
+   - `hintImage` — small inline image inside the map clue card (`.map-clue-image`).
+   - `characterImage` — inline character portrait on the island (`.character-image`).
+   - `islandBackgroundImage` — **16:9 full-screen background** behind the island question.
+   - `loseImage` — **16:9 full-screen background** behind the lose screen.
+   The full-screen ones use the same `#screen-bg` layer and `setScreenBackground()` as the
+   screen-level images below, so they should be authored at 16:9 (`viewBox="0 0 1920 1080"`)
+   with a readable center. Riddles without these paths fall back to the sea gradient, and the
+   island/lose emoji markers always show.
 2. **Screen-level backgrounds** (full-screen 16:9 images) — configured in `js/config.js` and
    gated by `USE_SCREEN_PLACEHOLDER_IMAGES`:
    - `START_SCREEN_IMAGE` -> `assets/ui/start_screen_placeholder.svg` (start screen)
@@ -50,8 +59,9 @@ assets/
    contrast. They are decorative only:
    - The map background does **not** contain fixed clues. The selected route clues are still
      rendered dynamically on top of it from `selectedRiddles` in the map card.
-   - The other screens (sailing, island, lose) clear the background and keep the normal
-     sea-gradient look.
+   - The island and lose screens use the current riddle's full-screen background when it has
+     one (see per-riddle images above), otherwise the sea gradient. The sailing screen always
+     uses the sea gradient.
    - If a screen image is missing or fails to load, the layer stays empty and the screen still
      works. Set `USE_SCREEN_PLACEHOLDER_IMAGES: false` to turn all three off.
 
@@ -111,7 +121,10 @@ In [js/config.js](../js/config.js):
 ## Notes
 
 - Keep file sizes small; everything loads from disk with no build step.
-- Sizing is handled by minimal CSS classes in [css/style.css](../css/style.css):
-  `.map-clue-image`, `.island-background`, `.character-image`, `.lose-image`.
-- Alt text: informative images (map clues, characters) use the riddle's label/name;
-  decorative images (backgrounds, lose art) use empty alt.
+- Inline images are sized by minimal CSS classes in [css/style.css](../css/style.css):
+  `.map-clue-image` (map clue) and `.character-image` (character portrait).
+- Full-screen background images (`islandBackgroundImage`, `loseImage`, and the three
+  screen-level images) are drawn by the fixed `#screen-bg` layer with `background-size: cover`,
+  so author them at 16:9 with a readable center.
+- Alt text: informative inline images (map clues, characters) use the riddle's label/name.
+  Full-screen backgrounds are decorative and set via CSS, so they need no alt text.

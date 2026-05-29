@@ -1,10 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" role="img" aria-label="parrot island placeholder">
-  <rect width="420" height="220" fill="#14618a"/>
-  <rect y="150" width="420" height="70" fill="#0b3d5c"/>
-  <ellipse cx="210" cy="172" rx="160" ry="40" fill="#3ba776"/>
-  <ellipse cx="210" cy="176" rx="110" ry="26" fill="#f3e2c0"/>
-  <ellipse cx="300" cy="70" rx="22" ry="30" fill="#b8473e"/>
-  <path d="M318 60 l16 6 l-16 6z" fill="#e8b733"/>
-  <circle cx="305" cy="58" r="4" fill="#2a2118"/>
-  <text x="210" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#f3e2c0">parrot island</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="parrot island background placeholder">
+  <defs>
+    <linearGradient id="pisky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2f7ea0"/>
+      <stop offset="1" stop-color="#14618a"/>
+    </linearGradient>
+    <linearGradient id="pisea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e4d72"/>
+      <stop offset="1" stop-color="#08344f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#pisky)"/>
+  <g fill="#ffffff" opacity="0.16">
+    <ellipse cx="1500" cy="220" rx="170" ry="50"/>
+    <ellipse cx="1640" cy="200" rx="120" ry="40"/>
+  </g>
+  <path d="M0 700 q240 -40 480 0 t480 0 t480 0 t480 0 V1080 H0 Z" fill="url(#pisea)"/>
+  <!-- green island bottom -->
+  <ellipse cx="960" cy="980" rx="780" ry="180" fill="#3ba776"/>
+  <ellipse cx="960" cy="1000" rx="560" ry="120" fill="#f3e2c0"/>
+  <rect x="540" y="700" width="18" height="200" fill="#7a5a2f"/>
+  <path d="M549 700 q-100 -26 -160 14 q88 -16 160 6 q74 -26 160 -6 q-66 -40 -160 -14z" fill="#2f8f63"/>
+  <!-- parrot perched to the right, away from the center -->
+  <g transform="translate(1500 560)">
+    <ellipse cx="0" cy="0" rx="70" ry="100" fill="#b8473e"/>
+    <ellipse cx="-6" cy="-10" rx="48" ry="74" fill="#e85d52"/>
+    <circle cx="10" cy="-90" r="46" fill="#3ba776"/>
+    <circle cx="22" cy="-98" r="8" fill="#2a2118"/>
+    <path d="M52 -90 l46 16 -46 16z" fill="#e8b733"/>
+    <path d="M-50 30 q-40 18 -18 76 q34 -18 40 -64z" fill="#14618a"/>
+  </g>
+  <g fill="none" stroke="#e8b733" stroke-width="6" opacity="0.35" stroke-dasharray="26 20">
+    <rect x="40" y="40" width="1840" height="1000" rx="28"/>
+  </g>
 </svg>

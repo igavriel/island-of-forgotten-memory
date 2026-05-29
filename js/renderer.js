@@ -58,20 +58,23 @@ function appendVisual(parent, src, placeholderEl, className, altText) {
   }
 }
 
-// Sets (or clears) the full-screen decorative background for the current screen, gated by
-// CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES. The image is preloaded so a missing/failed file
-// falls back cleanly to no background (the body's sea gradient shows and the screen still
-// works). Pass null/undefined to clear the background (screens without a background image).
-function setScreenBackground(src) {
+// Sets (or clears) the full-screen background for the current screen. The image is preloaded
+// so a missing/failed file falls back cleanly to no background (the body's sea gradient shows
+// and the screen still works). Pass null/undefined to clear the background.
+// "enabled" is the toggle that allows the image: it defaults to CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES
+// for the decorative screen images (start/map/win); per-riddle backgrounds (island/lose) pass
+// CONFIG.USE_IMAGE_ASSETS instead, so they follow the same on/off rule as other riddle images.
+function setScreenBackground(src, enabled) {
   const layer = document.getElementById("screen-bg");
   if (!layer) {
     return;
   }
+  const allow = enabled === undefined ? CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES : enabled;
   function clear() {
     layer.style.backgroundImage = "";
     layer.classList.remove("is-visible");
   }
-  if (CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES && src) {
+  if (allow && src) {
     const probe = new Image();
     probe.onload = function () {
       layer.style.backgroundImage = "url('" + src + "')";
@@ -235,16 +238,17 @@ function renderSailing(islandNumber, totalIslands, callback) {
 // ---- Island question screen ----
 function renderIsland(riddle, islandIndex, totalIslands) {
   const root = clearScreen();
-  setScreenBackground(null);
+  // The island background image (when the riddle has one) is shown full-screen behind the
+  // question; riddles without one fall back to the plain sea gradient. The emoji below is
+  // always shown as the island marker (like the flag/trophy on the start/win screens).
+  setScreenBackground(riddle.islandBackgroundImage, CONFIG.USE_IMAGE_ASSETS);
   const screen = createElement("section", "screen island-screen fade-in");
 
   const islandNumber = islandIndex + 1;
   screen.appendChild(
     createElement("p", "progress", "אי " + islandNumber + " מתוך " + totalIslands)
   );
-  // Island background image if available, otherwise the emoji placeholder. Decorative => empty alt.
-  const islandPlaceholder = createElement("div", "big-emoji", "🏝️");
-  appendVisual(screen, riddle.islandBackgroundImage, islandPlaceholder, "island-background", "");
+  screen.appendChild(createElement("div", "big-emoji", "🏝️"));
   screen.appendChild(createElement("h2", "island-title", riddle.islandTitle));
 
   // The character card gets a small entrance animation so the island "arrives" clearly.
@@ -313,12 +317,12 @@ function renderIsland(riddle, islandIndex, totalIslands) {
 // chosenIndex is the original index of the wrong answer the player picked (may be undefined).
 function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
   const root = clearScreen();
-  setScreenBackground(null);
+  // The lose image (when the riddle has one) is shown full-screen behind the result; riddles
+  // without one fall back to the plain sea gradient. The emoji is always shown as the marker.
+  setScreenBackground(riddle.loseImage, CONFIG.USE_IMAGE_ASSETS);
   const screen = createElement("section", "screen lose-screen fade-in");
 
-  // Lose image if available, otherwise the emoji placeholder. Decorative => empty alt.
-  const losePlaceholder = createElement("div", "big-emoji", "💀");
-  appendVisual(screen, riddle.loseImage, losePlaceholder, "lose-image", "");
+  screen.appendChild(createElement("div", "big-emoji", "💀"));
   screen.appendChild(createElement("h2", "title", riddle.failTitle));
   screen.appendChild(createElement("p", "subtitle", riddle.failText));
 

@@ -1,9 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 240" role="img" aria-label="parrot lose placeholder">
-  <rect width="320" height="240" fill="#0b3d5c"/>
-  <ellipse cx="160" cy="110" rx="46" ry="60" fill="#3ba776"/>
-  <circle cx="170" cy="72" r="26" fill="#b8473e"/>
-  <circle cx="176" cy="66" r="4" fill="#2a2118"/>
-  <path d="M196 72 l22 8 l-22 8z" fill="#e8b733"/>
-  <path d="M120 118 q-22 10 -10 40 q18 -10 22 -34z" fill="#14618a"/>
-  <text x="160" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="#e8b733">parrot flew away</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="parrot flew away background placeholder">
+  <defs>
+    <linearGradient id="lpbg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#123a52"/>
+      <stop offset="1" stop-color="#08283b"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#lpbg)"/>
+  <circle cx="1600" cy="240" r="110" fill="#cdd7de" opacity="0.5"/>
+  <!-- empty perch toward the bottom-left -->
+  <g stroke="#5a4523" stroke-width="18" stroke-linecap="round">
+    <path d="M180 900 l360 -40"/>
+  </g>
+  <rect x="150" y="880" width="22" height="160" fill="#5a4523"/>
+  <!-- parrot flying away to the upper right (small, leaving the scene) -->
+  <g transform="translate(1430 360) scale(0.7)" opacity="0.85">
+    <ellipse cx="0" cy="0" rx="60" ry="86" fill="#b8473e"/>
+    <circle cx="8" cy="-78" r="38" fill="#3ba776"/>
+    <path d="M40 -78 l40 14 -40 14z" fill="#e8b733"/>
+    <path d="M-50 -10 q-110 -50 -150 6 q90 -8 150 40z" fill="#14618a"/>
+    <path d="M50 -10 q110 -50 150 6 q-90 -8 -150 40z" fill="#14618a"/>
+  </g>
+  <!-- a couple of stray feathers -->
+  <g fill="#3ba776" opacity="0.7">
+    <path d="M760 520 q-30 30 -8 70 q26 -22 28 -56z"/>
+    <path d="M1120 640 q-28 26 -8 64 q24 -20 26 -50z"/>
+  </g>
+  <g fill="none" stroke="#3ba776" stroke-width="6" opacity="0.25" stroke-dasharray="26 20">
+    <rect x="40" y="40" width="1840" height="1000" rx="28"/>
+  </g>
 </svg>

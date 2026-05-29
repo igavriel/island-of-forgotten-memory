@@ -1,9 +1,36 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" role="img" aria-label="gold island placeholder">
-  <rect width="420" height="220" fill="#14618a"/>
-  <rect y="150" width="420" height="70" fill="#0b3d5c"/>
-  <ellipse cx="210" cy="170" rx="150" ry="42" fill="#f3e2c0"/>
-  <rect x="200" y="96" width="10" height="60" fill="#7a5a2f"/>
-  <path d="M205 96 q-40 -10 -58 8 q34 -6 58 6 q24 -12 58 -6 q-18 -18 -58 -8z" fill="#3ba776"/>
-  <circle cx="350" cy="46" r="26" fill="#e8b733"/>
-  <text x="210" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#f3e2c0">gold island</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" role="img" aria-label="gold island background placeholder">
+  <defs>
+    <linearGradient id="gisky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a6f93"/>
+      <stop offset="1" stop-color="#14618a"/>
+    </linearGradient>
+    <linearGradient id="gisea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0e4d72"/>
+      <stop offset="1" stop-color="#08344f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#gisky)"/>
+  <circle cx="300" cy="240" r="120" fill="#e8b733" opacity="0.9"/>
+  <circle cx="300" cy="240" r="160" fill="#e8b733" opacity="0.16"/>
+  <path d="M0 700 q240 -40 480 0 t480 0 t480 0 t480 0 V1080 H0 Z" fill="url(#gisea)"/>
+  <!-- gold-sand islands toward the bottom corners, center kept clear -->
+  <g>
+    <ellipse cx="360" cy="900" rx="420" ry="150" fill="#f0d27a"/>
+    <ellipse cx="360" cy="870" rx="300" ry="90" fill="#f3e2c0"/>
+    <rect x="330" y="660" width="16" height="200" fill="#7a5a2f"/>
+    <path d="M338 660 q-90 -24 -150 12 q80 -14 150 6 q70 -24 150 -6 q-60 -36 -150 -12z" fill="#3ba776"/>
+  </g>
+  <g>
+    <ellipse cx="1580" cy="940" rx="460" ry="150" fill="#f0d27a"/>
+    <ellipse cx="1580" cy="912" rx="320" ry="90" fill="#f3e2c0"/>
+  </g>
+  <!-- scattered gold coins -->
+  <g fill="#e8b733" stroke="#b8901f" stroke-width="4">
+    <circle cx="520" cy="930" r="22"/>
+    <circle cx="1400" cy="960" r="22"/>
+    <circle cx="1470" cy="930" r="18"/>
+  </g>
+  <g fill="none" stroke="#e8b733" stroke-width="6" opacity="0.35" stroke-dasharray="26 20">
+    <rect x="40" y="40" width="1840" height="1000" rx="28"/>
+  </g>
 </svg>
