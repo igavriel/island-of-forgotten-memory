@@ -8,6 +8,7 @@ alwaysApply: true
 - Work in small steps. Before major changes, explain the plan.
 - Do NOT rewrite the whole project unless explicitly asked.
 - Preserve existing behavior unless the user asks to change it.
+- Maintain docs/progress.md, docs/decisions.md, docs/next-steps.md, and docs/changelog.md as part of every meaningful implementation step.
 
 ## Suggested commit sequence (small commits)
 
