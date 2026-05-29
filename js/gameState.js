@@ -71,7 +71,7 @@ function answerCurrentIsland(originalIndex) {
   if (originalIndex === currentRiddle.correctIndex) {
     advanceToNextIsland();
   } else {
-    loseGame(currentRiddle);
+    loseGame(currentRiddle, originalIndex);
   }
 }
 
@@ -87,10 +87,11 @@ function advanceToNextIsland() {
 }
 
 // Lose: show an island-specific lose screen, with progress (island X of Y).
-function loseGame(currentRiddle) {
+// chosenIndex is the original index of the wrong answer the player picked (may be undefined).
+function loseGame(currentRiddle, chosenIndex) {
   gameState.finished = true;
   const reachedIsland = gameState.currentIslandIndex + 1;
-  renderLoseScreen(currentRiddle, reachedIsland, CONFIG.NUMBER_OF_ISLANDS);
+  renderLoseScreen(currentRiddle, reachedIsland, CONFIG.NUMBER_OF_ISLANDS, chosenIndex);
 }
 
 // Win: all islands completed.

@@ -49,6 +49,20 @@ body {
   text-align: center;
 }
 
+/* Start screen reads as a clear, grouped panel (no extra markup needed). */
+.start-screen {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 32px 28px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+}
+
+.start-screen .subtitle {
+  max-width: 46ch;
+  margin-inline: auto;
+}
+
 .title {
   font-size: 2rem;
   margin: 12px 0;
@@ -78,6 +92,51 @@ body {
   font-weight: bold;
 }
 
+.score {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--gold);
+  margin: 14px 0 0;
+}
+
+/* ---- Lose screen answer review ---- */
+.answer-review {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 420px;
+  margin: 18px auto;
+}
+
+.answer-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  border-inline-start: 5px solid transparent;
+  text-align: start;
+}
+
+.answer-label {
+  font-weight: bold;
+  opacity: 0.9;
+}
+
+.answer-value {
+  font-weight: bold;
+}
+
+.answer-wrong {
+  border-inline-start-color: var(--danger);
+}
+
+.answer-correct {
+  border-inline-start-color: var(--correct);
+}
+
 /* ---- Main buttons ---- */
 .main-button {
   margin-top: 22px;
@@ -101,6 +160,14 @@ body {
 .main-button:active {
   transform: translateY(2px);
   box-shadow: 0 1px 0 #b8901f;
+}
+
+/* Visible keyboard focus for all interactive buttons (accessibility). */
+.main-button:focus-visible,
+.option-button:focus-visible,
+.debug-button:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
 }
 
 /* ---- Treasure map ---- */
@@ -220,26 +287,32 @@ body {
 
 .option-button {
   font-family: inherit;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  min-height: 64px;
   color: var(--ink);
   background: var(--white);
   border: 2px solid transparent;
   border-radius: 12px;
-  padding: 16px;
+  padding: 16px 18px;
   cursor: pointer;
-  transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.12);
+  transition: transform 0.1s ease, background 0.15s ease, border-color 0.15s ease,
+    box-shadow 0.1s ease;
 }
 
 .option-button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   border-color: var(--gold);
   background: #fff4d6;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, 0.14);
 }
 
 .option-button:active,
 .option-button.clicked {
-  transform: scale(0.96);
+  transform: translateY(2px) scale(0.98);
   background: #ffe9a8;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.14);
 }
 
 .option-button.debug-correct {
@@ -271,15 +344,30 @@ body {
 }
 
 /* ---- Sailing ---- */
-.sailing-boat {
-  font-size: 4rem;
-  animation: bob 1.2s ease-in-out infinite;
+.sea {
+  position: relative;
+  height: 120px;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.18));
+}
+
+.ship {
+  position: absolute;
+  top: 28px;
+  font-size: 3.4rem;
+  /* Sails across the sea (RTL feel: starts off-screen right, exits left). */
+  animation: sail 2s ease-in-out forwards, bob 1.2s ease-in-out infinite;
 }
 
 .waves {
-  font-size: 1.6rem;
+  position: absolute;
+  bottom: 8px;
+  inset-inline: 0;
+  text-align: center;
+  font-size: 1.7rem;
   letter-spacing: 4px;
-  margin-top: 10px;
   animation: bob 1.6s ease-in-out infinite;
 }
 
@@ -353,12 +441,58 @@ body {
   }
 }
 
+/* Ship sails from the right edge across to the left. */
+@keyframes sail {
+  from {
+    right: -20%;
+  }
+  to {
+    right: 100%;
+  }
+}
+
+/* Short wind message shown while the map blows away. */
+.wind-message {
+  margin-top: 18px;
+  font-size: 1.4rem;
+  font-weight: bold;
+  animation: windMessage 1.1s ease both;
+}
+
+@keyframes windMessage {
+  0% {
+    opacity: 0;
+    transform: translateX(40px) scale(0.9);
+  }
+  40% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
 /* ---- Small-screen adjustments ---- */
 @media (max-width: 480px) {
+  .game {
+    padding: 16px;
+  }
   .options {
     grid-template-columns: 1fr;
   }
   .title {
     font-size: 1.6rem;
+  }
+  .start-screen {
+    padding: 24px 18px;
+  }
+  .map-card {
+    padding: 18px;
+  }
+  .answer-row {
+    flex-direction: column;
+    gap: 4px;
   }
 }

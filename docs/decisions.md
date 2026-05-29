@@ -15,3 +15,5 @@ Locked-in design and technical decisions. Update when one changes.
 - The loss screen shows progress.
 - Final images will be added later.
 - The first prototype uses emoji/text placeholders.
+- The loss screen reveals the player's wrong answer and the correct answer (learning feedback). This does not change the rules: a wrong answer still ends the game.
+- Animations are CSS-only (no JS animation libraries) to keep the project simple and static.

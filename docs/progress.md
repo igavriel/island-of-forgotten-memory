@@ -2,7 +2,7 @@
 
 ## Current status
 
-Playable prototype. The full game loop was verified end to end (start to win/lose) with emoji/text placeholders. No code fixes were required.
+Polished playable prototype. The full loop works end to end with emoji/text placeholders, and the UX/animation polish phase is done.
 
 ## What already works (verified)
 
@@ -15,10 +15,13 @@ Playable prototype. The full game loop was verified end to end (start to win/los
 - Completing all islands shows the victory screen; "play again" starts a fresh randomized run.
 - Debug mode (answer reveal + skip button + console reminder).
 - Riddle pool validated: 10 riddles, each with exactly 4 options and a valid correctIndex.
+- UX polish: start-screen panel, map reveal, wind blow-away with "הרוח העיפה את המפה!" message, ship sailing across waves, larger answer buttons with hover/pressed feedback, visible keyboard focus.
+- Lose screen now shows the chosen wrong answer, the correct answer, and progress; win screen shows a final score.
+- Basic responsive layout for desktop and small screens.
 
 ## Partially working
 
-- CSS animations are basic and could be polished.
+- Animations are intentionally simple (CSS-only); fine for the prototype.
 
 ## Not implemented yet
 
@@ -33,4 +36,4 @@ Playable prototype. The full game loop was verified end to end (start to win/los
 
 ## Current prototype goal
 
-Done: the full game loop is solid with placeholders. Next focus is polishing CSS animations and preparing optional image fields, keeping the project fully static.
+Done: solid loop plus UX/animation polish, fully static. Next focus is preparing optional image fields in the riddle schema so real assets can drop in later.

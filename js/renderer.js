@@ -101,6 +101,8 @@ function renderMap(selectedRiddles) {
 }
 
 // Wind animation that blows the map away, then calls the callback when done.
+// A short Hebrew message appears while the map flies off. The map is never re-rendered,
+// so the player cannot reopen it.
 function renderMapBlowAway(callback) {
   const mapCard = document.querySelector(".map-card");
   if (!mapCard) {
@@ -109,6 +111,11 @@ function renderMapBlowAway(callback) {
   }
   mapCard.classList.remove("map-reveal");
   mapCard.classList.add("map-blow-away");
+
+  const screen = mapCard.closest(".screen") || getRoot();
+  const message = createElement("div", "wind-message", "💨 הרוח העיפה את המפה!");
+  screen.appendChild(message);
+
   runAfterAnimation(mapCard, callback, 1200);
 }
 
@@ -117,14 +124,16 @@ function renderSailing(islandNumber, totalIslands, callback) {
   const root = clearScreen();
   const screen = createElement("section", "screen sailing-screen fade-in");
 
-  screen.appendChild(createElement("div", "sailing-boat", "⛵"));
   screen.appendChild(createElement("h2", "title", "מפליגים לאי הבא..."));
   screen.appendChild(
     createElement("p", "subtitle", "אי " + islandNumber + " מתוך " + totalIslands)
   );
 
-  const waves = createElement("div", "waves", "🌊🌊🌊🌊🌊");
-  screen.appendChild(waves);
+  // The sea holds a ship that sails across the waves (animated in CSS).
+  const sea = createElement("div", "sea");
+  sea.appendChild(createElement("div", "ship", "⛵"));
+  sea.appendChild(createElement("div", "waves", "🌊🌊🌊🌊🌊🌊🌊"));
+  screen.appendChild(sea);
 
   root.appendChild(screen);
 
@@ -188,13 +197,31 @@ function renderIsland(riddle, islandIndex, totalIslands) {
 }
 
 // ---- Lose screen ----
-function renderLoseScreen(riddle, reachedIsland, totalIslands) {
+// chosenIndex is the original index of the wrong answer the player picked (may be undefined).
+function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
   const root = clearScreen();
   const screen = createElement("section", "screen lose-screen fade-in");
 
   screen.appendChild(createElement("div", "big-emoji", "💀"));
   screen.appendChild(createElement("h2", "title", riddle.failTitle));
   screen.appendChild(createElement("p", "subtitle", riddle.failText));
+
+  // Answer review: the player's wrong choice (if known) and the correct answer.
+  const review = createElement("div", "answer-review");
+  if (typeof chosenIndex === "number" && riddle.options[chosenIndex] !== undefined) {
+    const wrongRow = createElement("p", "answer-row answer-wrong");
+    wrongRow.appendChild(createElement("span", "answer-label", "בחרת:"));
+    wrongRow.appendChild(createElement("span", "answer-value", riddle.options[chosenIndex]));
+    review.appendChild(wrongRow);
+  }
+  const correctRow = createElement("p", "answer-row answer-correct");
+  correctRow.appendChild(createElement("span", "answer-label", "התשובה הנכונה:"));
+  correctRow.appendChild(
+    createElement("span", "answer-value", riddle.options[riddle.correctIndex])
+  );
+  review.appendChild(correctRow);
+  screen.appendChild(review);
+
   screen.appendChild(
     createElement(
       "p",
@@ -223,6 +250,9 @@ function renderWinScreen(totalIslands) {
       "subtitle",
       "עברת את כל " + totalIslands + " האיים בזכות זיכרון מצוין!"
     )
+  );
+  screen.appendChild(
+    createElement("p", "score", "ניקוד: " + totalIslands + " מתוך " + totalIslands)
   );
 
   const again = createElement("button", "main-button", "שחקו שוב");
