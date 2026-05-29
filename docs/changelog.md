@@ -2,6 +2,8 @@
 
 ## 2026-05-29
 
+- Phase 7A: added the first real placeholder image assets to prove the image pipeline works. Eight simple SVG placeholders were created for two riddles (`gold`, `parrot`) across hints/islands/characters/endings, and their four image fields were wired up in riddles.js. All other riddles keep `null` image fields and fall back to emoji/text. Image mode was tested by temporarily setting `USE_IMAGE_ASSETS: true`, then restored to `false` so the prototype still opens in placeholder mode by default. No gameplay, CSS, or renderer changes were needed (existing fallback and image CSS classes already supported SVGs).
+
 - Fixed the wind blow-away map animation being cut short. The map timer bar's `drain` animation ends at the same moment the blow-away starts, and its `animationend` event bubbled up to `.map-card`, prematurely firing the post-animation callback. `runAfterAnimation` now ignores `animationend` events bubbling from child elements (checks `event.target === element`).
 
 - Playtest/balancing pass: win and lose screens show a summary (islands completed and map view time always; hint-labels and debug-mode lines only in DEBUG_MODE). Added SHOW_CORRECT_ANSWER_ON_LOSS config flag and a manual playtest log + balancing guide in docs/playtest.md. No analytics or stored data.

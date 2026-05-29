@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" role="img" aria-label="parrot island placeholder">
+  <rect width="420" height="220" fill="#14618a"/>
+  <rect y="150" width="420" height="70" fill="#0b3d5c"/>
+  <ellipse cx="210" cy="172" rx="160" ry="40" fill="#3ba776"/>
+  <ellipse cx="210" cy="176" rx="110" ry="26" fill="#f3e2c0"/>
+  <ellipse cx="300" cy="70" rx="22" ry="30" fill="#b8473e"/>
+  <path d="M318 60 l16 6 l-16 6z" fill="#e8b733"/>
+  <circle cx="305" cy="58" r="4" fill="#2a2118"/>
+  <text x="210" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#f3e2c0">parrot island</text>
+</svg>

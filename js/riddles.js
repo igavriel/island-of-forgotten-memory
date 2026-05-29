@@ -28,10 +28,10 @@ const RIDDLES = [
     id: "gold",
     hintEmoji: "🪙",
     hintLabel: "מטבע זהב",
-    hintImage: null, // e.g. "assets/hints/gold.png"
-    islandBackgroundImage: null, // e.g. "assets/islands/gold.png"
-    characterImage: null, // e.g. "assets/characters/gold.png"
-    loseImage: null, // e.g. "assets/endings/lose_gold.png"
+    hintImage: "assets/hints/gold_chest.svg",
+    islandBackgroundImage: "assets/islands/gold_island.svg",
+    characterImage: "assets/characters/gold_guard.svg",
+    loseImage: "assets/endings/lose_gold.svg",
     question: "איזה אוצר נצנץ על מפת האי?",
     options: ["מטבע זהב", "פנינה כחולה", "יהלום ירוק", "כתר כסף"],
     correctIndex: 0,
@@ -44,10 +44,10 @@ const RIDDLES = [
     id: "parrot",
     hintEmoji: "🦜",
     hintLabel: "תוכי",
-    hintImage: null,
-    islandBackgroundImage: null,
-    characterImage: null,
-    loseImage: null,
+    hintImage: "assets/hints/parrot.svg",
+    islandBackgroundImage: "assets/islands/parrot_island.svg",
+    characterImage: "assets/characters/parrot_captain.svg",
+    loseImage: "assets/endings/lose_parrot.svg",
     question: "איזו חיה ישבה על הכתף של שודד הים במפה?",
     options: ["דג", "תוכי", "חתול", "נחש"],
     correctIndex: 1,

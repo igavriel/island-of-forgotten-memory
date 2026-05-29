@@ -3,6 +3,23 @@
 How to replace the emoji/text placeholders with real images later. The game stays fully
 static: images are plain files referenced by path, loaded directly from disk.
 
+## Current status (Phase 7A)
+
+The image pipeline has been proven with temporary SVG placeholders:
+
+- Only the `gold` and `parrot` riddles currently have image assets (simple SVG placeholders
+  under `assets/hints`, `assets/islands`, `assets/characters`, `assets/endings`).
+- All other riddles intentionally keep their image fields `null` and fall back to the
+  emoji/text placeholders (this is the supported "mixed mode").
+- `CONFIG.USE_IMAGE_ASSETS` is `false` by default, so the prototype opens in placeholder
+  mode. To preview/test image mode, set it to `true` (see below); `gold` and `parrot` then
+  render their SVGs while every other riddle keeps showing emoji/text.
+- These SVGs are temporary developer placeholders, not final art. Full art integration
+  (real images for all riddles) is future work.
+
+Images can be SVG or raster (PNG/JPG); both are plain static files. SVG is convenient for
+lightweight placeholders because it scales cleanly inside the existing CSS sizing.
+
 ## Folders
 
 ```
@@ -39,13 +56,17 @@ In [js/riddles.js](../js/riddles.js), set the matching field on the riddle to th
   id: "gold",
   hintEmoji: "🪙",
   hintLabel: "מטבע זהב",
-  hintImage: "assets/hints/gold.png",
-  islandBackgroundImage: "assets/islands/gold.png",
-  characterImage: "assets/characters/gold.png",
-  loseImage: "assets/endings/lose_gold.png",
+  hintImage: "assets/hints/gold_chest.svg",
+  islandBackgroundImage: "assets/islands/gold_island.svg",
+  characterImage: "assets/characters/gold_guard.svg",
+  loseImage: "assets/endings/lose_gold.svg",
   // ...rest unchanged
 }
 ```
+
+This is exactly how the `gold` and `parrot` riddles are wired today (see
+[js/riddles.js](../js/riddles.js)). File names can follow the riddle `id` or be more
+descriptive (e.g. `gold_chest.svg`); only the path in the riddle field needs to match.
 
 ## Switch from placeholders to image mode
 

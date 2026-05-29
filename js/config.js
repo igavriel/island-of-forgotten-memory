@@ -18,7 +18,9 @@ const CONFIG = {
 
   // false keeps the emoji/text prototype. true uses image assets where a riddle
   // provides a path (with automatic fallback to the emoji/text placeholder).
-  USE_IMAGE_ASSETS: false,
+  // Currently only the "gold" and "parrot" riddles ship SVG placeholders; set this
+  // to true to preview image mode (other riddles fall back to emoji/text).
+  USE_IMAGE_ASSETS: true,
 
   // Debug mode. Must be false for the final presentation.
   // When true: the correct answer is shown and a developer skip/answer button appears.

@@ -19,6 +19,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Lose screen now shows the chosen wrong answer, the correct answer, progress ("הגעת לאי X מתוך Y"), and remembered-clue count ("זכרת נכון N רמזים"); win screen shows a final score.
 - Basic responsive layout for desktop and small screens.
 - Image-ready: optional image fields on every riddle (default null), an appendVisual renderer fallback, USE_IMAGE_ASSETS flag, asset folders, and an asset integration guide. Placeholder mode is unchanged.
+- Image pipeline proven (Phase 7A): two riddles (`gold`, `parrot`) ship simple SVG placeholders across hints/islands/characters/endings, wired into riddles.js. The other riddles keep null image fields and fall back to emoji/text (mixed mode). Verified with USE_IMAGE_ASSETS temporarily true; default remains false so the prototype opens in placeholder mode.
 - Playtest/balancing: win and lose screens show a summary (islands completed + map time always; hint-labels and debug-mode lines in DEBUG_MODE only); SHOW_CORRECT_ANSWER_ON_LOSS flag; manual playtest log in docs/playtest.md. No stored data.
 
 ## Partially working
@@ -27,7 +28,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Not implemented yet
 
-- Real image files (the data model and renderer are ready; placeholders still used by default).
+- Final/real artwork (only 2 riddles have temporary SVG placeholders so far; the data model, renderer, and pipeline are proven and ready for the full art set).
 - Sound effects.
 
 ## Known limitations

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 220" role="img" aria-label="gold island placeholder">
+  <rect width="420" height="220" fill="#14618a"/>
+  <rect y="150" width="420" height="70" fill="#0b3d5c"/>
+  <ellipse cx="210" cy="170" rx="150" ry="42" fill="#f3e2c0"/>
+  <rect x="200" y="96" width="10" height="60" fill="#7a5a2f"/>
+  <path d="M205 96 q-40 -10 -58 8 q34 -6 58 6 q24 -12 58 -6 q-18 -18 -58 -8z" fill="#3ba776"/>
+  <circle cx="350" cy="46" r="26" fill="#e8b733"/>
+  <text x="210" y="206" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#f3e2c0">gold island</text>
+</svg>
