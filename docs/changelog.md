@@ -1,5 +1,13 @@
 # Changelog
 
+## 2026-06-03
+
+- Added a randomized map asset layer. `config/assets.js` exposes categorized image pools as `ASSETS_BY_CATEGORY` / `ASSETS`; `CONFIG.MAP_ASSET_LAYOUT` defines relative `x`, `y`, and `sizePercent` values. Each new run selects one random image from each configured category and renders it proportionally on the map, with the volcano centered by default. Riddle logic remains separate for the next step.
+- Changed the map presentation from a centered popup-style panel to a full-map stage. The map image now renders as the base image inside the screen, randomized category assets appear directly on it, the header is at the top, and the timer progress bar is at the bottom.
+- Updated the asset data convention for future question generation: categories expose `question1` / `question2`, and each image asset now stores `answer1` plus a placeholder numeric `answer2` instead of `name`.
+- Switched the active route from the static `RIDDLES` pool to generated map-asset questions. Each configured category produces one question per run, randomly choosing `question1`/`answer1` or `question2`/`answer2`; options are unique same-category answers with the correct answer in a random position.
+- Added per-category generated-question screen metadata (`islandTitle`, `characterName`, `failTitle`) to `ASSET_CATEGORIES`.
+
 ## 2026-05-29
 
 - Moved game settings and riddle data from `js/` to `config/config.js` and `config/riddles.js`. Updated `index.html` script tags and documentation paths.

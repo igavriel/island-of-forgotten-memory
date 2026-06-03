@@ -21,6 +21,7 @@ function applyAnimationTimings() {
 function clearScreen() {
   const root = getRoot();
   root.innerHTML = "";
+  root.classList.remove("is-map-screen");
   return root;
 }
 
@@ -111,8 +112,8 @@ function renderStartScreen() {
   const info = createElement(
     "p",
     "hint-text",
-    "מספר איים: " +
-      CONFIG.NUMBER_OF_ISLANDS +
+    "מספר שאלות: " +
+      Object.keys(CONFIG.MAP_ASSET_LAYOUT).length +
       "  •  זמן צפייה במפה: " +
       Math.round(CONFIG.MAP_VIEW_TIME_MS / 1000) +
       " שניות"
@@ -128,39 +129,50 @@ function renderStartScreen() {
 
 // ---- Treasure map ----
 // Shows the selected riddles, in route order. This is the player's memory source.
-function renderMap(selectedRiddles) {
+function renderMap(selectedRiddles, selectedMapAssets) {
   const root = clearScreen();
-  // Full-screen parchment map background. The dynamic clues from selectedRiddles are still
-  // rendered on top in the map card below; if the image is missing the screen still works.
-  setScreenBackground(CONFIG.MAP_BACKGROUND_IMAGE);
+  root.classList.add("is-map-screen");
+  setScreenBackground(null);
   const screen = createElement("section", "screen map-screen");
 
   const mapCard = createElement("div", "map-card map-reveal");
-  mapCard.appendChild(createElement("h2", "map-title", "🗺️ מפת האוצר"));
+  const mapImage = document.createElement("img");
+  mapImage.src = CONFIG.MAP_BACKGROUND_IMAGE;
+  mapImage.alt = "מפת האוצר";
+  mapImage.className = "map-background-image";
+  mapCard.appendChild(mapImage);
+
+  const mapHeader = createElement("header", "map-header");
+  mapHeader.appendChild(createElement("h2", "map-title", "🗺️ מפת האוצר"));
   // The pulsing cue makes the memory phase feel intentional: "memorize this now".
-  mapCard.appendChild(
-    createElement("p", "map-subtitle memorize-cue", "זכרו את הרמזים לפי הסדר!")
+  mapHeader.appendChild(
+    createElement("p", "map-subtitle memorize-cue", "זכרו את הרמזים!")
   );
+  mapCard.appendChild(mapHeader);
 
-  const route = createElement("ol", "map-route");
-  selectedRiddles.forEach(function (riddle, index) {
-    const item = createElement("li", "map-clue");
+  mapCard.appendChild(renderMapAssets(selectedMapAssets || []));
 
-    const number = createElement("span", "clue-number", index + 1);
-    item.appendChild(number);
+  if (selectedRiddles.some(hasMapHint)) {
+    const route = createElement("ol", "map-route");
+    selectedRiddles.forEach(function (riddle, index) {
+      const item = createElement("li", "map-clue");
 
-    // Image clue if available (image mode on), otherwise the emoji placeholder.
-    const emoji = createElement("span", "clue-emoji", riddle.hintEmoji);
-    appendVisual(item, riddle.hintImage, emoji, "map-clue-image", riddle.hintLabel);
+      const number = createElement("span", "clue-number", index + 1);
+      item.appendChild(number);
 
-    // The label is shown only if enabled in the config. The final version shows a visual clue only.
-    if (CONFIG.SHOW_HINT_LABELS_ON_MAP) {
-      item.appendChild(createElement("span", "clue-label", riddle.hintLabel));
-    }
+      // Image clue if available (image mode on), otherwise the emoji placeholder.
+      const emoji = createElement("span", "clue-emoji", riddle.hintEmoji);
+      appendVisual(item, riddle.hintImage, emoji, "map-clue-image", riddle.hintLabel);
 
-    route.appendChild(item);
-  });
-  mapCard.appendChild(route);
+      // The label is shown only if enabled in the config. The final version shows a visual clue only.
+      if (CONFIG.SHOW_HINT_LABELS_ON_MAP) {
+        item.appendChild(createElement("span", "clue-label", riddle.hintLabel));
+      }
+
+      route.appendChild(item);
+    });
+    mapCard.appendChild(route);
+  }
 
   // Optional numeric countdown (kept off by default for a calmer look).
   if (CONFIG.SHOW_COUNTDOWN_NUMBER) {
@@ -174,10 +186,38 @@ function renderMap(selectedRiddles) {
   const timerFill = createElement("div", "timer-fill");
   timerFill.style.animationDuration = CONFIG.MAP_VIEW_TIME_MS + "ms";
   timerBar.appendChild(timerFill);
-  mapCard.appendChild(timerBar);
+  const timerWrap = createElement("div", "map-timer");
+  timerWrap.appendChild(timerBar);
+  mapCard.appendChild(timerWrap);
 
   screen.appendChild(mapCard);
   root.appendChild(screen);
+}
+
+// Renders one randomized image per category using CONFIG.MAP_ASSET_LAYOUT placement.
+// x/y/sizePercent are relative percentages, so the layout scales with the map area.
+function renderMapAssets(selectedMapAssets) {
+  const layer = createElement("div", "map-assets-layer");
+
+  selectedMapAssets.forEach(function (asset) {
+    const image = document.createElement("img");
+    image.src = asset.path;
+    image.alt = asset.answer1;
+    image.className = "map-positioned-asset";
+    image.style.left = asset.x + "%";
+    image.style.top = asset.y + "%";
+    image.style.width = asset.sizePercent + "%";
+    image.addEventListener("error", function () {
+      image.remove();
+    });
+    layer.appendChild(image);
+  });
+
+  return layer;
+}
+
+function hasMapHint(riddle) {
+  return Boolean(riddle.hintEmoji || riddle.hintLabel || riddle.hintImage);
 }
 
 // Updates a "נותרו N שניות" countdown once per second. Self-clears when the element
@@ -251,12 +291,12 @@ function renderSailing(islandNumber, totalIslands, callback) {
 
   screen.appendChild(scene);
   // Plain text over the sky area — no panel/card; readability via text-shadow in CSS.
-  screen.appendChild(createElement("p", "sailing-message", "מפליגים אל האי הבא..."));
+  screen.appendChild(createElement("p", "sailing-message", "מתקדמים לשאלה הבאה..."));
   screen.appendChild(
     createElement(
       "p",
       "sailing-progress",
-      "אי " + islandNumber + " מתוך " + totalIslands
+      "שאלה " + islandNumber + " מתוך " + totalIslands
     )
   );
   root.appendChild(screen);
@@ -276,7 +316,7 @@ function renderIsland(riddle, islandIndex, totalIslands) {
 
   const islandNumber = islandIndex + 1;
   screen.appendChild(
-    createElement("p", "progress", "אי " + islandNumber + " מתוך " + totalIslands)
+    createElement("p", "progress", "שאלה " + islandNumber + " מתוך " + totalIslands)
   );
   screen.appendChild(createElement("div", "big-emoji", "🏝️"));
   screen.appendChild(createElement("h2", "island-title", riddle.islandTitle));
@@ -379,14 +419,14 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
     createElement(
       "p",
       "progress",
-      "הגעת לאי " + reachedIsland + " מתוך " + totalIslands
+      "הגעת לשאלה " + reachedIsland + " מתוך " + totalIslands
     )
   );
 
-  // Clues remembered correctly = islands cleared before failing (never negative).
+  // Correct answers before failing (never negative).
   const rememberedClues = Math.max(0, reachedIsland - 1);
   screen.appendChild(
-    createElement("p", "progress-detail", "זכרת נכון " + rememberedClues + " רמזים")
+    createElement("p", "progress-detail", "ענית נכון על " + rememberedClues + " שאלות")
   );
 
   screen.appendChild(buildPlaytestSummary(rememberedClues, totalIslands));
@@ -419,7 +459,7 @@ function renderWinScreen(totalIslands) {
     createElement(
       "p",
       "subtitle",
-      "עברת את כל " + totalIslands + " האיים בזכות זיכרון מצוין!"
+      "עברת את כל " + totalIslands + " השאלות בזכות זיכרון מצוין!"
     )
   );
   screen.appendChild(
@@ -446,7 +486,7 @@ function buildPlaytestSummary(completedIslands, totalIslands) {
     return value ? "כן" : "לא";
   }
   box.appendChild(
-    createElement("p", "playtest-line", "השלמת " + completedIslands + " מתוך " + totalIslands + " איים")
+    createElement("p", "playtest-line", "השלמת " + completedIslands + " מתוך " + totalIslands + " שאלות")
   );
   box.appendChild(createElement("p", "playtest-line", "זמן צפייה במפה: " + seconds + " שניות"));
 

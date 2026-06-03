@@ -6,9 +6,9 @@ Locked-in design and technical decisions. Update when one changes.
 - No npm and no build step.
 - Vanilla JavaScript only (no framework).
 - Hebrew, right-to-left (RTL) UI.
-- Data-driven riddles.
-- The riddle pool is separate from the selected route.
-- The map shows the selected route in order.
+- Data-driven questions.
+- The active question route is generated from the randomized map assets.
+- The map shows the randomized assets; questions are all related to the map, not to specific islands.
 - The map is shown for a configurable time.
 - The map cannot be reopened after it is hidden.
 - A wrong answer ends the game.
@@ -22,6 +22,9 @@ Locked-in design and technical decisions. Update when one changes.
 - The sailing transition uses right-to-left ship movement (RTL feel: ship enters from the right, destination island on the left, ship stops near the island). Positions use % of `#game-viewport`, not `vw`. Vertical bobbing is approximated with stepped CSS keyframes. Full-screen sailing background: `assets/ui/sailing_background_placeholder.svg` (CONFIG.SAILING_BACKGROUND_IMAGE). Foreground sprites: `assets/ui/sailing_ship_placeholder.svg` and `assets/ui/destination_island_placeholder.svg`, with emoji fallbacks. Sailing text is plain over the sky (text-shadow), not a panel.
 - The game supports prefers-reduced-motion: decorative animations are disabled while gameplay and flow are unchanged; the map timer bar keeps draining because it conveys remaining time. A wrong answer shows a final-feeling shake and a correct answer a positive pulse, but neither changes the rules (the answer feedback is a short visual moment before the existing transition).
 - Riddles carry optional image fields (hintImage, islandBackgroundImage, characterImage, loseImage), default null. Images are used automatically wherever a path exists (presence-based), and always fall back to the emoji/text placeholder when the path is null or the file fails to load. CONFIG.USE_IMAGE_ASSETS (default true) is an optional master override: set it to false to force placeholder-only mode for testing. Asset naming/workflow is documented in docs/assets.md.
-- Default island count is 5 (CONFIG.NUMBER_OF_ISLANDS), still configurable, drawn from a pool of at least 10 riddles.
+- The active run currently has one generated question per configured map category (7 questions).
 - Playtesting is manual and documented in docs/playtest.md; no analytics and no stored data (no localStorage). The win/lose screens display the run's settings to support balancing.
 - Image assets may be SVG (preferred for lightweight placeholders) or raster (PNG); both load as plain static files. Phase 7A added temporary SVG placeholders for the `gold` and `parrot` riddles only, to prove the pipeline. Images are now used automatically wherever a path exists: `gold` and `parrot` render their SVGs while every other riddle falls back to emoji/text (mixed mode by default).
+- The visual map can render one randomized asset from each configured category. Asset pools live in `config/assets.js`; map positions and display sizes live in `CONFIG.MAP_ASSET_LAYOUT` as relative `x`, `y`, and `sizePercent` values. The map image is rendered as an in-screen `<img>` so positioned assets share its coordinate space; title, hints, and timer are overlays. This is intentionally separate from riddle logic for now.
+- Asset category question data lives in `ASSET_CATEGORIES`: each category has `question1`, `question2`, `islandTitle`, `characterName`, `failTitle`, and an `assets` array. Each asset stores `answer1` (the visual/name answer) and `answer2`, plus `category` and `path`.
+- Generated asset questions preserve the existing riddle object shape for compatibility. Each category randomly chooses `question1`/`answer1` or `question2`/`answer2`; distractors are unique answers from the same category and answer field, with a maximum of 4 options. The old static `RIDDLES` file remains temporarily and should be removed or repurposed in a later cleanup.

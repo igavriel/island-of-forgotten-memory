@@ -94,6 +94,10 @@ body {
   padding: 3.5%;
 }
 
+#screen.is-map-screen {
+  padding: 0;
+}
+
 /* Custom pirate hook cursor across the game. Hotspot (6 6) = hook tip (top-left of SVG).
    Fallback: pointer if the SVG fails to load. To disable, remove this rule and the
    matching cursor declarations on buttons below, or override with cursor: pointer. */
@@ -275,47 +279,103 @@ button,
 }
 
 /* ---- Treasure map ---- */
-/* The map card sits on top of the full-screen parchment background and stays opaque so the
-   dynamic route clues (rendered inside it from selectedRiddles) remain readable. */
+.map-screen {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: initial;
+}
+
 .map-card {
-  background: var(--map-paper);
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+  max-height: 100%;
   color: var(--ink);
-  border: 6px solid var(--map-edge);
-  border-radius: 14px;
-  padding: 24px;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  line-height: 0;
+  overflow: hidden;
+}
+
+.map-background-image {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  pointer-events: none;
+  user-select: none;
+}
+
+.map-header {
+  position: absolute;
+  top: 4%;
+  left: 50%;
+  z-index: 3;
+  transform: translateX(-50%);
+  width: min(70%, 560px);
+  text-align: center;
+  color: var(--ink);
+  line-height: normal;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 .map-title {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: clamp(1.3rem, 3.2vmin, 2rem);
 }
 
 .map-subtitle {
-  margin: 6px 0 18px;
+  margin: 4px 0 0;
   font-weight: bold;
+  font-size: clamp(0.85rem, 1.9vmin, 1rem);
+}
+
+.map-assets-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.map-positioned-asset {
+  position: absolute;
+  display: block;
+  height: auto;
+  object-fit: contain;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 4px 4px rgba(42, 33, 24, 0.3));
 }
 
 .map-route {
+  position: absolute;
+  left: 4%;
+  top: 18%;
+  z-index: 3;
   list-style: none;
   margin: 0;
   padding: 0;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 7px;
+  max-width: 26%;
+  max-height: 62%;
+  overflow: hidden;
+  color: var(--ink);
+  line-height: normal;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 .map-clue {
-  background: var(--white);
-  border: 2px dashed var(--map-edge);
-  border-radius: 12px;
-  padding: 12px 16px;
-  min-width: 96px;
+  min-width: 0;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 7px;
+  font-weight: bold;
 }
 
 .clue-number {
@@ -326,23 +386,26 @@ button,
   line-height: 26px;
   border-radius: 50%;
   font-weight: bold;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  flex: 0 0 auto;
 }
 
 .clue-emoji {
-  font-size: 2.4rem;
+  font-size: 1.35rem;
+  line-height: 1;
 }
 
 .clue-label {
   font-weight: bold;
-  font-size: 0.95rem;
+  font-size: clamp(0.75rem, 1.7vmin, 0.95rem);
+  line-height: 1.2;
 }
 
 /* ---- Future image assets (used only when CONFIG.USE_IMAGE_ASSETS is true) ---- */
 /* Minimal safe sizing; refine when real assets arrive. */
 .map-clue-image {
-  width: 56px;
-  height: 56px;
+  width: 28px;
+  height: 28px;
   object-fit: contain;
 }
 
@@ -355,12 +418,20 @@ button,
 }
 
 /* Map viewing time bar */
+.map-timer {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 6%;
+  z-index: 3;
+}
+
 .timer-bar {
-  margin-top: 20px;
   height: 10px;
   background: rgba(0, 0, 0, 0.15);
   border-radius: 999px;
   overflow: hidden;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .timer-fill {
@@ -689,10 +760,17 @@ button,
 }
 
 .countdown-number {
-  margin: 14px 0 0;
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 9%;
+  z-index: 3;
+  margin: 0;
+  text-align: center;
   font-weight: bold;
   font-size: 1rem;
   color: var(--danger);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 /* ---- Island arrival entrance ---- */
@@ -902,8 +980,20 @@ button,
   .start-screen {
     padding: 24px 18px;
   }
-  .map-card {
-    padding: 18px;
+  .map-route {
+    left: 3%;
+    top: 17%;
+    max-width: 32%;
+    gap: 5px;
+  }
+  .clue-number {
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+  }
+  .map-clue-image {
+    width: 22px;
+    height: 22px;
   }
   .answer-row {
     flex-direction: column;

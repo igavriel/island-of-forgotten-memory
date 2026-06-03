@@ -5,8 +5,9 @@
 
 // The central game state. Rebuilt on every start.
 const gameState = {
-  selectedRiddles: [], // the riddles chosen for the current game, in route order
-  currentIslandIndex: 0, // the current island (0-based)
+  selectedRiddles: [], // generated map questions for the current game, in route order
+  selectedMapAssets: [], // one randomized visual asset per configured category
+  currentIslandIndex: 0, // the current question (0-based)
   mapTimerId: null, // the map timer id, so it can be cancelled
   finished: false, // whether the game has ended (win/lose)
 };
@@ -17,20 +18,25 @@ function showStartScreen() {
   renderStartScreen();
 }
 
-// Start a new game: select a random route and show the map.
+// Start a new game: select one random asset per category, build questions, and show the map.
 function startGame() {
-  // Select and shuffle NUMBER_OF_ISLANDS riddles from the pool.
-  gameState.selectedRiddles = pickRandom(RIDDLES, CONFIG.NUMBER_OF_ISLANDS);
+  gameState.selectedMapAssets = selectRandomMapAssets(
+    ASSET_CATEGORIES,
+    CONFIG.MAP_ASSET_LAYOUT
+  );
+  gameState.selectedRiddles = buildAssetQuestionRoute(
+    gameState.selectedMapAssets,
+    ASSET_CATEGORIES
+  );
   gameState.currentIslandIndex = 0;
   gameState.finished = false;
 
   showMap();
 }
 
-// Show the treasure map with the selected route, then start a timer that blows the map away.
+// Show the treasure map with the selected assets, then start a timer that blows the map away.
 function showMap() {
-  // The map shows the same riddles, in the same order, that will be asked on the islands.
-  renderMap(gameState.selectedRiddles);
+  renderMap(gameState.selectedRiddles, gameState.selectedMapAssets);
 
   clearMapTimer();
   gameState.mapTimerId = setTimeout(function () {
@@ -38,7 +44,7 @@ function showMap() {
   }, CONFIG.MAP_VIEW_TIME_MS);
 }
 
-// Wind animation that blows the map away, then transitions to sailing to the first island.
+// Wind animation that blows the map away, then transitions to the first question.
 function blowMapAway() {
   clearMapTimer();
   renderMapBlowAway(function () {
@@ -46,18 +52,18 @@ function blowMapAway() {
   });
 }
 
-// Sailing animation, then show the current island's question.
+// Sailing animation, then show the current question.
 function sailToCurrentIsland() {
   const islandNumber = gameState.currentIslandIndex + 1;
-  renderSailing(islandNumber, CONFIG.NUMBER_OF_ISLANDS, function () {
+  renderSailing(islandNumber, gameState.selectedRiddles.length, function () {
     showCurrentIsland();
   });
 }
 
-// Show the question screen of the current island.
+// Show the current question screen.
 function showCurrentIsland() {
   const currentRiddle = gameState.selectedRiddles[gameState.currentIslandIndex];
-  renderIsland(currentRiddle, gameState.currentIslandIndex, CONFIG.NUMBER_OF_ISLANDS);
+  renderIsland(currentRiddle, gameState.currentIslandIndex, gameState.selectedRiddles.length);
 }
 
 // Handle the player's answer. Receives the original index of the selected option.
@@ -75,7 +81,7 @@ function answerCurrentIsland(originalIndex) {
   }
 }
 
-// Advance to the next island, or win if all islands are done.
+// Advance to the next question, or win if all questions are done.
 function advanceToNextIsland() {
   gameState.currentIslandIndex += 1;
 
@@ -86,21 +92,21 @@ function advanceToNextIsland() {
   }
 }
 
-// Lose: show an island-specific lose screen, with progress (island X of Y).
+// Lose: show a question result screen, with progress (question X of Y).
 // chosenIndex is the original index of the wrong answer the player picked (may be undefined).
 function loseGame(currentRiddle, chosenIndex) {
   gameState.finished = true;
   const reachedIsland = gameState.currentIslandIndex + 1;
-  renderLoseScreen(currentRiddle, reachedIsland, CONFIG.NUMBER_OF_ISLANDS, chosenIndex);
+  renderLoseScreen(currentRiddle, reachedIsland, gameState.selectedRiddles.length, chosenIndex);
 }
 
-// Win: all islands completed.
+// Win: all questions completed.
 function winGame() {
   gameState.finished = true;
-  renderWinScreen(CONFIG.NUMBER_OF_ISLANDS);
+  renderWinScreen(gameState.selectedRiddles.length);
 }
 
-// Debug tool: automatically answer the current island correctly (only active in DEBUG_MODE).
+// Debug tool: automatically answer the current question correctly (only active in DEBUG_MODE).
 function debugAnswerCorrectly() {
   if (!CONFIG.DEBUG_MODE || gameState.finished) {
     return;
