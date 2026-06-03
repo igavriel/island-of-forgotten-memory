@@ -62,8 +62,8 @@ Avoid clever one-liners and unnecessary classes.
 
 ## Data
 - `config/assets.js` is the active data source.
-- One random asset is selected from each configured category per run.
-- One generated question is created per selected category.
+- Difficulty controls how many random map assets are selected and how many generated questions are asked.
+- A selected map asset may create both `question1` and `question2` when the difficulty asks for more questions than displayed images.
 - Each category should define `question1`, `question2`, `islandEmoji`, `islandTitle`, `characterEmoji`, `characterName`, `failTitle`, and `assets`.
 - Each asset should define `category`, `path`, `answer1`, and `answer2`.
 - The game engine must not hardcode specific asset content.

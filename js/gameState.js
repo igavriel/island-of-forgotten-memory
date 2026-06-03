@@ -6,7 +6,9 @@
 // The central game state. Rebuilt on every start.
 const gameState = {
   selectedQuestions: [], // generated map questions for the current game, in route order
-  selectedMapAssets: [], // one randomized visual asset per configured category
+  selectedMapAssets: [], // randomized visual assets for the selected difficulty
+  difficultyKey: CONFIG.DEFAULT_DIFFICULTY, // selected level key
+  difficulty: CONFIG.DIFFICULTY_LEVELS[CONFIG.DEFAULT_DIFFICULTY], // selected level config
   currentQuestionIndex: 0, // the current question (0-based)
   mapTimerId: null, // the map timer id, so it can be cancelled
   finished: false, // whether the game has ended (win/lose)
@@ -15,18 +17,30 @@ const gameState = {
 // The start screen.
 function showStartScreen() {
   clearMapTimer();
-  renderStartScreen();
+  renderStartScreen(CONFIG.DIFFICULTY_LEVELS);
 }
 
-// Start a new game: select one random asset per category, build questions, and show the map.
-function startGame() {
+// Start a new game: select randomized map assets by difficulty, build questions, and show the map.
+function startGame(difficultyKey) {
+  const requestedDifficultyKey =
+    difficultyKey || gameState.difficultyKey || CONFIG.DEFAULT_DIFFICULTY;
+  const nextDifficultyKey = CONFIG.DIFFICULTY_LEVELS[requestedDifficultyKey]
+    ? requestedDifficultyKey
+    : CONFIG.DEFAULT_DIFFICULTY;
+  const difficulty = CONFIG.DIFFICULTY_LEVELS[nextDifficultyKey];
+
+  gameState.difficultyKey = nextDifficultyKey;
+  gameState.difficulty = difficulty;
   gameState.selectedMapAssets = selectRandomMapAssets(
     ASSET_CATEGORIES,
-    CONFIG.MAP_ASSET_LAYOUT
+    CONFIG.MAP_ASSET_LAYOUT,
+    difficulty.assetCount,
+    CONFIG.REQUIRED_MAP_CATEGORY
   );
   gameState.selectedQuestions = buildAssetQuestionRoute(
     gameState.selectedMapAssets,
-    ASSET_CATEGORIES
+    ASSET_CATEGORIES,
+    difficulty.questionCount
   );
   gameState.currentQuestionIndex = 0;
   gameState.finished = false;
@@ -97,13 +111,19 @@ function advanceToNextIsland() {
 function loseGame(currentQuestion, chosenIndex) {
   gameState.finished = true;
   const reachedQuestion = gameState.currentQuestionIndex + 1;
-  renderLoseScreen(currentQuestion, reachedQuestion, gameState.selectedQuestions.length, chosenIndex);
+  renderLoseScreen(
+    currentQuestion,
+    reachedQuestion,
+    gameState.selectedQuestions.length,
+    chosenIndex,
+    gameState.difficulty
+  );
 }
 
 // Win: all questions completed.
 function winGame() {
   gameState.finished = true;
-  renderWinScreen(gameState.selectedQuestions.length);
+  renderWinScreen(gameState.selectedQuestions.length, gameState.difficulty);
 }
 
 // Debug tool: automatically answer the current question correctly (only active in DEBUG_MODE).

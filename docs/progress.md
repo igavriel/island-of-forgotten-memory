@@ -7,15 +7,16 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 ## What already works (verified)
 
 - Start screen and screen switching.
-- Randomized map asset selection: one image from each configured category, fresh each game.
-- Asset-generated question route: one question per map category, currently 7 questions per run. Each category randomly uses `question1`/`answer1` or `question2`/`answer2`; answer options are unique values from the same category and answer field, with up to 4 options.
+- Difficulty selection on the welcome screen: `קל`, `בינוני`, `קשה`.
+- Randomized map asset selection by difficulty: 3, 5, or 7 images, fresh each game.
+- Asset-generated question route by difficulty: 5, 5, or 7 questions per run. Each selected image can use `question1`/`answer1` and, when more questions are needed than images, `question2`/`answer2`; answer options are unique values from the same category and answer field, with up to 4 options.
 - Treasure map shows the selected randomized assets for MAP_VIEW_TIME_MS, then blows away; cannot be reopened.
 - Fixed 16:9 responsive viewport: `#app` centers `#game-viewport` inside the browser window with letterboxing (`--letterbox-bg: #071827`) when the window is not 16:9. All backgrounds (`#screen-bg`) and UI render inside the viewport; backgrounds use `contain` (no stretch, no crop). Screens inject into `#screen`.
 - Per-question flow with up to 4 shuffled unique answers (original index preserved).
 - Correct answers advance; wrong answers show the loss screen immediately with progress.
 - Completing all questions shows the victory screen; "play again" starts a fresh randomized run.
 - Debug mode (answer reveal + skip button + console reminder).
-- Generated asset-question route validated: 7 questions, unique options, and valid `correctIndex` values.
+- Generated asset-question route validated for easy/medium/hard counts, unique generated question ids, and valid `correctIndex` values.
 - UX polish: start-screen panel, map reveal, wind blow-away with "הרוח העיפה את המפה!" message, sailing transition with ship + destination island placeholders, larger answer buttons with hover/pressed feedback, visible keyboard focus.
 - Animation/transition tuning (Phase 7B): configurable timings (WIND_TRANSITION_MS, SAILING_TRANSITION_MS, ANSWER_FEEDBACK_MS) synced into CSS variables at startup; pulsing "memorize" map cue; clearer "map cannot be reopened" wind message; island/character entrance; answer feedback flash (green pulse correct / red shake wrong) with a brief click lock; win celebration (trophy pop + confetti); optional numeric countdown (SHOW_COUNTDOWN_NUMBER); and prefers-reduced-motion support that keeps the game playable.
 - Lose screen now shows the chosen wrong answer, the correct answer, progress ("הגעת לשאלה X מתוך Y"), and correct-question count; win screen shows a final score.
@@ -24,7 +25,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Screen-level placeholder art: four 16:9 full-screen SVG backgrounds inside `#game-viewport` on `#screen-bg` (`background-size: contain`). Letterboxing outside the viewport when the browser window is not 16:9.
 - Custom pirate hook mouse cursor: `assets/ui/pirate_hook_cursor.svg`, applied site-wide via CSS (`cursor: url(...) 6 6, pointer` with fallback). CSS-only; no JavaScript.
 - Playtest/balancing: win and lose screens show a summary (islands completed + map time always; hint-labels and debug-mode lines in DEBUG_MODE only); SHOW_CORRECT_ANSWER_ON_LOSS flag; manual playtest log in docs/playtest.md. No stored data.
-- Dynamic map asset layer: `config/assets.js` provides categorized image pools, `CONFIG.MAP_ASSET_LAYOUT` controls relative `x`, `y`, and `sizePercent`, and each new run randomly selects one image per configured category. The map image is now the actual full-screen stage: assets render directly on it, the header sits at the top, and the timer bar sits at the bottom.
+- Dynamic map asset layer: `config/assets.js` provides categorized image pools, `CONFIG.MAP_ASSET_LAYOUT` controls relative `x`, `y`, and `sizePercent`, and each new run randomly selects images according to the selected difficulty. The map image is now the actual full-screen stage: assets render directly on it, the header sits at the top, and the timer bar sits at the bottom.
 - Asset question convention: each asset category now has configurable `question1` and `question2`; each image asset now has `answer1` and placeholder numeric `answer2` instead of `name`.
 
 ## Partially working
@@ -44,4 +45,4 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Current prototype goal
 
-Done: solid loop, UX/animation polish, image-asset readiness, generated map-based 7-question runs, and old static route removal. Next focus is integrating final image/question content.
+Done: solid loop, UX/animation polish, image-asset readiness, difficulty-based generated map/question runs, and old static route removal. Next focus is integrating final image/question content.

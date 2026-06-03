@@ -29,12 +29,12 @@ assets/
 
 ## Game flow
 
-1. Player starts a new run.
-2. The game randomly selects one image from each configured asset category.
+1. Player selects a difficulty level.
+2. The game randomly selects the configured number of map images for that difficulty.
 3. The selected images appear on the treasure map for `MAP_VIEW_TIME_MS`.
 4. The map is blown away and cannot be reopened.
-5. The game generates one question per selected category.
-6. Each question randomly uses `question1`/`answer1` or `question2`/`answer2`.
+5. The game generates the configured number of questions for that difficulty.
+6. Each selected image can produce `question1`/`answer1` and `question2`/`answer2`.
 7. Answer options are unique answers from the same category, up to 4 total.
 8. A correct answer advances; a wrong answer shows the loss screen.
 9. Completing all questions shows the victory screen.
@@ -54,7 +54,17 @@ Edit [config/config.js](config/config.js).
 | `USE_SCREEN_PLACEHOLDER_IMAGES` | Enables screen/background images |
 | `DEBUG_MODE` | Shows correct answers and a skip button; keep `false` for final presentation |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | Shows the correct answer after a wrong answer |
+| `DIFFICULTY_LEVELS` | Difficulty labels plus image/question counts |
+| `REQUIRED_MAP_CATEGORY` | Category that must appear on every generated map |
 | `MAP_ASSET_LAYOUT` | Relative `x`, `y`, and `sizePercent` map placement per category |
+
+Default levels:
+
+| Level | Pictures | Questions |
+| --- | ---: | ---: |
+| קל | 3 | 5 |
+| בינוני | 5 | 5 |
+| קשה | 7 | 7 |
 
 ## Asset question data
 

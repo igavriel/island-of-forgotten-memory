@@ -32,6 +32,27 @@ const CONFIG = {
     // Show the correct answer after a wrong answer.
     SHOW_CORRECT_ANSWER_ON_LOSS: true,
 
+    // Difficulty controls how many map images are shown and how many questions are asked.
+    DEFAULT_DIFFICULTY: "medium",
+    REQUIRED_MAP_CATEGORY: "volcano",
+    DIFFICULTY_LEVELS: {
+        easy: {
+            label: "קל",
+            assetCount: 3,
+            questionCount: 5,
+        },
+        medium: {
+            label: "בינוני",
+            assetCount: 5,
+            questionCount: 5,
+        },
+        hard: {
+            label: "קשה",
+            assetCount: 7,
+            questionCount: 7,
+        },
+    },
+
     // Random map asset placement. x/y/sizePercent are relative percentages.
     MAP_ASSET_LAYOUT: {
         volcano: {

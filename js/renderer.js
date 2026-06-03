@@ -94,7 +94,7 @@ function setScreenBackground(src, enabled) {
 }
 
 // ---- Start screen ----
-function renderStartScreen() {
+function renderStartScreen(difficultyLevels) {
   const root = clearScreen();
   setScreenBackground(CONFIG.START_SCREEN_IMAGE);
   const screen = createElement("section", "screen start-screen fade-in");
@@ -112,17 +112,24 @@ function renderStartScreen() {
   const info = createElement(
     "p",
     "hint-text",
-    "מספר שאלות: " +
-      Object.keys(CONFIG.MAP_ASSET_LAYOUT).length +
-      "  •  זמן צפייה במפה: " +
+    "זמן צפייה במפה: " +
       Math.round(CONFIG.MAP_VIEW_TIME_MS / 1000) +
       " שניות"
   );
   screen.appendChild(info);
 
-  const startButton = createElement("button", "main-button", "התחילו את ההרפתקה");
-  startButton.addEventListener("click", startGame);
-  screen.appendChild(startButton);
+  screen.appendChild(createElement("p", "difficulty-question", "איזו רמה לשחק?"));
+
+  const difficultyBox = createElement("div", "difficulty-options");
+  Object.keys(difficultyLevels).forEach(function (difficultyKey) {
+    const difficulty = difficultyLevels[difficultyKey];
+    const button = createElement("button", "main-button difficulty-button", difficulty.label);
+    button.addEventListener("click", function () {
+      startGame(difficultyKey);
+    });
+    difficultyBox.appendChild(button);
+  });
+  screen.appendChild(difficultyBox);
 
   root.appendChild(screen);
 }
@@ -365,7 +372,7 @@ function renderIsland(questionData, questionIndex, totalQuestions) {
 
 // ---- Lose screen ----
 // chosenIndex is the original index of the wrong answer the player picked (may be undefined).
-function renderLoseScreen(questionData, reachedQuestion, totalQuestions, chosenIndex) {
+function renderLoseScreen(questionData, reachedQuestion, totalQuestions, chosenIndex, difficulty) {
   const root = clearScreen();
   setScreenBackground(questionData.loseImage, CONFIG.USE_IMAGE_ASSETS);
   const screen = createElement("section", "screen lose-screen fade-in");
@@ -407,17 +414,19 @@ function renderLoseScreen(questionData, reachedQuestion, totalQuestions, chosenI
     createElement("p", "progress-detail", "ענית נכון על " + rememberedClues + " שאלות")
   );
 
-  screen.appendChild(buildPlaytestSummary(rememberedClues, totalQuestions));
+  screen.appendChild(buildPlaytestSummary(rememberedClues, totalQuestions, difficulty));
 
   const again = createElement("button", "main-button", "שחקו שוב");
-  again.addEventListener("click", startGame);
+  again.addEventListener("click", function () {
+    startGame();
+  });
   screen.appendChild(again);
 
   root.appendChild(screen);
 }
 
 // ---- Win screen ----
-function renderWinScreen(totalQuestions) {
+function renderWinScreen(totalQuestions, difficulty) {
   const root = clearScreen();
   setScreenBackground(CONFIG.VICTORY_IMAGE);
   const screen = createElement("section", "screen win-screen fade-in");
@@ -444,10 +453,12 @@ function renderWinScreen(totalQuestions) {
     createElement("p", "score", "ניקוד: " + totalQuestions + " מתוך " + totalQuestions)
   );
 
-  screen.appendChild(buildPlaytestSummary(totalQuestions, totalQuestions));
+  screen.appendChild(buildPlaytestSummary(totalQuestions, totalQuestions, difficulty));
 
   const again = createElement("button", "main-button", "שחקו שוב");
-  again.addEventListener("click", startGame);
+  again.addEventListener("click", function () {
+    startGame();
+  });
   screen.appendChild(again);
 
   root.appendChild(screen);
@@ -457,15 +468,17 @@ function renderWinScreen(totalQuestions) {
 // Always shows progress and map time; the hint-label and debug-mode lines are shown
 // in DEBUG_MODE only. Reports the settings used this run so testers can judge difficulty.
 // No data is stored.
-function buildPlaytestSummary(completedQuestions, totalQuestions) {
+function buildPlaytestSummary(completedQuestions, totalQuestions, difficulty) {
   const box = createElement("div", "playtest-summary");
   const seconds = Math.round(CONFIG.MAP_VIEW_TIME_MS / 1000);
+  const difficultyLabel = difficulty ? difficulty.label : CONFIG.DIFFICULTY_LEVELS[CONFIG.DEFAULT_DIFFICULTY].label;
   function yesNo(value) {
     return value ? "כן" : "לא";
   }
   box.appendChild(
     createElement("p", "playtest-line", "השלמת " + completedQuestions + " מתוך " + totalQuestions + " שאלות")
   );
+  box.appendChild(createElement("p", "playtest-line", "רמה: " + difficultyLabel));
   box.appendChild(createElement("p", "playtest-line", "זמן צפייה במפה: " + seconds + " שניות"));
 
   // These extra balancing details are shown only in debug mode.

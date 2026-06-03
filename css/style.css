@@ -165,6 +165,26 @@ button,
   font-size: 0.95rem;
 }
 
+.difficulty-question {
+  margin: 20px 0 0;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.difficulty-options {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.difficulty-button {
+  min-width: 96px;
+  margin-top: 0;
+  padding-inline: 20px;
+}
+
 .big-emoji {
   font-size: 4.5rem;
   line-height: 1;
