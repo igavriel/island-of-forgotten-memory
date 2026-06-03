@@ -34,8 +34,10 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Not implemented yet
 
-- Final/real artwork and final asset question content.
-- Sound effects.
+- Content QA for final Hebrew question/answer wording.
+- Playtest-based balancing for difficulty, map time, map positions, and image sizes.
+- Final/real artwork approval or replacement for placeholder-style screens and transitions.
+- Optional sound effects.
 
 ## Known limitations
 
@@ -45,4 +47,4 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Current prototype goal
 
-Done: solid loop, UX/animation polish, image-asset readiness, difficulty-based generated map/question runs, and old static route removal. Next focus is integrating final image/question content.
+Done: solid loop, UX/animation polish, image-asset readiness, difficulty-based generated map/question runs, and old static route removal. Next focus is content QA, playtest balancing, and final art readiness.

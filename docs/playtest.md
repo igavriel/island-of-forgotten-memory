@@ -31,5 +31,8 @@ Manual playtesting only. No analytics, storage, server, or database.
 
 - Is 10 seconds enough to memorize the generated map assets?
 - Does each difficulty feel different enough?
+- Is `קל` fair with 3 pictures and 5 questions?
+- Is `קשה` too crowded with 7 pictures?
 - Are any category questions too easy or too ambiguous?
 - Do the map positions and image sizes make each asset recognizable?
+- Should any `MAP_ASSET_LAYOUT` position or `sizePercent` value change?

@@ -324,34 +324,34 @@ const FOOD_FILES = [
 ];
 
 const ASSET_CATEGORY_QUESTIONS = {
-  animal: {
-    question1: "איזו חיה הופיעה במפה?",
-    question2: "לאיזה משפחת החיות שייכת החיה?",
-  },
-  treasure: {
-    question1: "איזה אוצר הופיע במפה?",
-    question2: "מה הפריט היקר ביותר באוצר?",
-  },
-  statue: {
-    question1: "איזה פסל הופיע במפה?",
-    question2: "מה חומר ממנו עשוי הפסל?",
-  },
-  volcano: {
-    question1: "איזה הר געש הופיע במפה?",
-    question2: "האם הר הגעש פעיל?",
-  },
-  flag: {
-    question1: "איזה דגל הופיע במפה?",
-    question2: "צבע הבד של הדגל?",
-  },
-  tree: {
-    question1: "איזה עץ הופיע במפה?",
-    question2: "מהם פירות העץ?",
-  },
-  food: {
-    question1: "איזה אוכל הופיע במפה?",
-    question2: "לאיזה סוג מאכל הוא שייך?",
-  },
+    animal: {
+        question1: "איזו חיה הופיעה במפה?",
+        question2: "לאיזו משפחה שייכת החיה?",
+    },
+    treasure: {
+        question1: "איזה אוצר הופיע במפה?",
+        question2: "מהו הפריט היקר ביותר באוצר?",
+    },
+    statue: {
+        question1: "איזה פסל הופיע במפה?",
+        question2: "מה החומר ממנו עשוי הפסל?",
+    },
+    volcano: {
+        question1: "איזה הר געש הופיע במפה?",
+        question2: "האם הר הגעש היה פעיל?",
+    },
+    flag: {
+        question1: "איזה דגל הופיע במפה?",
+        question2: "מה היה צבע הבד של הדגל?",
+    },
+    tree: {
+        question1: "איזה עץ הופיע במפה?",
+        question2: "מהם פירות העץ?",
+    },
+    food: {
+        question1: "איזה אוכל הופיע במפה?",
+        question2: "לאיזה סוג מאכל הוא שייך?",
+    },
 };
 
 const FILES_BY_CATEGORY = {
