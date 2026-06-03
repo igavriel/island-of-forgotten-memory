@@ -43,7 +43,7 @@ const CONFIG = {
   // always rendered on top of the map background from selectedRiddles.
   USE_SCREEN_PLACEHOLDER_IMAGES: true,
   START_SCREEN_IMAGE: "assets/ui/start_screen_placeholder.svg",
-  MAP_BACKGROUND_IMAGE: "assets/map/treasure_map_placeholder.png",
+  MAP_BACKGROUND_IMAGE: "assets/map/map_01.png",
   VICTORY_IMAGE: "assets/endings/victory_placeholder.svg",
   // Full-screen 16:9 sea scene for the sailing transition (same #screen-bg layer as above).
   SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background_placeholder.svg",

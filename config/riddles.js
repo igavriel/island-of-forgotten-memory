@@ -33,7 +33,7 @@ const RIDDLES = [
     characterImage: "assets/characters/gold_guard.svg",
     loseImage: "assets/endings/lose_gold.svg",
     question: "איזה אוצר נצנץ על מפת האי?",
-    options: ["מטבע זהב", "פנינה כחולה", "יהלום ירוק", "כתר כסף"],
+    options: ["מטבע זהב", "פנינה כחולה", "יהלו ירוק", "כתר כסף"],
     correctIndex: 0,
     islandTitle: "אי הזהב",
     characterName: "רב החובל מורגן",
