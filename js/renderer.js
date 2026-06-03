@@ -37,13 +37,13 @@ function createElement(tag, className, text) {
   return el;
 }
 
-// Appends an <img> when the riddle provides a source path; otherwise appends the emoji/text
+// Appends an <img> when a source path exists; otherwise appends the placeholder.
 // placeholder. So images are used automatically wherever they exist, and everything else
 // falls back to the placeholder. If the image fails to load (missing/renamed file), the
 // placeholder is swapped back in, so the game never shows a broken image. CONFIG.USE_IMAGE_ASSETS
 // is an optional override: set it to false to force placeholder-only mode (ignore all paths).
 // altText: meaningful description for informative images (e.g. a hint label),
-//          or "" for decorative images (backgrounds, lose art).
+//          or "" for decorative images.
 function appendVisual(parent, src, placeholderEl, className, altText) {
   if (CONFIG.USE_IMAGE_ASSETS && src) {
     const img = document.createElement("img");
@@ -63,7 +63,7 @@ function appendVisual(parent, src, placeholderEl, className, altText) {
 // #game-viewport). The image is preloaded so a missing/failed file falls back cleanly.
 // Pass null/undefined to clear the background.
 // "enabled" defaults to CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES for screen-level images;
-// per-riddle backgrounds (island/lose) pass CONFIG.USE_IMAGE_ASSETS instead.
+// generated question backgrounds pass CONFIG.USE_IMAGE_ASSETS instead.
 function setScreenBackground(src, enabled) {
   const layer = document.getElementById("screen-bg");
   if (!layer) {
@@ -128,8 +128,8 @@ function renderStartScreen() {
 }
 
 // ---- Treasure map ----
-// Shows the selected riddles, in route order. This is the player's memory source.
-function renderMap(selectedRiddles, selectedMapAssets) {
+// Shows the randomized map assets. This is the player's memory source.
+function renderMap(selectedMapAssets) {
   const root = clearScreen();
   root.classList.add("is-map-screen");
   setScreenBackground(null);
@@ -151,28 +151,6 @@ function renderMap(selectedRiddles, selectedMapAssets) {
   mapCard.appendChild(mapHeader);
 
   mapCard.appendChild(renderMapAssets(selectedMapAssets || []));
-
-  if (selectedRiddles.some(hasMapHint)) {
-    const route = createElement("ol", "map-route");
-    selectedRiddles.forEach(function (riddle, index) {
-      const item = createElement("li", "map-clue");
-
-      const number = createElement("span", "clue-number", index + 1);
-      item.appendChild(number);
-
-      // Image clue if available (image mode on), otherwise the emoji placeholder.
-      const emoji = createElement("span", "clue-emoji", riddle.hintEmoji);
-      appendVisual(item, riddle.hintImage, emoji, "map-clue-image", riddle.hintLabel);
-
-      // The label is shown only if enabled in the config. The final version shows a visual clue only.
-      if (CONFIG.SHOW_HINT_LABELS_ON_MAP) {
-        item.appendChild(createElement("span", "clue-label", riddle.hintLabel));
-      }
-
-      route.appendChild(item);
-    });
-    mapCard.appendChild(route);
-  }
 
   // Optional numeric countdown (kept off by default for a calmer look).
   if (CONFIG.SHOW_COUNTDOWN_NUMBER) {
@@ -216,10 +194,6 @@ function renderMapAssets(selectedMapAssets) {
   return layer;
 }
 
-function hasMapHint(riddle) {
-  return Boolean(riddle.hintEmoji || riddle.hintLabel || riddle.hintImage);
-}
-
 // Updates a "נותרו N שניות" countdown once per second. Self-clears when the element
 // leaves the DOM (e.g. the map blew away), so no timer is left running.
 function startCountdown(element, totalMs) {
@@ -258,7 +232,7 @@ function renderMapBlowAway(callback) {
 }
 
 // ---- Sailing-between-islands screen ----
-function renderSailing(islandNumber, totalIslands, callback) {
+function renderSailing(questionNumber, totalQuestions, callback) {
   const root = clearScreen();
   // Full-screen 16:9 sea background (same #screen-bg layer as start/map/win).
   setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
@@ -296,7 +270,7 @@ function renderSailing(islandNumber, totalIslands, callback) {
     createElement(
       "p",
       "sailing-progress",
-      "שאלה " + islandNumber + " מתוך " + totalIslands
+      "שאלה " + questionNumber + " מתוך " + totalQuestions
     )
   );
   root.appendChild(screen);
@@ -306,32 +280,38 @@ function renderSailing(islandNumber, totalIslands, callback) {
 }
 
 // ---- Island question screen ----
-function renderIsland(riddle, islandIndex, totalIslands) {
+function renderIsland(questionData, questionIndex, totalQuestions) {
   const root = clearScreen();
-  // The island background image (when the riddle has one) is shown full-screen behind the
-  // question; riddles without one fall back to the plain sea gradient. The emoji below is
-  // always shown as the island marker (like the flag/trophy on the start/win screens).
-  setScreenBackground(riddle.islandBackgroundImage, CONFIG.USE_IMAGE_ASSETS);
+  setScreenBackground(questionData.backgroundImage, CONFIG.USE_IMAGE_ASSETS);
   const screen = createElement("section", "screen island-screen fade-in");
 
-  const islandNumber = islandIndex + 1;
+  const questionNumber = questionIndex + 1;
   screen.appendChild(
-    createElement("p", "progress", "שאלה " + islandNumber + " מתוך " + totalIslands)
+    createElement("p", "progress", "שאלה " + questionNumber + " מתוך " + totalQuestions)
   );
-  screen.appendChild(createElement("div", "big-emoji", "🏝️"));
-  screen.appendChild(createElement("h2", "island-title", riddle.islandTitle));
+  screen.appendChild(createElement("div", "big-emoji", questionData.islandEmoji));
+  screen.appendChild(createElement("h2", "island-title", questionData.islandTitle));
 
-  // The character card gets a small entrance animation so the island "arrives" clearly.
+  // The question card gets a small entrance animation so the next question arrives clearly.
   const character = createElement("div", "character-box character-enter");
-  // Character image if available, otherwise the emoji placeholder. Named by characterName for alt.
-  const characterPlaceholder = createElement("div", "character-emoji", "🧑‍✈️");
-  appendVisual(character, riddle.characterImage, characterPlaceholder, "character-image", riddle.characterName);
-  character.appendChild(createElement("p", "character-name", riddle.characterName));
-  character.appendChild(createElement("p", "question", riddle.question));
+  const characterPlaceholder = createElement(
+    "div",
+    "character-emoji",
+    questionData.characterEmoji
+  );
+  appendVisual(
+    character,
+    questionData.characterImage,
+    characterPlaceholder,
+    "character-image",
+    questionData.characterName
+  );
+  character.appendChild(createElement("p", "character-name", questionData.characterName));
+  character.appendChild(createElement("p", "question", questionData.question));
   screen.appendChild(character);
 
   // Build options preserving the original index, then shuffle the display.
-  const options = buildShuffledOptions(riddle.options);
+  const options = buildShuffledOptions(questionData.options);
   const optionsBox = createElement("div", "options");
 
   // Guard so only the first click counts during the short feedback moment.
@@ -340,7 +320,7 @@ function renderIsland(riddle, islandIndex, totalIslands) {
     const button = createElement("button", "option-button", option.text);
 
     // In debug mode, mark the correct answer.
-    if (CONFIG.DEBUG_MODE && option.originalIndex === riddle.correctIndex) {
+    if (CONFIG.DEBUG_MODE && option.originalIndex === questionData.correctIndex) {
       button.classList.add("debug-correct");
       button.textContent = option.text + "  ✓";
     }
@@ -353,7 +333,7 @@ function renderIsland(riddle, islandIndex, totalIslands) {
       answered = true;
 
       // Positive vs final feedback, computed via the original index (never the display index).
-      const isCorrect = option.originalIndex === riddle.correctIndex;
+      const isCorrect = option.originalIndex === questionData.correctIndex;
       button.classList.add("clicked");
       button.classList.add(isCorrect ? "answer-correct-flash" : "answer-wrong-flash");
       // Lock the panel so the player feels the click before the screen changes.
@@ -385,23 +365,21 @@ function renderIsland(riddle, islandIndex, totalIslands) {
 
 // ---- Lose screen ----
 // chosenIndex is the original index of the wrong answer the player picked (may be undefined).
-function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
+function renderLoseScreen(questionData, reachedQuestion, totalQuestions, chosenIndex) {
   const root = clearScreen();
-  // The lose image (when the riddle has one) is shown full-screen behind the result; riddles
-  // without one fall back to the plain sea gradient. The emoji is always shown as the marker.
-  setScreenBackground(riddle.loseImage, CONFIG.USE_IMAGE_ASSETS);
+  setScreenBackground(questionData.loseImage, CONFIG.USE_IMAGE_ASSETS);
   const screen = createElement("section", "screen lose-screen fade-in");
 
   screen.appendChild(createElement("div", "big-emoji", "💀"));
-  screen.appendChild(createElement("h2", "title", riddle.failTitle));
-  screen.appendChild(createElement("p", "subtitle", riddle.failText));
+  screen.appendChild(createElement("h2", "title", questionData.failTitle));
+  screen.appendChild(createElement("p", "subtitle", questionData.failText));
 
   // Answer review: the player's wrong choice (if known) and the correct answer.
   const review = createElement("div", "answer-review");
-  if (typeof chosenIndex === "number" && riddle.options[chosenIndex] !== undefined) {
+  if (typeof chosenIndex === "number" && questionData.options[chosenIndex] !== undefined) {
     const wrongRow = createElement("p", "answer-row answer-wrong");
     wrongRow.appendChild(createElement("span", "answer-label", "בחרת:"));
-    wrongRow.appendChild(createElement("span", "answer-value", riddle.options[chosenIndex]));
+    wrongRow.appendChild(createElement("span", "answer-value", questionData.options[chosenIndex]));
     review.appendChild(wrongRow);
   }
   // The correct answer is shown only when enabled (a balancing/playtest option).
@@ -409,7 +387,7 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
     const correctRow = createElement("p", "answer-row answer-correct");
     correctRow.appendChild(createElement("span", "answer-label", "התשובה הנכונה:"));
     correctRow.appendChild(
-      createElement("span", "answer-value", riddle.options[riddle.correctIndex])
+      createElement("span", "answer-value", questionData.options[questionData.correctIndex])
     );
     review.appendChild(correctRow);
   }
@@ -419,17 +397,17 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
     createElement(
       "p",
       "progress",
-      "הגעת לשאלה " + reachedIsland + " מתוך " + totalIslands
+      "הגעת לשאלה " + reachedQuestion + " מתוך " + totalQuestions
     )
   );
 
   // Correct answers before failing (never negative).
-  const rememberedClues = Math.max(0, reachedIsland - 1);
+  const rememberedClues = Math.max(0, reachedQuestion - 1);
   screen.appendChild(
     createElement("p", "progress-detail", "ענית נכון על " + rememberedClues + " שאלות")
   );
 
-  screen.appendChild(buildPlaytestSummary(rememberedClues, totalIslands));
+  screen.appendChild(buildPlaytestSummary(rememberedClues, totalQuestions));
 
   const again = createElement("button", "main-button", "שחקו שוב");
   again.addEventListener("click", startGame);
@@ -439,7 +417,7 @@ function renderLoseScreen(riddle, reachedIsland, totalIslands, chosenIndex) {
 }
 
 // ---- Win screen ----
-function renderWinScreen(totalIslands) {
+function renderWinScreen(totalQuestions) {
   const root = clearScreen();
   setScreenBackground(CONFIG.VICTORY_IMAGE);
   const screen = createElement("section", "screen win-screen fade-in");
@@ -459,14 +437,14 @@ function renderWinScreen(totalIslands) {
     createElement(
       "p",
       "subtitle",
-      "עברת את כל " + totalIslands + " השאלות בזכות זיכרון מצוין!"
+      "עברת את כל " + totalQuestions + " השאלות בזכות זיכרון מצוין!"
     )
   );
   screen.appendChild(
-    createElement("p", "score", "ניקוד: " + totalIslands + " מתוך " + totalIslands)
+    createElement("p", "score", "ניקוד: " + totalQuestions + " מתוך " + totalQuestions)
   );
 
-  screen.appendChild(buildPlaytestSummary(totalIslands, totalIslands));
+  screen.appendChild(buildPlaytestSummary(totalQuestions, totalQuestions));
 
   const again = createElement("button", "main-button", "שחקו שוב");
   again.addEventListener("click", startGame);
@@ -479,22 +457,19 @@ function renderWinScreen(totalIslands) {
 // Always shows progress and map time; the hint-label and debug-mode lines are shown
 // in DEBUG_MODE only. Reports the settings used this run so testers can judge difficulty.
 // No data is stored.
-function buildPlaytestSummary(completedIslands, totalIslands) {
+function buildPlaytestSummary(completedQuestions, totalQuestions) {
   const box = createElement("div", "playtest-summary");
   const seconds = Math.round(CONFIG.MAP_VIEW_TIME_MS / 1000);
   function yesNo(value) {
     return value ? "כן" : "לא";
   }
   box.appendChild(
-    createElement("p", "playtest-line", "השלמת " + completedIslands + " מתוך " + totalIslands + " שאלות")
+    createElement("p", "playtest-line", "השלמת " + completedQuestions + " מתוך " + totalQuestions + " שאלות")
   );
   box.appendChild(createElement("p", "playtest-line", "זמן צפייה במפה: " + seconds + " שניות"));
 
   // These extra balancing details are shown only in debug mode.
   if (CONFIG.DEBUG_MODE) {
-    box.appendChild(
-      createElement("p", "playtest-line", "רמזי טקסט הוצגו: " + yesNo(CONFIG.SHOW_HINT_LABELS_ON_MAP))
-    );
     box.appendChild(createElement("p", "playtest-line", "מצב פיתוח: " + yesNo(CONFIG.DEBUG_MODE)));
   }
   return box;

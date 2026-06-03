@@ -15,13 +15,12 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Correct answers advance; wrong answers show the loss screen immediately with progress.
 - Completing all questions shows the victory screen; "play again" starts a fresh randomized run.
 - Debug mode (answer reveal + skip button + console reminder).
-- Riddle pool validated: 10 riddles, each with exactly 4 options and a valid correctIndex.
+- Generated asset-question route validated: 7 questions, unique options, and valid `correctIndex` values.
 - UX polish: start-screen panel, map reveal, wind blow-away with "הרוח העיפה את המפה!" message, sailing transition with ship + destination island placeholders, larger answer buttons with hover/pressed feedback, visible keyboard focus.
 - Animation/transition tuning (Phase 7B): configurable timings (WIND_TRANSITION_MS, SAILING_TRANSITION_MS, ANSWER_FEEDBACK_MS) synced into CSS variables at startup; pulsing "memorize" map cue; clearer "map cannot be reopened" wind message; island/character entrance; answer feedback flash (green pulse correct / red shake wrong) with a brief click lock; win celebration (trophy pop + confetti); optional numeric countdown (SHOW_COUNTDOWN_NUMBER); and prefers-reduced-motion support that keeps the game playable.
 - Lose screen now shows the chosen wrong answer, the correct answer, progress ("הגעת לשאלה X מתוך Y"), and correct-question count; win screen shows a final score.
 - Basic responsive layout for desktop and small screens.
-- Image-ready: optional image fields on every riddle (default null), an appendVisual renderer fallback, USE_IMAGE_ASSETS flag, asset folders, and an asset integration guide. Placeholder mode is unchanged.
-- Image pipeline proven (Phase 7A): two riddles (`gold`, `parrot`) ship simple SVG placeholders across hints/islands/characters/endings, wired into riddles.js. The other riddles keep null image fields and fall back to emoji/text (mixed mode). Images are now used automatically wherever a path exists (USE_IMAGE_ASSETS default true, an optional override to force placeholder-only mode); the game falls back to the hint emoji/label when there is no image or it fails to load. The per-riddle island background and lose images are 16:9 and render as full-screen backgrounds (via the shared #screen-bg layer); hint and character images remain inline.
+- Image-ready: static asset folders, `USE_IMAGE_ASSETS` flag, map asset layout, and an asset integration guide.
 - Screen-level placeholder art: four 16:9 full-screen SVG backgrounds inside `#game-viewport` on `#screen-bg` (`background-size: contain`). Letterboxing outside the viewport when the browser window is not 16:9.
 - Custom pirate hook mouse cursor: `assets/ui/pirate_hook_cursor.svg`, applied site-wide via CSS (`cursor: url(...) 6 6, pointer` with fallback). CSS-only; no JavaScript.
 - Playtest/balancing: win and lose screens show a summary (islands completed + map time always; hint-labels and debug-mode lines in DEBUG_MODE only); SHOW_CORRECT_ANSWER_ON_LOSS flag; manual playtest log in docs/playtest.md. No stored data.
@@ -34,16 +33,15 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 
 ## Not implemented yet
 
-- Old static `RIDDLES` route logic cleanup/removal after the generated asset-question flow is stable.
-- Final/real artwork (only 2 riddles have temporary SVG placeholders so far; the data model, renderer, and pipeline are proven and ready for the full art set).
+- Final/real artwork and final asset question content.
 - Sound effects.
 
 ## Known limitations
 
 - Map cannot be reopened once hidden (by design).
 - A single wrong answer ends the game (by design).
-- Old static riddle data still exists for now, but the active route is generated from map assets.
+- The active route is generated from map assets.
 
 ## Current prototype goal
 
-Done: solid loop, UX/animation polish, image-asset readiness, and generated map-based 7-question runs, all fully static. Next focus is cleaning up the old static riddle route and integrating final image/question content.
+Done: solid loop, UX/animation polish, image-asset readiness, generated map-based 7-question runs, and old static route removal. Next focus is integrating final image/question content.

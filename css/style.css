@@ -349,66 +349,6 @@ button,
   filter: drop-shadow(0 4px 4px rgba(42, 33, 24, 0.3));
 }
 
-.map-route {
-  position: absolute;
-  left: 4%;
-  top: 18%;
-  z-index: 3;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 7px;
-  max-width: 26%;
-  max-height: 62%;
-  overflow: hidden;
-  color: var(--ink);
-  line-height: normal;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
-}
-
-.map-clue {
-  min-width: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 7px;
-  font-weight: bold;
-}
-
-.clue-number {
-  background: var(--map-edge);
-  color: var(--white);
-  width: 26px;
-  height: 26px;
-  line-height: 26px;
-  border-radius: 50%;
-  font-weight: bold;
-  font-size: 0.8rem;
-  flex: 0 0 auto;
-}
-
-.clue-emoji {
-  font-size: 1.35rem;
-  line-height: 1;
-}
-
-.clue-label {
-  font-weight: bold;
-  font-size: clamp(0.75rem, 1.7vmin, 0.95rem);
-  line-height: 1.2;
-}
-
-/* ---- Future image assets (used only when CONFIG.USE_IMAGE_ASSETS is true) ---- */
-/* Minimal safe sizing; refine when real assets arrive. */
-.map-clue-image {
-  width: 28px;
-  height: 28px;
-  object-fit: contain;
-}
-
 .character-image {
   width: 96px;
   height: 96px;
@@ -883,7 +823,7 @@ button,
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
 }
 
-/* The island and lose screens can also sit over a full-screen riddle background, so they get
+/* The question and lose screens can also sit over a full-screen background, so they get
    the same translucent panel for readability. */
 .island-screen,
 .lose-screen {
@@ -979,21 +919,6 @@ button,
   }
   .start-screen {
     padding: 24px 18px;
-  }
-  .map-route {
-    left: 3%;
-    top: 17%;
-    max-width: 32%;
-    gap: 5px;
-  }
-  .clue-number {
-    width: 22px;
-    height: 22px;
-    line-height: 22px;
-  }
-  .map-clue-image {
-    width: 22px;
-    height: 22px;
   }
   .answer-row {
     flex-direction: column;

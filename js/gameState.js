@@ -1,13 +1,13 @@
 // gameState.js
 // Responsible for game state and flow transitions only.
-// Does not depend on any specific riddle content and does not hardcode riddle ids.
+// Does not depend on any specific question content and does not hardcode asset ids.
 // All rendering is done through renderer.js (the render* functions).
 
 // The central game state. Rebuilt on every start.
 const gameState = {
-  selectedRiddles: [], // generated map questions for the current game, in route order
+  selectedQuestions: [], // generated map questions for the current game, in route order
   selectedMapAssets: [], // one randomized visual asset per configured category
-  currentIslandIndex: 0, // the current question (0-based)
+  currentQuestionIndex: 0, // the current question (0-based)
   mapTimerId: null, // the map timer id, so it can be cancelled
   finished: false, // whether the game has ended (win/lose)
 };
@@ -24,11 +24,11 @@ function startGame() {
     ASSET_CATEGORIES,
     CONFIG.MAP_ASSET_LAYOUT
   );
-  gameState.selectedRiddles = buildAssetQuestionRoute(
+  gameState.selectedQuestions = buildAssetQuestionRoute(
     gameState.selectedMapAssets,
     ASSET_CATEGORIES
   );
-  gameState.currentIslandIndex = 0;
+  gameState.currentQuestionIndex = 0;
   gameState.finished = false;
 
   showMap();
@@ -36,7 +36,7 @@ function startGame() {
 
 // Show the treasure map with the selected assets, then start a timer that blows the map away.
 function showMap() {
-  renderMap(gameState.selectedRiddles, gameState.selectedMapAssets);
+  renderMap(gameState.selectedMapAssets);
 
   clearMapTimer();
   gameState.mapTimerId = setTimeout(function () {
@@ -54,16 +54,16 @@ function blowMapAway() {
 
 // Sailing animation, then show the current question.
 function sailToCurrentIsland() {
-  const islandNumber = gameState.currentIslandIndex + 1;
-  renderSailing(islandNumber, gameState.selectedRiddles.length, function () {
+  const questionNumber = gameState.currentQuestionIndex + 1;
+  renderSailing(questionNumber, gameState.selectedQuestions.length, function () {
     showCurrentIsland();
   });
 }
 
 // Show the current question screen.
 function showCurrentIsland() {
-  const currentRiddle = gameState.selectedRiddles[gameState.currentIslandIndex];
-  renderIsland(currentRiddle, gameState.currentIslandIndex, gameState.selectedRiddles.length);
+  const currentQuestion = gameState.selectedQuestions[gameState.currentQuestionIndex];
+  renderIsland(currentQuestion, gameState.currentQuestionIndex, gameState.selectedQuestions.length);
 }
 
 // Handle the player's answer. Receives the original index of the selected option.
@@ -72,20 +72,20 @@ function answerCurrentIsland(originalIndex) {
   if (gameState.finished) {
     return;
   }
-  const currentRiddle = gameState.selectedRiddles[gameState.currentIslandIndex];
+  const currentQuestion = gameState.selectedQuestions[gameState.currentQuestionIndex];
 
-  if (originalIndex === currentRiddle.correctIndex) {
+  if (originalIndex === currentQuestion.correctIndex) {
     advanceToNextIsland();
   } else {
-    loseGame(currentRiddle, originalIndex);
+    loseGame(currentQuestion, originalIndex);
   }
 }
 
 // Advance to the next question, or win if all questions are done.
 function advanceToNextIsland() {
-  gameState.currentIslandIndex += 1;
+  gameState.currentQuestionIndex += 1;
 
-  if (gameState.currentIslandIndex >= gameState.selectedRiddles.length) {
+  if (gameState.currentQuestionIndex >= gameState.selectedQuestions.length) {
     winGame();
   } else {
     sailToCurrentIsland();
@@ -94,16 +94,16 @@ function advanceToNextIsland() {
 
 // Lose: show a question result screen, with progress (question X of Y).
 // chosenIndex is the original index of the wrong answer the player picked (may be undefined).
-function loseGame(currentRiddle, chosenIndex) {
+function loseGame(currentQuestion, chosenIndex) {
   gameState.finished = true;
-  const reachedIsland = gameState.currentIslandIndex + 1;
-  renderLoseScreen(currentRiddle, reachedIsland, gameState.selectedRiddles.length, chosenIndex);
+  const reachedQuestion = gameState.currentQuestionIndex + 1;
+  renderLoseScreen(currentQuestion, reachedQuestion, gameState.selectedQuestions.length, chosenIndex);
 }
 
 // Win: all questions completed.
 function winGame() {
   gameState.finished = true;
-  renderWinScreen(gameState.selectedRiddles.length);
+  renderWinScreen(gameState.selectedQuestions.length);
 }
 
 // Debug tool: automatically answer the current question correctly (only active in DEBUG_MODE).
@@ -111,8 +111,8 @@ function debugAnswerCorrectly() {
   if (!CONFIG.DEBUG_MODE || gameState.finished) {
     return;
   }
-  const currentRiddle = gameState.selectedRiddles[gameState.currentIslandIndex];
-  answerCurrentIsland(currentRiddle.correctIndex);
+  const currentQuestion = gameState.selectedQuestions[gameState.currentQuestionIndex];
+  answerCurrentIsland(currentQuestion.correctIndex);
 }
 
 // Cancel the map timer if it is active.

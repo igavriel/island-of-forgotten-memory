@@ -6,7 +6,9 @@
 - Changed the map presentation from a centered popup-style panel to a full-map stage. The map image now renders as the base image inside the screen, randomized category assets appear directly on it, the header is at the top, and the timer progress bar is at the bottom.
 - Updated the asset data convention for future question generation: categories expose `question1` / `question2`, and each image asset now stores `answer1` plus a placeholder numeric `answer2` instead of `name`.
 - Switched the active route from the static `RIDDLES` pool to generated map-asset questions. Each configured category produces one question per run, randomly choosing `question1`/`answer1` or `question2`/`answer2`; options are unique same-category answers with the correct answer in a random position.
-- Added per-category generated-question screen metadata (`islandTitle`, `characterName`, `failTitle`) to `ASSET_CATEGORIES`.
+- Added per-category generated-question screen metadata (`islandEmoji`, `islandTitle`, `characterEmoji`, `characterName`, `failTitle`) to `ASSET_CATEGORIES`.
+- Removed the old static `config/riddles.js` data file and script include. The active game route is now fully generated from `config/assets.js`.
+- Generated question-screen emojis now come from explicit `ASSET_CATEGORIES.islandEmoji` and `characterEmoji` fields instead of hardcoded renderer emojis.
 
 ## 2026-05-29
 

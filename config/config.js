@@ -2,9 +2,6 @@
 // Central game settings.
 
 const CONFIG = {
-    // Kept for compatibility until the old riddle route is removed.
-    NUMBER_OF_ISLANDS: 5,
-
     // How long the treasure map is visible.
     MAP_VIEW_TIME_MS: 10000,
 
@@ -15,9 +12,6 @@ const CONFIG = {
 
     // Optional map countdown text.
     SHOW_COUNTDOWN_NUMBER: false,
-
-    // Show text labels for map hints when old hint rendering is used.
-    SHOW_HINT_LABELS_ON_MAP: true,
 
     // Master image toggle.
     USE_IMAGE_ASSETS: true,

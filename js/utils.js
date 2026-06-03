@@ -1,5 +1,5 @@
 // utils.js
-// General helper functions. No game logic here and no dependency on riddle content.
+// General helper functions. No dependency on specific asset content.
 
 // Fisher-Yates shuffle. Returns a new shuffled array without mutating the original.
 function shuffle(array) {
@@ -87,16 +87,12 @@ function buildAssetQuestionRoute(selectedMapAssets, assetCategories) {
 
     return {
       id: "asset-" + selectedAsset.category,
-      hintEmoji: "",
-      hintLabel: "",
-      hintImage: null,
-      islandBackgroundImage: null,
-      characterImage: null,
-      loseImage: null,
       question: selectedAsset[questionKey],
       options: options,
       correctIndex: options.indexOf(correctAnswer),
+      islandEmoji: categoryData.islandEmoji,
       islandTitle: categoryData.islandTitle,
+      characterEmoji: categoryData.characterEmoji,
       characterName: categoryData.characterName,
       failTitle: categoryData.failTitle,
       failText: "התשובה הנכונה הייתה: " + correctAnswer,
