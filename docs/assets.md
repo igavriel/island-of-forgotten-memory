@@ -66,5 +66,5 @@ All images are plain static paths. If an image fails to load, the game falls bac
 
 ## Cursor
 
-The custom cursor is `assets/ui/pirate_hook_cursor.svg`, configured in [css/style.css](../css/style.css).
+The custom cursor is `assets/ui/hook-64x64.svg`, configured in [css/style.css](../css/style.css).
 The hotspot is `6 6`.

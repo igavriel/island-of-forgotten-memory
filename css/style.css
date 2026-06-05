@@ -47,7 +47,7 @@ body {
   font-family: "Segoe UI", "Arial Hebrew", Arial, sans-serif;
   color: var(--white);
   background: var(--letterbox-bg);
-  cursor: url("../assets/ui/pirate_hook_cursor.svg") 6 6, pointer;
+  cursor: url("../assets/ui/hook-64x64.png") 6 6, pointer;
 }
 
 /* ---- 16:9 game viewport ----
@@ -108,7 +108,7 @@ button,
 .main-button,
 .option-button,
 .debug-button {
-  cursor: url("../assets/ui/pirate_hook_cursor.svg") 6 6, pointer;
+  cursor: url("../assets/ui/hook-64x64.png") 6 6, pointer;
 }
 
 /* ---- Full-screen 16:9 art backgrounds ----
