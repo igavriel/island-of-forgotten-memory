@@ -14,7 +14,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Fixed 16:9 responsive viewport: `#app` centers `#game-viewport` inside the browser window with letterboxing (`--letterbox-bg: #071827`) when the window is not 16:9. All backgrounds (`#screen-bg`) and UI render inside the viewport; backgrounds use `contain` (no stretch, no crop). Screens inject into `#screen`.
 - Per-question flow with up to 4 shuffled unique answers (original index preserved).
 - Correct answers advance; wrong answers show the loss screen immediately with progress.
-- Completing all questions shows the victory screen; "play again" starts a fresh randomized run.
+- Completing all questions shows the victory screen; the end-screen button ("לתפריט הראשי") returns to the main menu, where the player picks a difficulty to start a fresh randomized run.
 - Debug mode (answer reveal + skip button + console reminder).
 - Generated asset-question route validated for easy/medium/hard counts, unique generated question ids, and valid `correctIndex` values.
 - UX polish: start-screen panel, map reveal, wind blow-away with "הרוח העיפה את המפה!" message, sailing transition with ship + destination island placeholders, larger answer buttons with hover/pressed feedback, visible keyboard focus.
@@ -23,7 +23,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Basic responsive layout for desktop and small screens.
 - Image-ready: static asset folders, `USE_IMAGE_ASSETS` flag, map asset layout, and an asset integration guide.
 - Screen-level placeholder art: four 16:9 full-screen SVG backgrounds inside `#game-viewport` on `#screen-bg` (`background-size: contain`). Letterboxing outside the viewport when the browser window is not 16:9.
-- Custom pirate hook mouse cursor: `assets/ui/pirate_hook_cursor.svg`, applied site-wide via CSS (`cursor: url(...) 6 6, pointer` with fallback). CSS-only; no JavaScript.
+- Custom pirate hook mouse cursor: `assets/ui/hook-64x64.svg`, applied site-wide via CSS (`cursor: url(...) 6 6, pointer` with fallback). CSS-only; no JavaScript.
 - Playtest/balancing: win and lose screens show a summary (islands completed + map time always; hint-labels and debug-mode lines in DEBUG_MODE only); SHOW_CORRECT_ANSWER_ON_LOSS flag; manual playtest log in docs/playtest.md. No stored data.
 - Dynamic map asset layer: `config/assets.js` provides categorized image pools, `CONFIG.MAP_ASSET_LAYOUT` controls relative `x`, `y`, and `sizePercent`, and each new run randomly selects images according to the selected difficulty. The map image is now the actual full-screen stage: assets render directly on it, the header sits at the top, and the timer bar sits at the bottom.
 - Asset question convention: each asset category now has configurable `question1` and `question2`; each image asset now has `answer1` and placeholder numeric `answer2` instead of `name`.

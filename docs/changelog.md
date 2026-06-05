@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-05
+
+- Changed the win and lose screen button to return to the main menu instead of immediately starting a new run. The button is relabeled "לתפריט הראשי" and now calls `showStartScreen()`, so the player re-selects a difficulty before replaying. No other gameplay rules changed.
+
 ## 2026-06-03
 
 - Added a randomized map asset layer. `config/assets.js` exposes categorized image pools as `ASSETS_BY_CATEGORY` / `ASSETS`; `CONFIG.MAP_ASSET_LAYOUT` defines relative `x`, `y`, and `sizePercent` values. Each new run selects randomized images for the chosen difficulty and renders them proportionally on the map, with the volcano centered by default.
@@ -22,7 +26,7 @@
 
 - Redesigned the sailing transition screen: two new SVG placeholders (`assets/ui/sailing_ship_placeholder.svg`, `assets/ui/destination_island_placeholder.svg`) configured via `SAILING_SHIP_IMAGE` / `SAILING_DESTINATION_ISLAND_IMAGE`. The ship sails right-to-left toward a destination island on the left (RTL feel) with sine-like vertical motion approximated by CSS keyframes (`.sailing-ship`, `@keyframes sailing-ship-wave`). Duration uses `SAILING_TRANSITION_MS` (now default `1800` ms), synced to `--sail-ms` for both CSS and JS. Emoji fallbacks (⛵ / 🏝️) when images are disabled or fail to load. No gameplay changes.
 
-- Added a custom pirate hook mouse cursor: `assets/ui/pirate_hook_cursor.svg` (48×48 SVG, hook tip at top-left for hotspot `6 6`). Applied site-wide in CSS on `body`, `#game`, and all buttons with `pointer` fallback. CSS-only; no game logic changes.
+- Added a custom pirate hook mouse cursor: `assets/ui/hook-64x64.svg` (48×48 SVG, hook tip at top-left for hotspot `6 6`). Applied site-wide in CSS on `body`, `#game`, and all buttons with `pointer` fallback. CSS-only; no game logic changes.
 
 - Converted the per-riddle `islandBackgroundImage` and `loseImage` placeholders (gold, parrot) to 16:9 (`viewBox="0 0 1920 1080"`) and now render them as full-screen backgrounds via the shared `#screen-bg` layer (same as the start/map/win backgrounds), gated by `USE_IMAGE_ASSETS`. `setScreenBackground()` gained an optional `enabled` argument so per-riddle backgrounds follow `USE_IMAGE_ASSETS` while screen-level ones follow `USE_SCREEN_PLACEHOLDER_IMAGES`. The island/lose emoji markers always show, and riddles without these images fall back to the sea gradient. Added translucent readability panels to the island and lose screens, and removed the now-unused inline `.island-background` / `.lose-image` CSS (these fields no longer render inline). `hintImage` and `characterImage` are unchanged (still inline).
 

@@ -416,9 +416,9 @@ function renderLoseScreen(questionData, reachedQuestion, totalQuestions, chosenI
 
   screen.appendChild(buildPlaytestSummary(rememberedClues, totalQuestions, difficulty));
 
-  const again = createElement("button", "main-button", "שחקו שוב");
+  const again = createElement("button", "main-button", "לתפריט הראשי");
   again.addEventListener("click", function () {
-    startGame();
+    showStartScreen();
   });
   screen.appendChild(again);
 
@@ -455,9 +455,9 @@ function renderWinScreen(totalQuestions, difficulty) {
 
   screen.appendChild(buildPlaytestSummary(totalQuestions, totalQuestions, difficulty));
 
-  const again = createElement("button", "main-button", "שחקו שוב");
+  const again = createElement("button", "main-button", "לתפריט הראשי");
   again.addEventListener("click", function () {
-    startGame();
+    showStartScreen();
   });
   screen.appendChild(again);
 
