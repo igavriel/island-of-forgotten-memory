@@ -113,19 +113,19 @@ button,
 
 /* ---- Full-screen 16:9 art backgrounds ----
    Backgrounds fill the 16:9 #game-viewport (not the full browser window).
-   contain preserves aspect ratio with no distortion and no cropping. */
+   cover fills the scene; edges may crop on non-16:9 source art. */
 .fullscreen-art-background {
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* Subtle scrim only when an image is shown, to keep overlaid text/buttons readable. */
+/* Very light scrim when an image is shown — keeps text readable without darkening art. */
 .screen-bg.is-visible::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(7, 28, 43, 0.32);
+  background: rgba(7, 28, 43, 0.06);
 }
 
 /* ---- General screen ---- */
@@ -137,7 +137,7 @@ button,
 
 /* Start screen reads as a clear, grouped panel (no extra markup needed). */
 .start-screen {
-  background: rgba(0, 0, 0, 0.22);
+  background: rgba(0, 0, 0, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 20px;
   padding: 32px 28px;
@@ -406,7 +406,7 @@ button,
 
 /* ---- Character and question ---- */
 .character-box {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.14);
   border-radius: 16px;
   padding: 18px;
   margin: 18px 0;
@@ -836,7 +836,7 @@ button,
 .win-screen {
   position: relative;
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.32);
+  background: rgba(0, 0, 0, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 20px;
   padding: 28px 24px;
@@ -847,7 +847,7 @@ button,
    the same translucent panel for readability. */
 .island-screen,
 .lose-screen {
-  background: rgba(0, 0, 0, 0.34);
+  background: rgba(0, 0, 0, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 20px;
   padding: 24px 22px;

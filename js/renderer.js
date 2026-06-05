@@ -81,7 +81,7 @@ function setScreenBackground(src, enabled) {
     const probe = new Image();
     probe.onload = function () {
       layer.style.backgroundImage = "url('" + src + "')";
-      layer.style.backgroundSize = "contain";
+      layer.style.backgroundSize = "cover";
       layer.style.backgroundPosition = "center";
       layer.style.backgroundRepeat = "no-repeat";
       layer.classList.add("is-visible");
@@ -374,7 +374,7 @@ function renderIsland(questionData, questionIndex, totalQuestions) {
 // chosenIndex is the original index of the wrong answer the player picked (may be undefined).
 function renderLoseScreen(questionData, reachedQuestion, totalQuestions, chosenIndex, difficulty) {
   const root = clearScreen();
-  setScreenBackground(questionData.loseImage, CONFIG.USE_IMAGE_ASSETS);
+  setScreenBackground(CONFIG.LOSE_SCREEN_IMAGE);
   const screen = createElement("section", "screen lose-screen fade-in");
 
   screen.appendChild(createElement("div", "big-emoji", "💀"));

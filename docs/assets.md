@@ -48,7 +48,7 @@ assets/
   characters/   # category images used on the map
   map/          # treasure map images
   ui/           # shared UI and transition images
-  endings/      # victory / loss images
+  endings/      # victory images (loss uses assets/ui/ending_screen.png via CONFIG)
 ```
 
 ## Screen images
@@ -57,6 +57,7 @@ Configured in `CONFIG`:
 
 - `START_SCREEN_IMAGE`
 - `MAP_BACKGROUND_IMAGE`
+- `LOSE_SCREEN_IMAGE` (shared background for every wrong answer)
 - `SAILING_BACKGROUND_IMAGE`
 - `VICTORY_IMAGE`
 - `SAILING_SHIP_IMAGE`

@@ -2,6 +2,8 @@
 
 ## 2026-06-05
 
+- Replaced per-question lose backgrounds with one shared screen image: `CONFIG.LOSE_SCREEN_IMAGE` (`assets/ui/ending_screen.png`) is used for every wrong answer. Removed the old `questionData.loseImage` hook from the lose renderer.
+- Brightened full-screen art across the site: `#screen-bg` backgrounds now use `cover` instead of `contain`, the image scrim was reduced from 32% to 6% opacity, and the translucent panels on the start, island, win, and lose screens were lightened so JPEG/SVG art (e.g. `start_screen.jpeg`) appears closer to its true colors.
 - Changed the win and lose screen button to return to the main menu instead of immediately starting a new run. The button is relabeled "לתפריט הראשי" and now calls `showStartScreen()`, so the player re-selects a difficulty before replaying. No other gameplay rules changed.
 
 ## 2026-06-03

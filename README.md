@@ -52,6 +52,7 @@ Edit [config/config.js](config/config.js).
 | `SHOW_COUNTDOWN_NUMBER` | Optional numeric countdown on the map |
 | `USE_IMAGE_ASSETS` | Enables image assets with fallbacks |
 | `USE_SCREEN_PLACEHOLDER_IMAGES` | Enables screen/background images |
+| `LOSE_SCREEN_IMAGE` | Shared full-screen background for every wrong answer |
 | `DEBUG_MODE` | Shows correct answers and a skip button; keep `false` for final presentation |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | Shows the correct answer after a wrong answer |
 | `DIFFICULTY_LEVELS` | Difficulty labels plus image/question counts |

@@ -18,8 +18,9 @@ const CONFIG = {
 
     // Screen and transition images.
     USE_SCREEN_PLACEHOLDER_IMAGES: true,
-    START_SCREEN_IMAGE: "assets/ui/start_screen_placeholder.svg",
+    START_SCREEN_IMAGE: "assets/ui/start_screen.jpeg",
     MAP_BACKGROUND_IMAGE: "assets/map/map_01.png",
+    LOSE_SCREEN_IMAGE: "assets/ui/ending_screen.png",
     VICTORY_IMAGE: "assets/endings/victory_placeholder.svg",
     SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background_placeholder.svg",
     SAILING_SHIP_IMAGE: "assets/ui/sailing_ship_placeholder.png",
