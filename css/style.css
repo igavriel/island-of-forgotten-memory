@@ -355,17 +355,17 @@ button,
   top: 4%;
   left: 50%;
   z-index: 3;
-  transform: translateX(-50%);
+  transform: translate(-50%, -10px);
   width: min(70%, 560px);
   text-align: center;
-  color: var(--ink);
   line-height: normal;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 .map-title {
   margin: 0;
   font-size: clamp(1.3rem, 3.2vmin, 2rem);
+  font-weight: bold;
+  color: #000;
 }
 
 .map-subtitle {
@@ -533,6 +533,17 @@ button,
   inset: 0;
   overflow: hidden;
   pointer-events: auto;
+  cursor: not-allowed;
+}
+
+/* Hook on clickable sailing targets; not-allowed elsewhere on the scene (sky, land, etc.). */
+.sailing-sea-hitbox,
+.destination-island {
+  cursor: url("../assets/ui/hook-64x64.png") 6 6, pointer;
+}
+
+.sailing-scene--layout-picker {
+  cursor: crosshair;
 }
 
 .sailing-message {
@@ -615,7 +626,6 @@ button,
 
 .sailing-sea-hitbox {
   z-index: 1;
-  cursor: pointer;
   background: transparent;
 }
 
@@ -653,7 +663,6 @@ button,
 
 .destination-island {
   z-index: 2;
-  cursor: pointer;
 }
 
 .destination-island-emoji,

@@ -144,8 +144,7 @@ function renderMap(selectedMapAssets) {
   mapCard.appendChild(mapImage);
 
   const mapHeader = createElement("header", "map-header");
-  const mapTitle = createElement("h2", "map-title", "🗺️ מפת האוצר ");
-  mapTitle.appendChild(createElement("span", "map-subtitle memorize-cue", "זכרו את הרמזים!"));
+  const mapTitle = createElement("h2", "map-title", "מפת האוצר - זכרו את הרמזים!");
   mapHeader.appendChild(mapTitle);
   mapCard.appendChild(mapHeader);
 
@@ -530,10 +529,13 @@ function renderSailing(questionNumber, totalQuestions, callback) {
   const root = clearScreen();
   setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen sailing-screen fade-in");
-  const scene = createElement("div", "sailing-scene");
+  const layoutPicker = isSailingLayoutPickerActive();
+  const scene = createElement(
+    "div",
+    "sailing-scene" + (layoutPicker ? " sailing-scene--layout-picker" : "")
+  );
   const layout = getSailingLayout();
   const travelMs = CONFIG.SAILING_SHIP_TRAVEL_MS || 1200;
-  const layoutPicker = isSailingLayoutPickerActive();
   let isMoving = false;
 
   if (shouldShowSailingGuides()) {
