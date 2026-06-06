@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-06
+
+- Replaced the CSS wind blow-away on the treasure map with a three-frame sprite sequence (`treasure_map_fly_01`–`03`). `CONFIG.MAP_FLY_FRAMES` and `CONFIG.MAP_FLY_FRAME_MS` control the frame list and per-frame timing; frames are preloaded during map viewing and swapped in order before sailing begins. Removed `WIND_TRANSITION_MS`, `.map-blow-away`, and `@keyframes blowAway`.
+
 ## 2026-06-05
 
 - Replaced per-question lose backgrounds with one shared screen image: `CONFIG.LOSE_SCREEN_IMAGE` (`assets/endings/ending_screen.png`) is used for every wrong answer. Removed the old `questionData.loseImage` hook from the lose renderer.

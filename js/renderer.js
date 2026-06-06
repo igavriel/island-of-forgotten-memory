@@ -12,7 +12,6 @@ function getRoot() {
 // at startup. Other (purely cosmetic) durations stay as fixed values in the stylesheet.
 function applyAnimationTimings() {
   const root = document.documentElement;
-  root.style.setProperty("--wind-ms", CONFIG.WIND_TRANSITION_MS + "ms");
   root.style.setProperty("--sail-ms", CONFIG.SAILING_TRANSITION_MS + "ms");
   root.style.setProperty("--answer-feedback-ms", CONFIG.ANSWER_FEEDBACK_MS + "ms");
 }
@@ -177,6 +176,7 @@ function renderMap(selectedMapAssets) {
 
   screen.appendChild(mapCard);
   root.appendChild(screen);
+  preloadMapFlyFrames(CONFIG.MAP_FLY_FRAMES);
 }
 
 // Renders one randomized image per category using CONFIG.MAP_ASSET_LAYOUT placement.
@@ -217,25 +217,74 @@ function startCountdown(element, totalMs) {
   const intervalId = setInterval(tick, 250);
 }
 
-// Wind animation that blows the map away, then calls the callback when done.
-// A short Hebrew message appears while the map flies off. The map is never re-rendered,
-// so the player cannot reopen it.
+// Sprite-style map fly-away: plays CONFIG.MAP_FLY_FRAMES one after another, then calls
+// the callback. A short Hebrew message appears while the map flies off. The map is never
+// re-rendered, so the player cannot reopen it.
 function renderMapBlowAway(callback) {
   const mapCard = document.querySelector(".map-card");
-  if (!mapCard) {
+  const screen = mapCard ? mapCard.closest(".screen") : null;
+  if (!mapCard || !screen) {
     callback();
     return;
   }
-  mapCard.classList.remove("map-reveal");
-  mapCard.classList.add("map-blow-away");
 
-  const screen = mapCard.closest(".screen") || getRoot();
-  // Clear reminder that the map is gone for good and cannot be reopened.
+  screen.classList.add("is-map-flying");
+  mapCard.className = "map-fly-sequence";
+  mapCard.innerHTML = "";
+
+  const flyImage = createElement("img", "map-fly-frame");
+  flyImage.alt = "";
+  mapCard.appendChild(flyImage);
+
   const message = createElement("div", "wind-message", "💨 הרוח העיפה את המפה! אי אפשר לפתוח אותה שוב");
   screen.appendChild(message);
 
-  // Fallback slightly longer than the wind transition, in case animationend never fires.
-  runAfterAnimation(mapCard, callback, CONFIG.WIND_TRANSITION_MS + 150);
+  playMapFlyFrames(
+    flyImage,
+    CONFIG.MAP_FLY_FRAMES || [],
+    CONFIG.MAP_FLY_FRAME_MS || 370,
+    callback
+  );
+}
+
+// Preloads fly frames during the map viewing phase so frame swaps do not flicker.
+function preloadMapFlyFrames(frames) {
+  if (!frames || !frames.length) {
+    return;
+  }
+  frames.forEach(function (src) {
+    const probe = new Image();
+    probe.src = src;
+  });
+}
+
+// Shows each fly frame in order like a short sprite movie, then runs the callback.
+function playMapFlyFrames(imageElement, frames, frameMs, callback) {
+  if (!frames.length) {
+    callback();
+    return;
+  }
+
+  let frameIndex = 0;
+  imageElement.src = frames[0];
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    imageElement.src = frames[frames.length - 1];
+    setTimeout(callback, 200);
+    return;
+  }
+
+  function showNext() {
+    frameIndex += 1;
+    if (frameIndex >= frames.length) {
+      callback();
+      return;
+    }
+    imageElement.src = frames[frameIndex];
+    setTimeout(showNext, frameMs);
+  }
+
+  setTimeout(showNext, frameMs);
 }
 
 // ---- Sailing-between-islands screen ----

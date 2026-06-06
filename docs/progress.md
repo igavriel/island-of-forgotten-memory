@@ -10,15 +10,15 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Difficulty selection on the welcome screen: `קל`, `בינוני`, `קשה`.
 - Randomized map asset selection by difficulty: 3, 5, or 7 images, fresh each game.
 - Asset-generated question route by difficulty: 5, 5, or 7 questions per run. Each selected image can use `question1`/`answer1` and, when more questions are needed than images, `question2`/`answer2`; answer options are unique values from the same category and answer field, with up to 4 options.
-- Treasure map shows the selected randomized assets for MAP_VIEW_TIME_MS, then blows away; cannot be reopened.
+- Treasure map shows the selected randomized assets for MAP_VIEW_TIME_MS, then plays a three-frame fly-away sprite (`MAP_FLY_FRAMES`); cannot be reopened.
 - Fixed 16:9 responsive viewport: `#app` centers `#game-viewport` inside the browser window with letterboxing (`--letterbox-bg: #071827`) when the window is not 16:9. All backgrounds (`#screen-bg`) and UI render inside the viewport; backgrounds use `cover` with a very light scrim. Screens inject into `#screen`.
 - Per-question flow with up to 4 shuffled unique answers (original index preserved).
 - Correct answers advance; wrong answers show the loss screen immediately with progress.
 - Completing all questions shows the victory screen; the end-screen button ("לתפריט הראשי") returns to the main menu, where the player picks a difficulty to start a fresh randomized run.
 - Debug mode (answer reveal + skip button + console reminder).
 - Generated asset-question route validated for easy/medium/hard counts, unique generated question ids, and valid `correctIndex` values.
-- UX polish: start-screen panel, map reveal, wind blow-away with "הרוח העיפה את המפה!" message, sailing transition with ship + destination island placeholders, larger answer buttons with hover/pressed feedback, visible keyboard focus.
-- Animation/transition tuning (Phase 7B): configurable timings (WIND_TRANSITION_MS, SAILING_TRANSITION_MS, ANSWER_FEEDBACK_MS) synced into CSS variables at startup; pulsing "memorize" map cue; clearer "map cannot be reopened" wind message; island/character entrance; answer feedback flash (green pulse correct / red shake wrong) with a brief click lock; win celebration (trophy pop + confetti); optional numeric countdown (SHOW_COUNTDOWN_NUMBER); and prefers-reduced-motion support that keeps the game playable.
+- UX polish: start-screen panel, map reveal, fly-away sprite sequence with "הרוח העיפה את המפה!" message, sailing transition with ship + destination island placeholders, larger answer buttons with hover/pressed feedback, visible keyboard focus.
+- Animation/transition tuning (Phase 7B): configurable timings (MAP_FLY_FRAME_MS, SAILING_TRANSITION_MS, ANSWER_FEEDBACK_MS); pulsing "memorize" map cue; clearer "map cannot be reopened" wind message; island/character entrance; answer feedback flash (green pulse correct / red shake wrong) with a brief click lock; win celebration (trophy pop + confetti); optional numeric countdown (SHOW_COUNTDOWN_NUMBER); and prefers-reduced-motion support that keeps the game playable.
 - Lose screen now shows the chosen wrong answer, the correct answer, progress ("הגעת לשאלה X מתוך Y"), and correct-question count, on a shared full-screen background (`assets/endings/ending_screen.png`); win screen shows a final score.
 - Basic responsive layout for desktop and small screens.
 - Image-ready: static asset folders, `USE_IMAGE_ASSETS` flag, map asset layout, and an asset integration guide.

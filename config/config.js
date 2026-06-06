@@ -6,7 +6,6 @@ const CONFIG = {
     MAP_VIEW_TIME_MS: 10000,
 
     // Animation timings in milliseconds.
-    WIND_TRANSITION_MS: 1100,
     SAILING_TRANSITION_MS: 1800,
     ANSWER_FEEDBACK_MS: 420,
 
@@ -20,6 +19,12 @@ const CONFIG = {
     USE_SCREEN_PLACEHOLDER_IMAGES: true,
     START_SCREEN_IMAGE: "assets/ui/start_screen.jpeg",
     MAP_BACKGROUND_IMAGE: "assets/map/treasure_map.png",
+    MAP_FLY_FRAMES: [
+        "assets/map/treasure_map_fly_01.png",
+        "assets/map/treasure_map_fly_02.png",
+        "assets/map/treasure_map_fly_03.png",
+    ],
+    MAP_FLY_FRAME_MS: 500,
     LOSE_SCREEN_IMAGE: "assets/endings/lose_ending_screen.png",
     VICTORY_IMAGE: "assets/endings/win_ending_screen.png",
     SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background.png",

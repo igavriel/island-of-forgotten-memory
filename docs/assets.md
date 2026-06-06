@@ -57,6 +57,8 @@ Configured in `CONFIG`:
 
 - `START_SCREEN_IMAGE`
 - `MAP_BACKGROUND_IMAGE`
+- `MAP_FLY_FRAMES` (ordered sprite frames for the map fly-away)
+- `MAP_FLY_FRAME_MS` (milliseconds per fly frame)
 - `LOSE_SCREEN_IMAGE` (shared background for every wrong answer)
 - `SAILING_BACKGROUND_IMAGE`
 - `VICTORY_IMAGE`

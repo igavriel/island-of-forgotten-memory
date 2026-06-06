@@ -46,7 +46,8 @@ Edit [config/config.js](config/config.js).
 | Setting | Purpose |
 | --- | --- |
 | `MAP_VIEW_TIME_MS` | How long the map is visible |
-| `WIND_TRANSITION_MS` | Wind animation duration |
+| `MAP_FLY_FRAMES` | Ordered sprite images for the map fly-away |
+| `MAP_FLY_FRAME_MS` | Milliseconds per fly-away frame |
 | `SAILING_TRANSITION_MS` | Transition duration between questions |
 | `ANSWER_FEEDBACK_MS` | Delay after answer click feedback |
 | `SHOW_COUNTDOWN_NUMBER` | Optional numeric countdown on the map |
