@@ -18,7 +18,7 @@ SAILING_SHOW_LAYOUT_GUIDES: true,  // optional but recommended
 | --- | --- |
 | `SAILING_LAYOUT_PICKER` | Turns on click-to-log mode on the sailing screen. **Required** for the picker. |
 | `SAILING_SHOW_LAYOUT_GUIDES` | Draws dashed sea / island / ship / dock guides. Also shown when `SAILING_LAYOUT_PICKER` or `DEBUG_MODE` is on. |
-| `DEBUG_MODE` | Shows correct answers and other dev aids. Does **not** enable the layout picker. |
+| `DEBUG_MODE` | Shows correct answers and other dev aids (`js/devTools.js`). Does **not** enable the layout picker. |
 
 While `SAILING_LAYOUT_PICKER` is `true`, sailing gameplay is disabled on that
 screen (no ship movement, no island advance). Only layout measurement works.

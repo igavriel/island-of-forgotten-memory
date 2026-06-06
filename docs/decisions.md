@@ -2,7 +2,7 @@
 
 Locked-in design and technical decisions. Update when one changes.
 
-- JS module split: `utils.js` (generic), `gameLogic.js` (map/question generation), `layoutGeometry.js` (percent layout math), `renderer.js` (DOM), `gameState.js` (flow).
+- JS module split: `utils.js` (generic), `gameLogic.js` (map/question generation), `layoutGeometry.js` (percent layout math), `devTools.js` (debug/layout picker), `renderer.js` (DOM), `gameState.js` (flow). Dev styles in `css/devTools.css`.
 - Static HTML site only (no backend).
 - No npm and no build step.
 - Vanilla JavaScript only (no framework).

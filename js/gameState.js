@@ -126,15 +126,6 @@ function winGame() {
   renderWinScreen(gameState.selectedQuestions.length, gameState.difficulty);
 }
 
-// Debug tool: automatically answer the current question correctly (only active in DEBUG_MODE).
-function debugAnswerCorrectly() {
-  if (!CONFIG.DEBUG_MODE || gameState.finished) {
-    return;
-  }
-  const currentQuestion = gameState.selectedQuestions[gameState.currentQuestionIndex];
-  answerCurrentIsland(currentQuestion.correctIndex);
-}
-
 // Cancel the map timer if it is active.
 function clearMapTimer() {
   if (gameState.mapTimerId !== null) {

@@ -36,6 +36,7 @@ Use simple modular files:
 - js/utils.js for generic helpers
 - js/layoutGeometry.js for percent layout math
 - js/gameLogic.js for map/question route generation
+- js/devTools.js for DEBUG_MODE, layout picker, and dev overlays
 - js/renderer.js for DOM rendering
 - js/gameState.js for game flow
 - js/main.js for startup

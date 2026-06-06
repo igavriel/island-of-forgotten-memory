@@ -1,0 +1,21 @@
+DevTools extraction — automated smoke log (after)
+Branch: refactor/dev-tools
+
+## Grep verification
+
+- CONFIG.DEBUG_MODE / picker logic: only in js/devTools.js
+- renderer.js: no CONFIG.DEBUG_MODE references
+- style.css: no debug/guide/picker/playtest rules (moved to devTools.css)
+
+## Dev globals (browser console after load)
+
+typeof initDevTools === "function"
+typeof shouldShowSailingGuides === "function"
+typeof debugAnswerCorrectly === "function"
+typeof renderStartScreen === "function"
+
+## Manual browser regression (user)
+
+Production (all dev flags false): P1–P7 from devTools plan
+Debug (DEBUG_MODE true): D1–D5
+Picker (SAILING_LAYOUT_PICKER true): L1–L5

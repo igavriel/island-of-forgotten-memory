@@ -22,7 +22,9 @@ css/style.css
 js/utils.js           # generic helpers (shuffle, clamp, pickRandom)
 js/layoutGeometry.js  # percent rect/circle layout math
 js/gameLogic.js       # map asset selection and question route generation
+js/devTools.js        # DEBUG_MODE, layout picker, sailing guides, playtest dev UI
 js/renderer.js        # DOM rendering
+css/devTools.css      # styles for debug and layout-tuning UI
 js/gameState.js       # game flow
 js/main.js       # startup
 docs/

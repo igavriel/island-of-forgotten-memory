@@ -33,7 +33,9 @@ config/riddles.js     # RIDDLES pool
 js/utils.js            # generic helpers
 js/layoutGeometry.js   # percent layout math
 js/gameLogic.js        # map/question route generation
+js/devTools.js         # debug mode and layout picker
 js/renderer.js         # DOM rendering
+css/devTools.css       # dev tool styles
 js/gameState.js        # state + transitions
 js/main.js        # wiring / entry
 README.md

@@ -269,87 +269,6 @@ function getSailingLayout() {
   );
 }
 
-function shouldShowSailingGuides() {
-  return CONFIG.SAILING_SHOW_LAYOUT_GUIDES || CONFIG.SAILING_LAYOUT_PICKER || CONFIG.DEBUG_MODE;
-}
-
-function isSailingLayoutPickerActive() {
-  return Boolean(CONFIG.SAILING_LAYOUT_PICKER);
-}
-
-function updateSailingLayoutPickerHud(hud, lines) {
-  hud.innerHTML = "";
-  lines.forEach(function (line) {
-    hud.appendChild(createElement("p", "sailing-picker-line", line));
-  });
-}
-
-function attachSailingLayoutPicker(scene, hud) {
-  let seaCorner = null;
-
-  scene.addEventListener("click", function (event) {
-    const point = getScenePercentFromEvent(scene, event);
-    const x = formatLayoutPercent(point.x);
-    const y = formatLayoutPercent(point.y);
-
-    if (event.shiftKey) {
-      if (!seaCorner) {
-        seaCorner = { x: x, y: y };
-        console.log("[SAILING_LAYOUT] Sea corner 1:", seaCorner);
-        console.log("Shift+click the opposite sea corner.");
-        updateSailingLayoutPickerHud(hud, [
-          "Layout picker active",
-          "Sea corner 1: x " + x + ", y " + y,
-          "Shift+click opposite sea corner",
-        ]);
-        return;
-      }
-
-      const sea = buildSeaLayoutFromCorners(seaCorner, { x: x, y: y });
-      seaCorner = null;
-      const snippet =
-        "sea: { x: " +
-        sea.x +
-        ", y: " +
-        sea.y +
-        ", widthPercent: " +
-        sea.widthPercent +
-        ", heightPercent: " +
-        sea.heightPercent +
-        " }";
-      console.log("[SAILING_LAYOUT] Sea rectangle:", sea);
-      console.log("Paste into SAILING_LAYOUT:", snippet);
-      updateSailingLayoutPickerHud(hud, [
-        "Layout picker active",
-        "Sea: x " + sea.x + ", y " + sea.y,
-        "width " + sea.widthPercent + "%, height " + sea.heightPercent + "%",
-        "Full snippet logged to console (F12)",
-      ]);
-      return;
-    }
-
-    const layout = getSailingLayout();
-    const islandSnippet =
-      "island: { x: " + x + ", y: " + y + ", sizePercent: " + layout.island.sizePercent + " }";
-    const shipSnippet =
-      "ship: { x: " + x + ", y: " + y + ", sizePercent: " + layout.ship.sizePercent + " }";
-    const dockSnippet =
-      "dock: { x: " + x + ", y: " + y + ", sizePercent: " + layout.dock.sizePercent + " }";
-
-    console.log("[SAILING_LAYOUT] Click point:", { x: x, y: y });
-    console.log("Island:", islandSnippet);
-    console.log("Ship:  ", shipSnippet);
-    console.log("Dock:  ", dockSnippet);
-
-    updateSailingLayoutPickerHud(hud, [
-      "Layout picker active — point: x " + x + ", y " + y,
-      "Click — center for island / ship / dock (see console)",
-      "Shift+click twice — sea rectangle (opposite corners)",
-      "Open console: F12 → Console",
-    ]);
-  });
-}
-
 // Positions a rectangle by center (x/y %) and width/height as % of the scene.
 function applyRectLayout(el, layout) {
   el.style.left = layout.x + "%";
@@ -372,18 +291,6 @@ function applyCircleLayout(el, layout, imageSlot) {
   } else {
     el.style.aspectRatio = "1";
   }
-}
-
-function appendSailingCircleGuide(scene, layout, guideClass) {
-  const guide = createElement("div", "sailing-guide sailing-circle-guide " + guideClass);
-  applyCircleLayout(guide, layout);
-  scene.appendChild(guide);
-}
-
-function appendSailingRectGuide(scene, layout, guideClass) {
-  const guide = createElement("div", "sailing-guide sailing-rect-guide " + guideClass);
-  applyRectLayout(guide, layout);
-  scene.appendChild(guide);
 }
 
 function prefersReducedMotion() {
@@ -427,19 +334,13 @@ function renderSailing(questionNumber, totalQuestions, callback) {
   setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen sailing-screen fade-in");
   const layoutPicker = isSailingLayoutPickerActive();
-  const scene = createElement(
-    "div",
-    "sailing-scene" + (layoutPicker ? " sailing-scene--layout-picker" : "")
-  );
+  const scene = createElement("div", "sailing-scene" + getSailingScenePickerClass());
   const layout = getSailingLayout();
   const travelMs = CONFIG.SAILING_SHIP_TRAVEL_MS || 1200;
   let isMoving = false;
 
   if (shouldShowSailingGuides()) {
-    appendSailingRectGuide(scene, layout.sea, "sailing-guide-sea");
-    appendSailingCircleGuide(scene, layout.island, "sailing-guide-island");
-    appendSailingCircleGuide(scene, layout.ship, "sailing-guide-ship");
-    appendSailingCircleGuide(scene, layout.dock, "sailing-guide-dock");
+    appendSailingLayoutGuides(scene, layout);
   }
 
   const seaHitbox = createElement("div", "sailing-rect sailing-sea-hitbox");
@@ -498,24 +399,7 @@ function renderSailing(questionNumber, totalQuestions, callback) {
 
   screen.appendChild(scene);
 
-  if (layoutPicker) {
-    const pickerHud = createElement("div", "sailing-layout-picker-hud");
-    updateSailingLayoutPickerHud(pickerHud, [
-      "Layout picker active",
-      "Click — center (island / ship / dock) → console",
-      "Shift+click ×2 — sea rectangle corners → console",
-      "F12 → Console",
-    ]);
-    screen.appendChild(pickerHud);
-    attachSailingLayoutPicker(scene, pickerHud);
-    screen.appendChild(
-      createElement(
-        "p",
-        "sailing-message sailing-message--picker",
-        "Layout picker: click the scene — values in console (F12)"
-      )
-    );
-  } else {
+  if (!appendSailingPickerUI(screen, scene, layout)) {
     screen.appendChild(
       createElement("p", "sailing-message", "לחצו על הים כדי לשוט, ועל האי כדי לעגון")
     );
@@ -570,11 +454,7 @@ function renderIsland(questionData, questionIndex, totalQuestions) {
   options.forEach(function (option) {
     const button = createElement("button", "option-button", option.text);
 
-    // In debug mode, mark the correct answer.
-    if (CONFIG.DEBUG_MODE && option.originalIndex === questionData.correctIndex) {
-      button.classList.add("debug-correct");
-      button.textContent = option.text + "  ✓";
-    }
+    decorateDebugOptionButton(button, option, questionData);
 
     // On click, pass the original index, not the display index.
     button.addEventListener("click", function () {
@@ -599,17 +479,7 @@ function renderIsland(questionData, questionIndex, totalQuestions) {
   });
   screen.appendChild(optionsBox);
 
-  // Developer tool: skip/answer-correctly button. Documented as false for the final presentation.
-  if (CONFIG.DEBUG_MODE) {
-    const debugBox = createElement("div", "debug-box");
-    debugBox.appendChild(
-      createElement("p", "debug-note", "מצב פיתוח פעיל — התשובה הנכונה מסומנת ב-✓")
-    );
-    const skipButton = createElement("button", "debug-button", "דלג (תשובה נכונה)");
-    skipButton.addEventListener("click", debugAnswerCorrectly);
-    debugBox.appendChild(skipButton);
-    screen.appendChild(debugBox);
-  }
+  appendIslandDebugPanel(screen);
 
   root.appendChild(screen);
 }
@@ -708,27 +578,17 @@ function renderWinScreen(totalQuestions, difficulty) {
   root.appendChild(screen);
 }
 
-// Lightweight playtest/balancing summary shown on the win and lose screens.
-// Always shows progress and map time; the hint-label and debug-mode lines are shown
-// in DEBUG_MODE only. Reports the settings used this run so testers can judge difficulty.
-// No data is stored.
+// Playtest/balancing summary on win and lose screens (progress, level, map time).
 function buildPlaytestSummary(completedQuestions, totalQuestions, difficulty) {
   const box = createElement("div", "playtest-summary");
   const seconds = Math.round(CONFIG.MAP_VIEW_TIME_MS / 1000);
   const difficultyLabel = difficulty ? difficulty.label : CONFIG.DIFFICULTY_LEVELS[CONFIG.DEFAULT_DIFFICULTY].label;
-  function yesNo(value) {
-    return value ? "כן" : "לא";
-  }
   box.appendChild(
     createElement("p", "playtest-line", "השלמת " + completedQuestions + " מתוך " + totalQuestions + " שאלות")
   );
   box.appendChild(createElement("p", "playtest-line", "רמה: " + difficultyLabel));
   box.appendChild(createElement("p", "playtest-line", "זמן צפייה במפה: " + seconds + " שניות"));
-
-  // These extra balancing details are shown only in debug mode.
-  if (CONFIG.DEBUG_MODE) {
-    box.appendChild(createElement("p", "playtest-line", "מצב פיתוח: " + yesNo(CONFIG.DEBUG_MODE)));
-  }
+  appendPlaytestDebugLines(box);
   return box;
 }
 
