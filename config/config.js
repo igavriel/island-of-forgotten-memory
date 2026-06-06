@@ -19,13 +19,12 @@ const CONFIG = {
     // Screen and transition images.
     USE_SCREEN_PLACEHOLDER_IMAGES: true,
     START_SCREEN_IMAGE: "assets/ui/start_screen.jpeg",
-    MAP_BACKGROUND_IMAGE: "assets/map/map_01.png",
-    LOSE_SCREEN_IMAGE: "assets/ui/ending_screen.png",
-    VICTORY_IMAGE: "assets/endings/victory_placeholder.svg",
-    SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background_placeholder.svg",
-    SAILING_SHIP_IMAGE: "assets/ui/sailing_ship_placeholder.png",
-    SAILING_DESTINATION_ISLAND_IMAGE:
-        "assets/ui/destination_island_placeholder.png",
+    MAP_BACKGROUND_IMAGE: "assets/map/treasure_map.png",
+    LOSE_SCREEN_IMAGE: "assets/endings/lose_ending_screen.png",
+    VICTORY_IMAGE: "assets/endings/win_ending_screen.png",
+    SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background.png",
+    SAILING_SHIP_IMAGE: "assets/ui/sailing_ship.png",
+    SAILING_DESTINATION_ISLAND_IMAGE: "assets/ui/destination_island.png",
 
     // Debug aids. Must be false for final presentation.
     DEBUG_MODE: false,

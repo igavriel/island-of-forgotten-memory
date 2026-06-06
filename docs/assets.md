@@ -48,7 +48,7 @@ assets/
   characters/   # category images used on the map
   map/          # treasure map images
   ui/           # shared UI and transition images
-  endings/      # victory images (loss uses assets/ui/ending_screen.png via CONFIG)
+  endings/      # victory images (loss uses assets/endings/ending_screen.png via CONFIG)
 ```
 
 ## Screen images
