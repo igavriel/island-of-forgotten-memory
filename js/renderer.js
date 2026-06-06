@@ -1,5 +1,5 @@
 // renderer.js
-// Responsible for all DOM rendering. Holds no game state and decides no flow.
+// DOM rendering only. Holds no game state and decides no flow.
 // The flow functions (gameState.js) call the render* functions here.
 
 // The root element into which all screens are injected (#screen inside #game-viewport).
@@ -277,23 +277,6 @@ function isSailingLayoutPickerActive() {
   return Boolean(CONFIG.SAILING_LAYOUT_PICKER);
 }
 
-function formatLayoutPercent(value) {
-  return Math.round(value * 10) / 10;
-}
-
-function buildSeaLayoutFromCorners(cornerA, cornerB) {
-  const left = Math.min(cornerA.x, cornerB.x);
-  const right = Math.max(cornerA.x, cornerB.x);
-  const top = Math.min(cornerA.y, cornerB.y);
-  const bottom = Math.max(cornerA.y, cornerB.y);
-  return {
-    x: formatLayoutPercent((left + right) / 2),
-    y: formatLayoutPercent((top + bottom) / 2),
-    widthPercent: formatLayoutPercent(right - left),
-    heightPercent: formatLayoutPercent(bottom - top),
-  };
-}
-
 function updateSailingLayoutPickerHud(hud, lines) {
   hud.innerHTML = "";
   lines.forEach(function (line) {
@@ -376,33 +359,6 @@ function applyRectLayout(el, layout) {
   el.style.transform = "translate(-50%, -50%)";
 }
 
-function getRectBounds(layout) {
-  return {
-    left: layout.x - layout.widthPercent / 2,
-    right: layout.x + layout.widthPercent / 2,
-    top: layout.y - layout.heightPercent / 2,
-    bottom: layout.y + layout.heightPercent / 2,
-  };
-}
-
-function isInsideRect(layout, xPercent, yPercent) {
-  const bounds = getRectBounds(layout);
-  return (
-    xPercent >= bounds.left &&
-    xPercent <= bounds.right &&
-    yPercent >= bounds.top &&
-    yPercent <= bounds.bottom
-  );
-}
-
-function clampPointToRect(layout, xPercent, yPercent) {
-  const bounds = getRectBounds(layout);
-  return {
-    x: Math.min(bounds.right, Math.max(bounds.left, xPercent)),
-    y: Math.min(bounds.bottom, Math.max(bounds.top, yPercent)),
-  };
-}
-
 // Positions a circle by center (x/y %) and diameter (sizePercent of scene width).
 // Image slots use the circle as a size anchor but allow the art to extend beyond it.
 function applyCircleLayout(el, layout, imageSlot) {
@@ -415,65 +371,6 @@ function applyCircleLayout(el, layout, imageSlot) {
     el.style.overflow = "visible";
   } else {
     el.style.aspectRatio = "1";
-  }
-}
-
-function getScenePercentFromEvent(scene, event) {
-  const rect = scene.getBoundingClientRect();
-  return {
-    x: ((event.clientX - rect.left) / rect.width) * 100,
-    y: ((event.clientY - rect.top) / rect.height) * 100,
-  };
-}
-
-// Hit test using scene pixels so the circle stays round on the 16:9 viewport.
-function isInsideCircle(scene, layout, xPercent, yPercent) {
-  const rect = scene.getBoundingClientRect();
-  const cx = (layout.x / 100) * rect.width;
-  const cy = (layout.y / 100) * rect.height;
-  const radius = ((layout.sizePercent / 100) * rect.width) / 2;
-  const px = (xPercent / 100) * rect.width;
-  const py = (yPercent / 100) * rect.height;
-  const dx = px - cx;
-  const dy = py - cy;
-  return dx * dx + dy * dy <= radius * radius;
-}
-
-function clampPointToCircle(scene, layout, xPercent, yPercent) {
-  const rect = scene.getBoundingClientRect();
-  const cx = (layout.x / 100) * rect.width;
-  const cy = (layout.y / 100) * rect.height;
-  const radius = ((layout.sizePercent / 100) * rect.width) / 2;
-  const px = (xPercent / 100) * rect.width;
-  const py = (yPercent / 100) * rect.height;
-  const dx = px - cx;
-  const dy = py - cy;
-  const dist = Math.sqrt(dx * dx + dy * dy);
-  if (dist <= radius) {
-    return { x: xPercent, y: yPercent };
-  }
-  if (dist === 0) {
-    return { x: layout.x, y: layout.y };
-  }
-  const scale = radius / dist;
-  return {
-    x: (((cx + dx * scale) / rect.width) * 100),
-    y: (((cy + dy * scale) / rect.height) * 100),
-  };
-}
-
-function appendCircleImage(parent, src, placeholderEl, imgClass, altText) {
-  if (src) {
-    const img = document.createElement("img");
-    img.src = src;
-    img.alt = altText || "";
-    img.className = "sailing-circle-fill " + imgClass;
-    img.addEventListener("error", function () {
-      img.replaceWith(placeholderEl);
-    });
-    parent.appendChild(img);
-  } else {
-    parent.appendChild(placeholderEl);
   }
 }
 
@@ -552,11 +449,11 @@ function renderSailing(questionNumber, totalQuestions, callback) {
   const islandWrap = createElement("div", "sailing-circle destination-island sailing-image-slot");
   applyCircleLayout(islandWrap, layout.island, true);
   const islandPlaceholder = createElement("span", "sailing-circle-fill destination-island-emoji", "🏝️");
-  appendCircleImage(
+  appendVisual(
     islandWrap,
     CONFIG.SAILING_DESTINATION_ISLAND_IMAGE,
     islandPlaceholder,
-    "destination-island-img",
+    "sailing-circle-fill destination-island-img",
     ""
   );
   scene.appendChild(islandWrap);
@@ -564,7 +461,13 @@ function renderSailing(questionNumber, totalQuestions, callback) {
   const shipWrap = createElement("div", "sailing-circle sailing-ship sailing-image-slot");
   applyCircleLayout(shipWrap, layout.ship, true);
   const shipPlaceholder = createElement("span", "sailing-circle-fill sailing-ship-emoji", "⛵");
-  appendCircleImage(shipWrap, CONFIG.SAILING_SHIP_IMAGE, shipPlaceholder, "sailing-ship-img", "");
+  appendVisual(
+    shipWrap,
+    CONFIG.SAILING_SHIP_IMAGE,
+    shipPlaceholder,
+    "sailing-circle-fill sailing-ship-img",
+    ""
+  );
   scene.appendChild(shipWrap);
 
   if (!layoutPicker) {

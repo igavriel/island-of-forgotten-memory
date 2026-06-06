@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-06-05
+
+- Split JS modules on branch `refactor/module-boundaries`: `js/gameLogic.js` (map/question route), `js/layoutGeometry.js` (percent rect math). `js/utils.js` keeps generic helpers only. Removed dead `isInsideCircle` / `clampPointToCircle`; merged sailing `appendCircleImage` into `appendVisual`. Script load order updated in `index.html`. See [refactor-module-boundaries-plan.md](refactor-module-boundaries-plan.md).
+
 ## 2026-06-06
 
 - Added `CONFIG.SAILING_LAYOUT_PICKER`: click the sailing scene to log `SAILING_LAYOUT` percentages to the browser console (F12). Normal click → island/ship/dock center; Shift+click twice → sea rectangle. English debug instructions and on-screen HUD in [docs/sailing-layout-krita.md](sailing-layout-krita.md).

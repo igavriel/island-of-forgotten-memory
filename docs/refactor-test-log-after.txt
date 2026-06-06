@@ -1,0 +1,30 @@
+Module boundary refactor — automated smoke log (after)
+Branch: refactor/module-boundaries
+Base commit: e489bcc964458ded4fa74905e7b7c9ad0112f50c
+Date: 2026-06-05
+
+## Node smoke (config + utils + layoutGeometry + gameLogic)
+
+geometryOk: true
+  getRectBounds({ x:50, y:80, widthPercent:95, heightPercent:40 })
+    => { left: 2.5, right: 97.5, top: 60, bottom: 100 }
+  buildSeaLayoutFromCorners({ x:10, y:20 }, { x:30, y:50 })
+    => { x: 20, y: 35, widthPercent: 20, heightPercent: 30 }
+
+assetsOk: true (count 5, volcano present)
+
+questionsOk: structure valid (5 questions, correctIndex in range, questionNumber stripped)
+  Note: some questions have 3 options when a category has fewer than 4 unique answers (pre-existing).
+
+## Grep verification
+
+- selectRandomMapAssets: only in js/gameLogic.js
+- getRectBounds: only in js/layoutGeometry.js
+- isInsideCircle: removed
+- appendCircleImage: removed
+
+## Manual browser regression (user)
+
+Run on file:// after pull:
+- L1–L14 from docs/refactor-module-boundaries-plan.md
+- V1–V7 screenshot compare if baseline captured

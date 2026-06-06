@@ -19,9 +19,11 @@ config/
   config.js      # game settings
   assets.js      # categorized image assets and question data
 css/style.css
-js/utils.js      # shuffle, random selection, question generation
-js/renderer.js   # DOM rendering
-js/gameState.js  # game flow
+js/utils.js           # generic helpers (shuffle, clamp, pickRandom)
+js/layoutGeometry.js  # percent rect/circle layout math
+js/gameLogic.js       # map asset selection and question route generation
+js/renderer.js        # DOM rendering
+js/gameState.js       # game flow
 js/main.js       # startup
 docs/
 assets/

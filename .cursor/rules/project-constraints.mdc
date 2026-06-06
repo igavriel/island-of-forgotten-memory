@@ -30,9 +30,11 @@ index.html
 css/style.css
 config/config.js      # CONFIG settings
 config/riddles.js     # RIDDLES pool
-js/utils.js       # shuffle, helpers
-js/renderer.js    # DOM rendering
-js/gameState.js   # state + transitions
+js/utils.js            # generic helpers
+js/layoutGeometry.js   # percent layout math
+js/gameLogic.js        # map/question route generation
+js/renderer.js         # DOM rendering
+js/gameState.js        # state + transitions
 js/main.js        # wiring / entry
 README.md
 ```

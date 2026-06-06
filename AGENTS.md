@@ -33,7 +33,9 @@ This project is a static HTML5 Hebrew RTL point-and-click memory game.
 Use simple modular files:
 - config/config.js for settings
 - config/assets.js for categorized assets and generated question data
-- js/utils.js for helpers
+- js/utils.js for generic helpers
+- js/layoutGeometry.js for percent layout math
+- js/gameLogic.js for map/question route generation
 - js/renderer.js for DOM rendering
 - js/gameState.js for game flow
 - js/main.js for startup
