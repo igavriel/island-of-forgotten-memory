@@ -59,7 +59,6 @@ Edit [config/config.js](config/config.js).
 | `ANSWER_FEEDBACK_MS` | Delay after answer click feedback |
 | `LOSE_SCREEN_IMAGE` | Shared full-screen background for every wrong answer |
 | `DEBUG_MODE` | Shows correct answers and a skip button; keep `false` for final presentation |
-| `SHOW_CORRECT_ANSWER_ON_LOSS` | Shows the correct answer after a wrong answer |
 | `DIFFICULTY_LEVELS` | Difficulty labels plus image/question counts |
 | `REQUIRED_MAP_CATEGORY` | Category that must appear on every generated map |
 | `MAP_ASSET_LAYOUT` | Relative `x`, `y`, and `sizePercent` map placement per category |

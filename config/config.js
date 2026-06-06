@@ -44,9 +44,6 @@ const CONFIG = {
     // Debug aids. Must be false for final presentation.
     DEBUG_MODE: false,
 
-    // Show the correct answer after a wrong answer.
-    SHOW_CORRECT_ANSWER_ON_LOSS: true,
-
     // Difficulty controls how many map images are shown and how many questions are asked.
     DEFAULT_DIFFICULTY: "medium",
     REQUIRED_MAP_CATEGORY: "volcano",

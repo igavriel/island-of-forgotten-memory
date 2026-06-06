@@ -503,15 +503,12 @@ function renderLoseScreen(questionData, reachedQuestion, totalQuestions, chosenI
     wrongRow.appendChild(createElement("span", "answer-value", questionData.options[chosenIndex]));
     review.appendChild(wrongRow);
   }
-  // The correct answer is shown only when enabled (a balancing/playtest option).
-  if (CONFIG.SHOW_CORRECT_ANSWER_ON_LOSS) {
-    const correctRow = createElement("p", "answer-row answer-correct");
-    correctRow.appendChild(createElement("span", "answer-label", "התשובה הנכונה:"));
-    correctRow.appendChild(
-      createElement("span", "answer-value", questionData.options[questionData.correctIndex])
-    );
-    review.appendChild(correctRow);
-  }
+  const correctRow = createElement("p", "answer-row answer-correct");
+  correctRow.appendChild(createElement("span", "answer-label", "התשובה הנכונה:"));
+  correctRow.appendChild(
+    createElement("span", "answer-value", questionData.options[questionData.correctIndex])
+  );
+  review.appendChild(correctRow);
   screen.appendChild(review);
 
   screen.appendChild(

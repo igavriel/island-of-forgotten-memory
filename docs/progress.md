@@ -27,7 +27,7 @@ Polished playable prototype. The full loop works end to end with emoji/text plac
 - Image-ready: static asset folders, path-based image loading with emoji fallbacks, map asset layout, and an asset integration guide.
 - Screen-level art: full-screen backgrounds inside `#game-viewport` on `#screen-bg` (`background-size: cover`, light scrim). Letterboxing outside the viewport when the browser window is not 16:9.
 - Custom pirate hook mouse cursor: `assets/ui/hook-64x64.svg`, applied site-wide via CSS (`cursor: url(...) 6 6, pointer` with fallback). CSS-only; no JavaScript.
-- Playtest/balancing: win and lose screens show a summary (islands completed + map time always; hint-labels and debug-mode lines in DEBUG_MODE only); SHOW_CORRECT_ANSWER_ON_LOSS flag; manual playtest log in docs/playtest.md. No stored data.
+- Playtest/balancing: win and lose screens show a summary (islands completed + map time always; hint-labels and debug-mode lines in DEBUG_MODE only); lose screen always reveals the correct answer; manual playtest log in docs/playtest.md. No stored data.
 - Dynamic map asset layer: `config/assets.js` provides categorized image pools, `CONFIG.MAP_ASSET_LAYOUT` controls relative `x`, `y`, and `sizePercent`, and each new run randomly selects images according to the selected difficulty. The map image is now the actual full-screen stage: assets render directly on it, the header sits at the top, and the timer bar sits at the bottom.
 - Asset question convention: each asset category now has configurable `question1` and `question2`; each image asset now has `answer1` and placeholder numeric `answer2` instead of `name`.
 

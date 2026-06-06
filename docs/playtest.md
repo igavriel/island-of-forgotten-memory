@@ -18,7 +18,6 @@ Manual playtesting only. No analytics, storage, server, or database.
 | `SAILING_SHOW_LAYOUT_GUIDES` | Show dashed layout circles while tuning |
 | `SAILING_SHIP_TRAVEL_MS` | Ship movement speed per click |
 | `DEBUG_MODE` | Marks correct answers and adds a skip button |
-| `SHOW_CORRECT_ANSWER_ON_LOSS` | Reveals the correct answer after loss |
 | `DIFFICULTY_LEVELS` | Controls level labels and image/question counts |
 | `MAP_ASSET_LAYOUT` | Changes asset positions and sizes on the map |
 

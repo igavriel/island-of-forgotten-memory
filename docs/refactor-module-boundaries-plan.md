@@ -162,7 +162,7 @@ On **current `main`** (or the commit you branch from):
 5. Record in a scratch note:
    - Number of map assets shown
    - Question count
-   - That wrong answer shows correct answer (if `SHOW_CORRECT_ANSWER_ON_LOSS`)
+   - That wrong answer shows the correct answer on the lose screen
 6. Open DevTools → Console: confirm **no errors** on start and through one run.
 
 This baseline is the visual + logic reference for the branch.
