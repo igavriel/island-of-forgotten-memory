@@ -244,13 +244,13 @@ const TREE_FILES = [
     category: "tree",
     path: "assets/characters/tree_0001.png",
     answer1: "עץ אלון",
-    answer2: "בלוטים",
+    answer2: "אצטרובלים/בלוטים",
   },
   {
     category: "tree",
     path: "assets/characters/tree_0002.png",
     answer1: "עץ אשוח",
-    answer2: "אצטרובלים",
+    answer2: "אצטרובלים/בלוטים",
   },
   {
     category: "tree",
@@ -262,7 +262,7 @@ const TREE_FILES = [
     category: "tree",
     path: "assets/characters/tree_0005.png",
     answer1: "עץ ברוש",
-    answer2: "אצטרובלים",
+    answer2: "אצטרובלים/בלוטים",
   },
   {
     category: "tree",
