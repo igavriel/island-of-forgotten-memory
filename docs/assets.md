@@ -64,8 +64,13 @@ Configured in `CONFIG`:
 - `VICTORY_IMAGE`
 - `SAILING_SHIP_IMAGE`
 - `SAILING_DESTINATION_ISLAND_IMAGE`
-- `SAILING_DESTINATION_ISLAND_SIZE_PERCENT` (island sprite size on the sailing screen, same % for width and height)
-- `SAILING_SHIP_DOCK_LEFT_PERCENT` (where the ship stops, % from the left edge of the sailing scene)
+- `SAILING_SHIP_TRAVEL_MS` (milliseconds per ship move)
+- `SAILING_SHOW_LAYOUT_GUIDES` (dashed circle guides for layout tuning; hidden in normal play)
+- `SAILING_LAYOUT.sea` — rectangle: `x`, `y`, `widthPercent`, `heightPercent` (center + size as % of scene)
+- `SAILING_LAYOUT.island` / `.ship` / `.dock` — circles: `x`, `y`, `sizePercent` (center + diameter as % of scene width)
+
+Tune sailing positions in Krita against `sailing_background.png` (1672×941): see
+[sailing-layout-krita.md](sailing-layout-krita.md).
 
 All images are plain static paths. The renderer uses an image whenever a path is set; if a file is missing or fails to load, the game falls back to emoji/text without a backend or build step.
 

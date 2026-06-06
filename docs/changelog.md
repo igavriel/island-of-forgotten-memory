@@ -2,6 +2,11 @@
 
 ## 2026-06-06
 
+- Added `CONFIG.SAILING_LAYOUT_PICKER`: click the sailing scene to log `SAILING_LAYOUT` percentages to the browser console (F12). Normal click → island/ship/dock center; Shift+click twice → sea rectangle. English debug instructions and on-screen HUD in [docs/sailing-layout-krita.md](sailing-layout-krita.md).
+- Added [docs/sailing-layout-krita.md](sailing-layout-krita.md) with Krita tuning steps and pixel→percent formulas for `sailing_background.png` (1672×941).
+- Sailing sea click zone is now a configurable rectangle (`widthPercent`, `heightPercent`); island, ship, and dock remain circles.
+- Sailing island and ship images are no longer clipped to their layout circles; the circle sets the width anchor and the full image may extend beyond it.
+- Replaced auto-play sailing with point-and-click movement. `SAILING_LAYOUT` defines a rectangular sea click zone and circle slots for island, ship spawn, and dock target. Images fill circles at 100%. `SAILING_SHOW_LAYOUT_GUIDES` shows dashed tuning circles (also when `DEBUG_MODE` is on). Sea clicks move the ship; island click docks and opens the next question. Removed `SAILING_TRANSITION_MS`, CSS `sailing-ship-wave`, and the old island size/dock percent keys.
 - Removed `CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES`. Full-screen backgrounds always load when a path is passed to `setScreenBackground()`; pass `null` to clear.
 - Removed `CONFIG.SHOW_COUNTDOWN_NUMBER` and the optional numeric map countdown (`startCountdown`, `.countdown-number`). Map time is shown by the timer bar only.
 - Removed `CONFIG.USE_IMAGE_ASSETS`. Inline and map images now load whenever a path exists; emoji/text placeholders are used only when there is no path or the file fails to load.

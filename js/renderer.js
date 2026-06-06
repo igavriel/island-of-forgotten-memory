@@ -12,16 +12,8 @@ function getRoot() {
 // at startup. Other (purely cosmetic) durations stay as fixed values in the stylesheet.
 function applyAnimationTimings() {
   const root = document.documentElement;
-  root.style.setProperty("--sail-ms", CONFIG.SAILING_TRANSITION_MS + "ms");
+  root.style.setProperty("--sailing-ship-travel-ms", CONFIG.SAILING_SHIP_TRAVEL_MS + "ms");
   root.style.setProperty("--answer-feedback-ms", CONFIG.ANSWER_FEEDBACK_MS + "ms");
-  root.style.setProperty(
-    "--sailing-island-size",
-    (CONFIG.SAILING_DESTINATION_ISLAND_SIZE_PERCENT || 40) + "%"
-  );
-  root.style.setProperty(
-    "--sailing-ship-dock-left",
-    (CONFIG.SAILING_SHIP_DOCK_LEFT_PERCENT || 30) + "%"
-  );
 }
 
 // Clears the screen and returns the root element.
@@ -152,11 +144,9 @@ function renderMap(selectedMapAssets) {
   mapCard.appendChild(mapImage);
 
   const mapHeader = createElement("header", "map-header");
-  mapHeader.appendChild(createElement("h2", "map-title", "🗺️ מפת האוצר"));
-  // The pulsing cue makes the memory phase feel intentional: "memorize this now".
-  mapHeader.appendChild(
-    createElement("p", "map-subtitle memorize-cue", "זכרו את הרמזים!")
-  );
+  const mapTitle = createElement("h2", "map-title", "🗺️ מפת האוצר ");
+  mapTitle.appendChild(createElement("span", "map-subtitle memorize-cue", "זכרו את הרמזים!"));
+  mapHeader.appendChild(mapTitle);
   mapCard.appendChild(mapHeader);
 
   mapCard.appendChild(renderMapAssets(selectedMapAssets || []));
@@ -267,27 +257,300 @@ function playMapFlyFrames(imageElement, frames, frameMs, callback) {
   setTimeout(showNext, frameMs);
 }
 
-// ---- Sailing-between-islands screen ----
+// ---- Sailing-between-islands screen (point-and-click) ----
+
+function getSailingLayout() {
+  return (
+    CONFIG.SAILING_LAYOUT || {
+      sea: { x: 50, y: 68, widthPercent: 92, heightPercent: 55 },
+      island: { x: 18, y: 72, sizePercent: 30 },
+      ship: { x: 82, y: 65, sizePercent: 18 },
+      dock: { x: 34, y: 65, sizePercent: 18 },
+    }
+  );
+}
+
+function shouldShowSailingGuides() {
+  return CONFIG.SAILING_SHOW_LAYOUT_GUIDES || CONFIG.SAILING_LAYOUT_PICKER || CONFIG.DEBUG_MODE;
+}
+
+function isSailingLayoutPickerActive() {
+  return Boolean(CONFIG.SAILING_LAYOUT_PICKER);
+}
+
+function formatLayoutPercent(value) {
+  return Math.round(value * 10) / 10;
+}
+
+function buildSeaLayoutFromCorners(cornerA, cornerB) {
+  const left = Math.min(cornerA.x, cornerB.x);
+  const right = Math.max(cornerA.x, cornerB.x);
+  const top = Math.min(cornerA.y, cornerB.y);
+  const bottom = Math.max(cornerA.y, cornerB.y);
+  return {
+    x: formatLayoutPercent((left + right) / 2),
+    y: formatLayoutPercent((top + bottom) / 2),
+    widthPercent: formatLayoutPercent(right - left),
+    heightPercent: formatLayoutPercent(bottom - top),
+  };
+}
+
+function updateSailingLayoutPickerHud(hud, lines) {
+  hud.innerHTML = "";
+  lines.forEach(function (line) {
+    hud.appendChild(createElement("p", "sailing-picker-line", line));
+  });
+}
+
+function attachSailingLayoutPicker(scene, hud) {
+  let seaCorner = null;
+
+  scene.addEventListener("click", function (event) {
+    const point = getScenePercentFromEvent(scene, event);
+    const x = formatLayoutPercent(point.x);
+    const y = formatLayoutPercent(point.y);
+
+    if (event.shiftKey) {
+      if (!seaCorner) {
+        seaCorner = { x: x, y: y };
+        console.log("[SAILING_LAYOUT] Sea corner 1:", seaCorner);
+        console.log("Shift+click the opposite sea corner.");
+        updateSailingLayoutPickerHud(hud, [
+          "Layout picker active",
+          "Sea corner 1: x " + x + ", y " + y,
+          "Shift+click opposite sea corner",
+        ]);
+        return;
+      }
+
+      const sea = buildSeaLayoutFromCorners(seaCorner, { x: x, y: y });
+      seaCorner = null;
+      const snippet =
+        "sea: { x: " +
+        sea.x +
+        ", y: " +
+        sea.y +
+        ", widthPercent: " +
+        sea.widthPercent +
+        ", heightPercent: " +
+        sea.heightPercent +
+        " }";
+      console.log("[SAILING_LAYOUT] Sea rectangle:", sea);
+      console.log("Paste into SAILING_LAYOUT:", snippet);
+      updateSailingLayoutPickerHud(hud, [
+        "Layout picker active",
+        "Sea: x " + sea.x + ", y " + sea.y,
+        "width " + sea.widthPercent + "%, height " + sea.heightPercent + "%",
+        "Full snippet logged to console (F12)",
+      ]);
+      return;
+    }
+
+    const layout = getSailingLayout();
+    const islandSnippet =
+      "island: { x: " + x + ", y: " + y + ", sizePercent: " + layout.island.sizePercent + " }";
+    const shipSnippet =
+      "ship: { x: " + x + ", y: " + y + ", sizePercent: " + layout.ship.sizePercent + " }";
+    const dockSnippet =
+      "dock: { x: " + x + ", y: " + y + ", sizePercent: " + layout.dock.sizePercent + " }";
+
+    console.log("[SAILING_LAYOUT] Click point:", { x: x, y: y });
+    console.log("Island:", islandSnippet);
+    console.log("Ship:  ", shipSnippet);
+    console.log("Dock:  ", dockSnippet);
+
+    updateSailingLayoutPickerHud(hud, [
+      "Layout picker active — point: x " + x + ", y " + y,
+      "Click — center for island / ship / dock (see console)",
+      "Shift+click twice — sea rectangle (opposite corners)",
+      "Open console: F12 → Console",
+    ]);
+  });
+}
+
+// Positions a rectangle by center (x/y %) and width/height as % of the scene.
+function applyRectLayout(el, layout) {
+  el.style.left = layout.x + "%";
+  el.style.top = layout.y + "%";
+  el.style.width = layout.widthPercent + "%";
+  el.style.height = layout.heightPercent + "%";
+  el.style.transform = "translate(-50%, -50%)";
+}
+
+function getRectBounds(layout) {
+  return {
+    left: layout.x - layout.widthPercent / 2,
+    right: layout.x + layout.widthPercent / 2,
+    top: layout.y - layout.heightPercent / 2,
+    bottom: layout.y + layout.heightPercent / 2,
+  };
+}
+
+function isInsideRect(layout, xPercent, yPercent) {
+  const bounds = getRectBounds(layout);
+  return (
+    xPercent >= bounds.left &&
+    xPercent <= bounds.right &&
+    yPercent >= bounds.top &&
+    yPercent <= bounds.bottom
+  );
+}
+
+function clampPointToRect(layout, xPercent, yPercent) {
+  const bounds = getRectBounds(layout);
+  return {
+    x: Math.min(bounds.right, Math.max(bounds.left, xPercent)),
+    y: Math.min(bounds.bottom, Math.max(bounds.top, yPercent)),
+  };
+}
+
+// Positions a circle by center (x/y %) and diameter (sizePercent of scene width).
+// Image slots use the circle as a size anchor but allow the art to extend beyond it.
+function applyCircleLayout(el, layout, imageSlot) {
+  el.style.left = layout.x + "%";
+  el.style.top = layout.y + "%";
+  el.style.width = layout.sizePercent + "%";
+  el.style.transform = "translate(-50%, -50%)";
+  if (imageSlot) {
+    el.style.height = "auto";
+    el.style.overflow = "visible";
+  } else {
+    el.style.aspectRatio = "1";
+  }
+}
+
+function getScenePercentFromEvent(scene, event) {
+  const rect = scene.getBoundingClientRect();
+  return {
+    x: ((event.clientX - rect.left) / rect.width) * 100,
+    y: ((event.clientY - rect.top) / rect.height) * 100,
+  };
+}
+
+// Hit test using scene pixels so the circle stays round on the 16:9 viewport.
+function isInsideCircle(scene, layout, xPercent, yPercent) {
+  const rect = scene.getBoundingClientRect();
+  const cx = (layout.x / 100) * rect.width;
+  const cy = (layout.y / 100) * rect.height;
+  const radius = ((layout.sizePercent / 100) * rect.width) / 2;
+  const px = (xPercent / 100) * rect.width;
+  const py = (yPercent / 100) * rect.height;
+  const dx = px - cx;
+  const dy = py - cy;
+  return dx * dx + dy * dy <= radius * radius;
+}
+
+function clampPointToCircle(scene, layout, xPercent, yPercent) {
+  const rect = scene.getBoundingClientRect();
+  const cx = (layout.x / 100) * rect.width;
+  const cy = (layout.y / 100) * rect.height;
+  const radius = ((layout.sizePercent / 100) * rect.width) / 2;
+  const px = (xPercent / 100) * rect.width;
+  const py = (yPercent / 100) * rect.height;
+  const dx = px - cx;
+  const dy = py - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  if (dist <= radius) {
+    return { x: xPercent, y: yPercent };
+  }
+  if (dist === 0) {
+    return { x: layout.x, y: layout.y };
+  }
+  const scale = radius / dist;
+  return {
+    x: (((cx + dx * scale) / rect.width) * 100),
+    y: (((cy + dy * scale) / rect.height) * 100),
+  };
+}
+
+function appendCircleImage(parent, src, placeholderEl, imgClass, altText) {
+  if (src) {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = altText || "";
+    img.className = "sailing-circle-fill " + imgClass;
+    img.addEventListener("error", function () {
+      img.replaceWith(placeholderEl);
+    });
+    parent.appendChild(img);
+  } else {
+    parent.appendChild(placeholderEl);
+  }
+}
+
+function appendSailingCircleGuide(scene, layout, guideClass) {
+  const guide = createElement("div", "sailing-guide sailing-circle-guide " + guideClass);
+  applyCircleLayout(guide, layout);
+  scene.appendChild(guide);
+}
+
+function appendSailingRectGuide(scene, layout, guideClass) {
+  const guide = createElement("div", "sailing-guide sailing-rect-guide " + guideClass);
+  applyRectLayout(guide, layout);
+  scene.appendChild(guide);
+}
+
+function prefersReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function sailShipTo(shipEl, x, y, travelMs, onComplete) {
+  if (prefersReducedMotion()) {
+    shipEl.style.transition = "none";
+    shipEl.style.left = x + "%";
+    shipEl.style.top = y + "%";
+    if (onComplete) {
+      onComplete();
+    }
+    return;
+  }
+
+  shipEl.style.transition =
+    "left " + travelMs + "ms ease-out, top " + travelMs + "ms ease-out";
+  shipEl.offsetHeight;
+  shipEl.style.left = x + "%";
+  shipEl.style.top = y + "%";
+
+  let done = false;
+  function finish() {
+    if (done) {
+      return;
+    }
+    done = true;
+    shipEl.removeEventListener("transitionend", finish);
+    if (onComplete) {
+      onComplete();
+    }
+  }
+  shipEl.addEventListener("transitionend", finish);
+  setTimeout(finish, travelMs + 80);
+}
+
 function renderSailing(questionNumber, totalQuestions, callback) {
   const root = clearScreen();
-  // Full-screen 16:9 sea background (same #screen-bg layer as start/map/win).
   setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen sailing-screen fade-in");
-
-  // Transparent overlay for ship + island sprites (background is on #screen-bg).
   const scene = createElement("div", "sailing-scene");
-  scene.style.setProperty(
-    "--sailing-island-size",
-    (CONFIG.SAILING_DESTINATION_ISLAND_SIZE_PERCENT || 40) + "%"
-  );
-  scene.style.setProperty(
-    "--sailing-ship-dock-left",
-    (CONFIG.SAILING_SHIP_DOCK_LEFT_PERCENT || 30) + "%"
-  );
+  const layout = getSailingLayout();
+  const travelMs = CONFIG.SAILING_SHIP_TRAVEL_MS || 1200;
+  const layoutPicker = isSailingLayoutPickerActive();
+  let isMoving = false;
 
-  const islandWrap = createElement("div", "destination-island");
-  const islandPlaceholder = createElement("span", "destination-island-emoji", "🏝️");
-  appendVisual(
+  if (shouldShowSailingGuides()) {
+    appendSailingRectGuide(scene, layout.sea, "sailing-guide-sea");
+    appendSailingCircleGuide(scene, layout.island, "sailing-guide-island");
+    appendSailingCircleGuide(scene, layout.ship, "sailing-guide-ship");
+    appendSailingCircleGuide(scene, layout.dock, "sailing-guide-dock");
+  }
+
+  const seaHitbox = createElement("div", "sailing-rect sailing-sea-hitbox");
+  applyRectLayout(seaHitbox, layout.sea);
+  scene.appendChild(seaHitbox);
+
+  const islandWrap = createElement("div", "sailing-circle destination-island sailing-image-slot");
+  applyCircleLayout(islandWrap, layout.island, true);
+  const islandPlaceholder = createElement("span", "sailing-circle-fill destination-island-emoji", "🏝️");
+  appendCircleImage(
     islandWrap,
     CONFIG.SAILING_DESTINATION_ISLAND_IMAGE,
     islandPlaceholder,
@@ -296,20 +559,62 @@ function renderSailing(questionNumber, totalQuestions, callback) {
   );
   scene.appendChild(islandWrap);
 
-  const shipWrap = createElement("div", "sailing-ship");
-  const shipPlaceholder = createElement("span", "sailing-ship-emoji", "⛵");
-  appendVisual(
-    shipWrap,
-    CONFIG.SAILING_SHIP_IMAGE,
-    shipPlaceholder,
-    "sailing-ship-img",
-    ""
-  );
+  const shipWrap = createElement("div", "sailing-circle sailing-ship sailing-image-slot");
+  applyCircleLayout(shipWrap, layout.ship, true);
+  const shipPlaceholder = createElement("span", "sailing-circle-fill sailing-ship-emoji", "⛵");
+  appendCircleImage(shipWrap, CONFIG.SAILING_SHIP_IMAGE, shipPlaceholder, "sailing-ship-img", "");
   scene.appendChild(shipWrap);
 
+  if (!layoutPicker) {
+    seaHitbox.addEventListener("click", function (event) {
+      if (isMoving) {
+        return;
+      }
+      const point = getScenePercentFromEvent(scene, event);
+      if (!isInsideRect(layout.sea, point.x, point.y)) {
+        return;
+      }
+      const target = clampPointToRect(layout.sea, point.x, point.y);
+      isMoving = true;
+      sailShipTo(shipWrap, target.x, target.y, travelMs, function () {
+        isMoving = false;
+      });
+    });
+
+    islandWrap.addEventListener("click", function (event) {
+      event.stopPropagation();
+      if (isMoving) {
+        return;
+      }
+      isMoving = true;
+      sailShipTo(shipWrap, layout.dock.x, layout.dock.y, travelMs, callback);
+    });
+  }
+
   screen.appendChild(scene);
-  // Plain text over the sky area — no panel/card; readability via text-shadow in CSS.
-  screen.appendChild(createElement("p", "sailing-message", "מתקדמים לשאלה הבאה..."));
+
+  if (layoutPicker) {
+    const pickerHud = createElement("div", "sailing-layout-picker-hud");
+    updateSailingLayoutPickerHud(pickerHud, [
+      "Layout picker active",
+      "Click — center (island / ship / dock) → console",
+      "Shift+click ×2 — sea rectangle corners → console",
+      "F12 → Console",
+    ]);
+    screen.appendChild(pickerHud);
+    attachSailingLayoutPicker(scene, pickerHud);
+    screen.appendChild(
+      createElement(
+        "p",
+        "sailing-message sailing-message--picker",
+        "Layout picker: click the scene — values in console (F12)"
+      )
+    );
+  } else {
+    screen.appendChild(
+      createElement("p", "sailing-message", "לחצו על הים כדי לשוט, ועל האי כדי לעגון")
+    );
+  }
   screen.appendChild(
     createElement(
       "p",
@@ -318,9 +623,6 @@ function renderSailing(questionNumber, totalQuestions, callback) {
     )
   );
   root.appendChild(screen);
-
-  // Move to the island question after the configured sailing time (--sail-ms in CSS).
-  setTimeout(callback, CONFIG.SAILING_TRANSITION_MS);
 }
 
 // ---- Island question screen ----

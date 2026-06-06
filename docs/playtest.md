@@ -14,6 +14,9 @@ Manual playtesting only. No analytics, storage, server, or database.
 | Setting | Effect |
 | --- | --- |
 | `MAP_VIEW_TIME_MS` | How long the map is visible |
+| `SAILING_LAYOUT` | Sea rectangle plus island/ship/dock circles on the sailing screen |
+| `SAILING_SHOW_LAYOUT_GUIDES` | Show dashed layout circles while tuning |
+| `SAILING_SHIP_TRAVEL_MS` | Ship movement speed per click |
 | `DEBUG_MODE` | Marks correct answers and adds a skip button |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | Reveals the correct answer after loss |
 | `DIFFICULTY_LEVELS` | Controls level labels and image/question counts |

@@ -16,13 +16,11 @@
   --danger: #b8473e;
 
   /* ---- Transition/animation timings ----
-     --sail-ms and --answer-feedback-ms are overwritten at startup from CONFIG
+     --sailing-ship-travel-ms and --answer-feedback-ms are overwritten at startup from CONFIG
      (see applyAnimationTimings in js/renderer.js); the values here are sensible fallbacks.
      The remaining durations are purely cosmetic and tuned directly in CSS. */
-  --sail-ms: 1600ms;
+  --sailing-ship-travel-ms: 1200ms;
   --answer-feedback-ms: 420ms;
-  --sailing-island-size: 40%; /* fallback; overwritten from CONFIG at startup */
-  --sailing-ship-dock-left: 30%; /* fallback; overwritten from CONFIG at startup */
   --fade-ms: 380ms;
   --map-reveal-ms: 560ms;
   --island-enter-ms: 460ms;
@@ -371,7 +369,8 @@ button,
 }
 
 .map-subtitle {
-  margin: 4px 0 0;
+  display: inline;
+  margin: 0;
   font-weight: bold;
   font-size: clamp(0.85rem, 1.9vmin, 1rem);
 }
@@ -533,10 +532,7 @@ button,
   position: absolute;
   inset: 0;
   overflow: hidden;
-  pointer-events: none;
-  /* Shared sailing layout. Island size and ship dock % come from CONFIG on this scene. */
-  --sailing-island-left: 2%;
-  --sailing-ship-size: clamp(80px, 22%, 200px);
+  pointer-events: auto;
 }
 
 .sailing-message {
@@ -556,6 +552,27 @@ button,
     0 1px 0 rgba(0, 0, 0, 0.5);
 }
 
+.sailing-layout-picker-hud {
+  position: absolute;
+  bottom: 4%;
+  left: 50%;
+  z-index: 5;
+  transform: translateX(-50%);
+  width: min(94%, 520px);
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(7, 28, 43, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  text-align: start;
+  pointer-events: none;
+}
+
+.sailing-picker-line {
+  margin: 3px 0;
+  font-size: clamp(0.8rem, 1.8vmin, 0.95rem);
+  line-height: 1.35;
+}
+
 .sailing-progress {
   position: absolute;
   top: 16%;
@@ -571,47 +588,96 @@ button,
     0 0 20px rgba(7, 28, 43, 0.55);
 }
 
-.destination-island {
+/* Shared circle slot: center x/y and diameter come from CONFIG via inline styles. */
+.sailing-circle {
   position: absolute;
-  left: var(--sailing-island-left);
-  bottom: 12%;
-  z-index: 1;
-  /* Width is % of .sailing-scene (full viewport); img fills this box. */
-  width: var(--sailing-island-size);
 }
 
-.destination-island-img {
+/* Island/ship: circle defines width anchor; full image may extend beyond the guide circle. */
+.sailing-image-slot {
+  overflow: visible;
+}
+
+.sailing-circle-fill {
   display: block;
   width: 100%;
   height: auto;
   pointer-events: none;
 }
 
-.destination-island-emoji {
-  display: block;
-  font-size: clamp(5.6rem, 16vmin, 9.6rem);
+.sailing-image-slot .sailing-circle-fill {
+  max-width: none;
+}
+
+.sailing-rect {
+  position: absolute;
+}
+
+.sailing-sea-hitbox {
+  z-index: 1;
+  cursor: pointer;
+  background: transparent;
+}
+
+.sailing-guide {
+  position: absolute;
+  border: 2px dashed rgba(255, 255, 255, 0.75);
+  pointer-events: none;
+  z-index: 0;
+  box-sizing: border-box;
+}
+
+.sailing-circle-guide {
+  border-radius: 50%;
+}
+
+.sailing-rect-guide {
+  border-radius: 4px;
+}
+
+.sailing-guide-sea {
+  border-color: rgba(96, 176, 255, 0.9);
+}
+
+.sailing-guide-island {
+  border-color: rgba(88, 210, 120, 0.9);
+}
+
+.sailing-guide-ship {
+  border-color: rgba(255, 220, 80, 0.9);
+}
+
+.sailing-guide-dock {
+  border-color: rgba(255, 150, 70, 0.9);
+}
+
+.destination-island {
+  z-index: 2;
+  cursor: pointer;
+}
+
+.destination-island-emoji,
+.sailing-ship-emoji {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(2.4rem, 7vmin, 4.5rem);
   line-height: 1;
+}
+
+.sailing-image-slot .destination-island-emoji,
+.sailing-image-slot .sailing-ship-emoji {
+  aspect-ratio: 1;
+  width: 100%;
+  height: auto;
 }
 
 .sailing-ship {
-  position: absolute;
-  bottom: 26%;
-  z-index: 2;
-  /* Sails from the right edge toward the island on the left (see sailing-ship-wave). */
-  animation: sailing-ship-wave var(--sail-ms) ease-out forwards;
-}
-
-.sailing-ship-img {
-  display: block;
-  width: var(--sailing-ship-size);
-  height: auto;
+  z-index: 3;
   pointer-events: none;
-}
-
-.sailing-ship-emoji {
-  display: block;
-  font-size: clamp(3rem, 9vmin, 5.5rem);
-  line-height: 1;
+  transition:
+    left var(--sailing-ship-travel-ms) ease-out,
+    top var(--sailing-ship-travel-ms) ease-out;
 }
 
 /* ---- Animations ---- */
@@ -654,30 +720,6 @@ button,
   }
   to {
     transform: scaleX(0);
-  }
-}
-
-/* Ship crosses the sea and docks at the island on the left (--sailing-ship-dock-left). */
-@keyframes sailing-ship-wave {
-  0% {
-    left: 105%;
-    transform: translateY(0);
-  }
-  25% {
-    left: 72%;
-    transform: translateY(-12px);
-  }
-  50% {
-    left: 48%;
-    transform: translateY(8px);
-  }
-  75% {
-    left: calc(var(--sailing-ship-dock-left) + 12%);
-    transform: translateY(-10px);
-  }
-  100% {
-    left: var(--sailing-ship-dock-left);
-    transform: translateY(0);
   }
 }
 
@@ -926,17 +968,11 @@ button,
   .memorize-cue,
   .character-enter,
   .trophy-celebrate,
-  .sailing-ship,
   .option-button,
   .option-button.answer-correct-flash,
   .option-button.answer-wrong-flash {
     animation: none !important;
     transition: none !important;
-  }
-  /* Show ship docked beside the island when motion is reduced. */
-  .sailing-ship {
-    left: var(--sailing-ship-dock-left);
-    transform: translateY(0);
   }
   .confetti {
     display: none !important;

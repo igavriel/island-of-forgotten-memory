@@ -6,7 +6,7 @@ const CONFIG = {
     MAP_VIEW_TIME_MS: 10000,
 
     // Animation timings in milliseconds.
-    SAILING_TRANSITION_MS: 1800,
+    SAILING_SHIP_TRAVEL_MS: 1200,
     ANSWER_FEEDBACK_MS: 420,
 
     // Screen and transition images.
@@ -23,10 +23,23 @@ const CONFIG = {
     SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background.png",
     SAILING_SHIP_IMAGE: "assets/ui/sailing_ship.png",
     SAILING_DESTINATION_ISLAND_IMAGE: "assets/ui/destination_island.png",
-    // Destination island width/height scale on the sailing screen (% of the viewport).
-    SAILING_DESTINATION_ISLAND_SIZE_PERCENT: 40,
-    // Where the ship stops on the sailing screen (% from the left edge of the scene).
-    SAILING_SHIP_DOCK_LEFT_PERCENT: 2,
+
+    // Dashed guides for tuning sailing layout. Hidden during normal play.
+    SAILING_SHOW_LAYOUT_GUIDES: false,
+
+    // Layout picker: click sailing scene → log % to browser console. See docs/sailing-layout-krita.md.
+    // While true, ship/island clicks on the sailing screen are disabled. Set false for play.
+    SAILING_LAYOUT_PICKER: false,
+
+    // Sailing screen layout — tune with SAILING_LAYOUT_PICKER or docs/sailing-layout-krita.md.
+    // sea: center rect (widthPercent = scene width, heightPercent = scene height).
+    // island / ship / dock: center + sizePercent (diameter as % of scene width).
+    SAILING_LAYOUT: {
+        sea: { x: 50, y: 80, widthPercent: 95, heightPercent: 40 },
+        island: { x: 15, y: 65, sizePercent: 30 },
+        ship: { x: 95, y: 80, sizePercent: 18 },
+        dock: { x: 25, y: 80, sizePercent: 12 },
+    },
 
     // Debug aids. Must be false for final presentation.
     DEBUG_MODE: false,

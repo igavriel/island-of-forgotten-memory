@@ -48,7 +48,10 @@ Edit [config/config.js](config/config.js).
 | `MAP_VIEW_TIME_MS` | How long the map is visible |
 | `MAP_FLY_FRAMES` | Ordered sprite images for the map fly-away |
 | `MAP_FLY_FRAME_MS` | Milliseconds per fly-away frame |
-| `SAILING_TRANSITION_MS` | Transition duration between questions |
+| `SAILING_SHIP_TRAVEL_MS` | Ship movement duration per sea/island click |
+| `SAILING_LAYOUT` | Sea rectangle (`x`, `y`, `widthPercent`, `heightPercent`); island/ship/dock circles (`x`, `y`, `sizePercent`) |
+| `SAILING_SHOW_LAYOUT_GUIDES` | Show dashed tuning guides on the sailing screen |
+| `SAILING_LAYOUT_PICKER` | Dev mode: click the sailing scene to log `SAILING_LAYOUT` values to the browser console (see `docs/sailing-layout-krita.md`) |
 | `ANSWER_FEEDBACK_MS` | Delay after answer click feedback |
 | `LOSE_SCREEN_IMAGE` | Shared full-screen background for every wrong answer |
 | `DEBUG_MODE` | Shows correct answers and a skip button; keep `false` for final presentation |
@@ -56,8 +59,6 @@ Edit [config/config.js](config/config.js).
 | `DIFFICULTY_LEVELS` | Difficulty labels plus image/question counts |
 | `REQUIRED_MAP_CATEGORY` | Category that must appear on every generated map |
 | `MAP_ASSET_LAYOUT` | Relative `x`, `y`, and `sizePercent` map placement per category |
-| `SAILING_DESTINATION_ISLAND_SIZE_PERCENT` | Destination island size on the sailing screen (% of viewport) |
-| `SAILING_SHIP_DOCK_LEFT_PERCENT` | Where the ship stops on the sailing screen (% from the left) |
 
 Default levels:
 
