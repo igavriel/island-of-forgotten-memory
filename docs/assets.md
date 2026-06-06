@@ -60,12 +60,14 @@ Configured in `CONFIG`:
 - `MAP_FLY_FRAMES` (ordered sprite frames for the map fly-away)
 - `MAP_FLY_FRAME_MS` (milliseconds per fly frame)
 - `LOSE_SCREEN_IMAGE` (shared background for every wrong answer)
-- `SAILING_BACKGROUND_IMAGE`
+- `SAILING_BACKGROUND_IMAGE` (sailing transition and question screens)
 - `VICTORY_IMAGE`
 - `SAILING_SHIP_IMAGE`
 - `SAILING_DESTINATION_ISLAND_IMAGE`
+- `SAILING_DESTINATION_ISLAND_SIZE_PERCENT` (island sprite size on the sailing screen, same % for width and height)
+- `SAILING_SHIP_DOCK_LEFT_PERCENT` (where the ship stops, % from the left edge of the sailing scene)
 
-All images are plain static paths. If an image fails to load, the game falls back without a backend or build step.
+All images are plain static paths. The renderer uses an image whenever a path is set; if a file is missing or fails to load, the game falls back to emoji/text without a backend or build step.
 
 ## Cursor
 

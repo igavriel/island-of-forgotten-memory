@@ -9,14 +9,7 @@ const CONFIG = {
     SAILING_TRANSITION_MS: 1800,
     ANSWER_FEEDBACK_MS: 420,
 
-    // Optional map countdown text.
-    SHOW_COUNTDOWN_NUMBER: false,
-
-    // Master image toggle.
-    USE_IMAGE_ASSETS: true,
-
     // Screen and transition images.
-    USE_SCREEN_PLACEHOLDER_IMAGES: true,
     START_SCREEN_IMAGE: "assets/ui/start_screen.jpeg",
     MAP_BACKGROUND_IMAGE: "assets/map/treasure_map.png",
     MAP_FLY_FRAMES: [
@@ -30,6 +23,10 @@ const CONFIG = {
     SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background.png",
     SAILING_SHIP_IMAGE: "assets/ui/sailing_ship.png",
     SAILING_DESTINATION_ISLAND_IMAGE: "assets/ui/destination_island.png",
+    // Destination island width/height scale on the sailing screen (% of the viewport).
+    SAILING_DESTINATION_ISLAND_SIZE_PERCENT: 40,
+    // Where the ship stops on the sailing screen (% from the left edge of the scene).
+    SAILING_SHIP_DOCK_LEFT_PERCENT: 2,
 
     // Debug aids. Must be false for final presentation.
     DEBUG_MODE: false,

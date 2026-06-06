@@ -14,6 +14,14 @@ function applyAnimationTimings() {
   const root = document.documentElement;
   root.style.setProperty("--sail-ms", CONFIG.SAILING_TRANSITION_MS + "ms");
   root.style.setProperty("--answer-feedback-ms", CONFIG.ANSWER_FEEDBACK_MS + "ms");
+  root.style.setProperty(
+    "--sailing-island-size",
+    (CONFIG.SAILING_DESTINATION_ISLAND_SIZE_PERCENT || 40) + "%"
+  );
+  root.style.setProperty(
+    "--sailing-ship-dock-left",
+    (CONFIG.SAILING_SHIP_DOCK_LEFT_PERCENT || 30) + "%"
+  );
 }
 
 // Clears the screen and returns the root element.
@@ -37,14 +45,12 @@ function createElement(tag, className, text) {
 }
 
 // Appends an <img> when a source path exists; otherwise appends the placeholder.
-// placeholder. So images are used automatically wherever they exist, and everything else
-// falls back to the placeholder. If the image fails to load (missing/renamed file), the
-// placeholder is swapped back in, so the game never shows a broken image. CONFIG.USE_IMAGE_ASSETS
-// is an optional override: set it to false to force placeholder-only mode (ignore all paths).
+// If the image fails to load (missing/renamed file), the placeholder is swapped back in,
+// so the game never shows a broken image.
 // altText: meaningful description for informative images (e.g. a hint label),
 //          or "" for decorative images.
 function appendVisual(parent, src, placeholderEl, className, altText) {
-  if (CONFIG.USE_IMAGE_ASSETS && src) {
+  if (src) {
     const img = document.createElement("img");
     img.src = src;
     img.alt = altText || "";
@@ -61,14 +67,11 @@ function appendVisual(parent, src, placeholderEl, className, altText) {
 // Sets (or clears) the full-screen background for the current screen (#screen-bg inside
 // #game-viewport). The image is preloaded so a missing/failed file falls back cleanly.
 // Pass null/undefined to clear the background.
-// "enabled" defaults to CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES for screen-level images;
-// generated question backgrounds pass CONFIG.USE_IMAGE_ASSETS instead.
-function setScreenBackground(src, enabled) {
+function setScreenBackground(src) {
   const layer = document.getElementById("screen-bg");
   if (!layer) {
     return;
   }
-  const allow = enabled === undefined ? CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES : enabled;
   function clear() {
     layer.style.backgroundImage = "";
     layer.style.backgroundSize = "";
@@ -76,7 +79,7 @@ function setScreenBackground(src, enabled) {
     layer.style.backgroundRepeat = "";
     layer.classList.remove("is-visible");
   }
-  if (allow && src) {
+  if (src) {
     const probe = new Image();
     probe.onload = function () {
       layer.style.backgroundImage = "url('" + src + "')";
@@ -158,13 +161,6 @@ function renderMap(selectedMapAssets) {
 
   mapCard.appendChild(renderMapAssets(selectedMapAssets || []));
 
-  // Optional numeric countdown (kept off by default for a calmer look).
-  if (CONFIG.SHOW_COUNTDOWN_NUMBER) {
-    const countdown = createElement("p", "countdown-number", "");
-    mapCard.appendChild(countdown);
-    startCountdown(countdown, CONFIG.MAP_VIEW_TIME_MS);
-  }
-
   // Visual timer bar that empties over the map viewing time.
   const timerBar = createElement("div", "timer-bar");
   const timerFill = createElement("div", "timer-fill");
@@ -199,22 +195,6 @@ function renderMapAssets(selectedMapAssets) {
   });
 
   return layer;
-}
-
-// Updates a "נותרו N שניות" countdown once per second. Self-clears when the element
-// leaves the DOM (e.g. the map blew away), so no timer is left running.
-function startCountdown(element, totalMs) {
-  const endTime = Date.now() + totalMs;
-  function tick() {
-    if (!document.body.contains(element)) {
-      clearInterval(intervalId);
-      return;
-    }
-    const secondsLeft = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
-    element.textContent = "נותרו " + secondsLeft + " שניות";
-  }
-  tick();
-  const intervalId = setInterval(tick, 250);
 }
 
 // Sprite-style map fly-away: plays CONFIG.MAP_FLY_FRAMES one after another, then calls
@@ -296,6 +276,14 @@ function renderSailing(questionNumber, totalQuestions, callback) {
 
   // Transparent overlay for ship + island sprites (background is on #screen-bg).
   const scene = createElement("div", "sailing-scene");
+  scene.style.setProperty(
+    "--sailing-island-size",
+    (CONFIG.SAILING_DESTINATION_ISLAND_SIZE_PERCENT || 40) + "%"
+  );
+  scene.style.setProperty(
+    "--sailing-ship-dock-left",
+    (CONFIG.SAILING_SHIP_DOCK_LEFT_PERCENT || 30) + "%"
+  );
 
   const islandWrap = createElement("div", "destination-island");
   const islandPlaceholder = createElement("span", "destination-island-emoji", "🏝️");
@@ -338,7 +326,7 @@ function renderSailing(questionNumber, totalQuestions, callback) {
 // ---- Island question screen ----
 function renderIsland(questionData, questionIndex, totalQuestions) {
   const root = clearScreen();
-  setScreenBackground(questionData.backgroundImage, CONFIG.USE_IMAGE_ASSETS);
+  setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen island-screen fade-in");
 
   const questionNumber = questionIndex + 1;

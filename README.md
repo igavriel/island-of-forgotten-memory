@@ -50,15 +50,14 @@ Edit [config/config.js](config/config.js).
 | `MAP_FLY_FRAME_MS` | Milliseconds per fly-away frame |
 | `SAILING_TRANSITION_MS` | Transition duration between questions |
 | `ANSWER_FEEDBACK_MS` | Delay after answer click feedback |
-| `SHOW_COUNTDOWN_NUMBER` | Optional numeric countdown on the map |
-| `USE_IMAGE_ASSETS` | Enables image assets with fallbacks |
-| `USE_SCREEN_PLACEHOLDER_IMAGES` | Enables screen/background images |
 | `LOSE_SCREEN_IMAGE` | Shared full-screen background for every wrong answer |
 | `DEBUG_MODE` | Shows correct answers and a skip button; keep `false` for final presentation |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | Shows the correct answer after a wrong answer |
 | `DIFFICULTY_LEVELS` | Difficulty labels plus image/question counts |
 | `REQUIRED_MAP_CATEGORY` | Category that must appear on every generated map |
 | `MAP_ASSET_LAYOUT` | Relative `x`, `y`, and `sizePercent` map placement per category |
+| `SAILING_DESTINATION_ISLAND_SIZE_PERCENT` | Destination island size on the sailing screen (% of viewport) |
+| `SAILING_SHIP_DOCK_LEFT_PERCENT` | Where the ship stops on the sailing screen (% from the left) |
 
 Default levels:
 

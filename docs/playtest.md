@@ -14,7 +14,6 @@ Manual playtesting only. No analytics, storage, server, or database.
 | Setting | Effect |
 | --- | --- |
 | `MAP_VIEW_TIME_MS` | How long the map is visible |
-| `SHOW_COUNTDOWN_NUMBER` | Shows/hides numeric countdown text |
 | `DEBUG_MODE` | Marks correct answers and adds a skip button |
 | `SHOW_CORRECT_ANSWER_ON_LOSS` | Reveals the correct answer after loss |
 | `DIFFICULTY_LEVELS` | Controls level labels and image/question counts |

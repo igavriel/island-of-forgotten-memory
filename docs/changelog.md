@@ -2,6 +2,12 @@
 
 ## 2026-06-06
 
+- Removed `CONFIG.USE_SCREEN_PLACEHOLDER_IMAGES`. Full-screen backgrounds always load when a path is passed to `setScreenBackground()`; pass `null` to clear.
+- Removed `CONFIG.SHOW_COUNTDOWN_NUMBER` and the optional numeric map countdown (`startCountdown`, `.countdown-number`). Map time is shown by the timer bar only.
+- Removed `CONFIG.USE_IMAGE_ASSETS`. Inline and map images now load whenever a path exists; emoji/text placeholders are used only when there is no path or the file fails to load.
+- Added `CONFIG.SAILING_DESTINATION_ISLAND_SIZE_PERCENT` to control the destination island sprite size on the sailing transition (percent of the viewport, same for width and height). Fixed sizing so the percent applies to `.destination-island` width relative to the sailing scene, not the shrink-wrapped image parent.
+- Added `CONFIG.SAILING_SHIP_DOCK_LEFT_PERCENT` so the ship stop position is set directly as a percent from the left edge, instead of being auto-calculated from the island size.
+- Question screens now use `CONFIG.SAILING_BACKGROUND_IMAGE` (`sailing_background.png`) as the full-screen background, matching the sailing transition art instead of the sea gradient fallback.
 - Replaced the CSS wind blow-away on the treasure map with a three-frame sprite sequence (`treasure_map_fly_01`–`03`). `CONFIG.MAP_FLY_FRAMES` and `CONFIG.MAP_FLY_FRAME_MS` control the frame list and per-frame timing; frames are preloaded during map viewing and swapped in order before sailing begins. Removed `WIND_TRANSITION_MS`, `.map-blow-away`, and `@keyframes blowAway`.
 
 ## 2026-06-05

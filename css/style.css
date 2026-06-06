@@ -21,6 +21,8 @@
      The remaining durations are purely cosmetic and tuned directly in CSS. */
   --sail-ms: 1600ms;
   --answer-feedback-ms: 420ms;
+  --sailing-island-size: 40%; /* fallback; overwritten from CONFIG at startup */
+  --sailing-ship-dock-left: 30%; /* fallback; overwritten from CONFIG at startup */
   --fade-ms: 380ms;
   --map-reveal-ms: 560ms;
   --island-enter-ms: 460ms;
@@ -532,14 +534,9 @@ button,
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  /* Shared sailing layout: island anchor + ship dock derived from the same sizes. */
+  /* Shared sailing layout. Island size and ship dock % come from CONFIG on this scene. */
   --sailing-island-left: 2%;
-  --sailing-island-size: clamp(144px, 40%, 336px);
   --sailing-ship-size: clamp(80px, 22%, 200px);
-  /* Ship stops overlapping the island shore (not at a fixed % in the middle). */
-  --sailing-ship-dock-left: calc(
-    var(--sailing-island-left) + var(--sailing-island-size) - var(--sailing-ship-size) * 0.75
-  );
 }
 
 .sailing-message {
@@ -579,11 +576,13 @@ button,
   left: var(--sailing-island-left);
   bottom: 12%;
   z-index: 1;
+  /* Width is % of .sailing-scene (full viewport); img fills this box. */
+  width: var(--sailing-island-size);
 }
 
 .destination-island-img {
   display: block;
-  width: var(--sailing-island-size);
+  width: 100%;
   height: auto;
   pointer-events: none;
 }
@@ -734,7 +733,7 @@ button,
   }
 }
 
-/* ---- Memory cue + optional countdown (map screen) ---- */
+/* ---- Memory cue (map screen) ---- */
 /* Gentle pulse that signals "memorize this now" without distracting from the clues. */
 .memorize-cue {
   animation: memorizePulse 1.6s ease-in-out infinite;
@@ -750,20 +749,6 @@ button,
     transform: scale(1.05);
     opacity: 1;
   }
-}
-
-.countdown-number {
-  position: absolute;
-  left: 8%;
-  right: 8%;
-  bottom: 9%;
-  z-index: 3;
-  margin: 0;
-  text-align: center;
-  font-weight: bold;
-  font-size: 1rem;
-  color: var(--danger);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.55);
 }
 
 /* ---- Island arrival entrance ---- */
