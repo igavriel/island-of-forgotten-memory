@@ -7,6 +7,7 @@ The game uses static image files and generated questions from [config/assets.js]
 Each category in `ASSET_CATEGORIES` defines:
 
 - `question1` and `question2`
+- `islandImage` (island sprite on sailing and question screens for this category)
 - `islandEmoji`
 - `islandTitle`
 - `characterEmoji`
@@ -60,10 +61,10 @@ Configured in `CONFIG`:
 - `MAP_FLY_FRAMES` (ordered sprite frames for the map fly-away)
 - `MAP_FLY_FRAME_MS` (milliseconds per fly frame)
 - `LOSE_SCREEN_IMAGE` (shared background for every wrong answer)
-- `SAILING_BACKGROUND_IMAGE` (sailing transition and question screens)
+- `SAILING_BACKGROUND_IMAGE` (sailing screen sea background)
+- `QUESTION_BACKGROUND_IMAGE` (fallback island sprite when a category has no `islandImage`)
 - `VICTORY_IMAGE`
 - `SAILING_SHIP_IMAGE`
-- `SAILING_DESTINATION_ISLAND_IMAGE`
 - `SAILING_SHIP_TRAVEL_MS` (milliseconds per ship move)
 - `SAILING_SHOW_LAYOUT_GUIDES` (dashed circle guides for layout tuning; hidden in normal play)
 - `SAILING_LAYOUT.sea` — rectangle: `x`, `y`, `widthPercent`, `heightPercent` (center + size as % of scene)

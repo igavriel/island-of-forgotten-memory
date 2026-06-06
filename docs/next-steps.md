@@ -2,7 +2,7 @@
 
 Prioritized. Check before changing code; update when priorities change.
 
-Done so far: full loop verified; UX and CSS animation polish; image-asset preparation
+Done so far: browser smoke tests via `test.html` + `js/smokeTests.js`; full loop verified; UX and CSS animation polish; image-asset preparation
 (renderer fallback, asset folders, docs/assets.md);
 expanded to a 5-island default (pool of 10) with verified route/win/lose/restart;
 added playtest/balancing support (end-screen settings summary + docs/playtest.md);

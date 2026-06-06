@@ -381,6 +381,7 @@ const ASSET_CATEGORIES = {
   animal: {
     question1: ASSET_CATEGORY_QUESTIONS.animal.question1,
     question2: ASSET_CATEGORY_QUESTIONS.animal.question2,
+    islandImage: "assets/islands/mountain_04.png",
     islandEmoji: "🐾",
     islandTitle: "שאלת החיות",
     characterEmoji: "🦜",
@@ -391,6 +392,7 @@ const ASSET_CATEGORIES = {
   treasure: {
     question1: ASSET_CATEGORY_QUESTIONS.treasure.question1,
     question2: ASSET_CATEGORY_QUESTIONS.treasure.question2,
+    islandImage: "assets/islands/mountain_07.png",
     islandEmoji: "💎",
     islandTitle: "שאלת האוצר",
     characterEmoji: "🏴‍☠️",
@@ -401,6 +403,7 @@ const ASSET_CATEGORIES = {
   statue: {
     question1: ASSET_CATEGORY_QUESTIONS.statue.question1,
     question2: ASSET_CATEGORY_QUESTIONS.statue.question2,
+    islandImage: "assets/islands/mountain_03.png",
     islandEmoji: "🗿",
     islandTitle: "שאלת הפסלים",
     characterEmoji: "🧭",
@@ -411,6 +414,7 @@ const ASSET_CATEGORIES = {
   volcano: {
     question1: ASSET_CATEGORY_QUESTIONS.volcano.question1,
     question2: ASSET_CATEGORY_QUESTIONS.volcano.question2,
+    islandImage: "assets/islands/mountain_02.png",
     islandEmoji: "🌋",
     islandTitle: "שאלת הר הגעש",
     characterEmoji: "🔥",
@@ -421,6 +425,7 @@ const ASSET_CATEGORIES = {
   flag: {
     question1: ASSET_CATEGORY_QUESTIONS.flag.question1,
     question2: ASSET_CATEGORY_QUESTIONS.flag.question2,
+    islandImage: "assets/islands/mountain_06.png",
     islandEmoji: "🚩",
     islandTitle: "שאלת הדגלים",
     characterEmoji: "⚓",
@@ -431,6 +436,7 @@ const ASSET_CATEGORIES = {
   tree: {
     question1: ASSET_CATEGORY_QUESTIONS.tree.question1,
     question2: ASSET_CATEGORY_QUESTIONS.tree.question2,
+    islandImage: "assets/islands/mountain_01.png",
     islandEmoji: "🌴",
     islandTitle: "שאלת העצים",
     characterEmoji: "🍃",
@@ -441,6 +447,7 @@ const ASSET_CATEGORIES = {
   food: {
     question1: ASSET_CATEGORY_QUESTIONS.food.question1,
     question2: ASSET_CATEGORY_QUESTIONS.food.question2,
+    islandImage: "assets/islands/mountain_05.png",
     islandEmoji: "🍲",
     islandTitle: "שאלת האוכל",
     characterEmoji: "👨‍🍳",

@@ -11,15 +11,24 @@ No install, server, npm, or build step is required.
 
 The game works from `file://` because data lives in JavaScript files and no local `fetch()` is used.
 
+### Smoke tests
+
+Open `test.html` in a browser to run automated checks (geometry, question routing, config,
+module globals, `startGame`, and static asset loading). Use **Run again** to re-run after
+changes. Results also appear in the browser console.
+
 ## File structure
 
 ```text
 index.html
+test.html          # browser smoke-test page (opens js/smokeTests.js)
 config/
   config.js      # game settings
   assets.js      # categorized image assets and question data
 css/style.css
+css/test.css          # styles for test.html only
 js/utils.js           # generic helpers (shuffle, clamp, pickRandom)
+js/smokeTests.js      # automated smoke tests (loaded by test.html)
 js/layoutGeometry.js  # percent rect/circle layout math
 js/gameLogic.js       # map asset selection and question route generation
 js/devTools.js        # DEBUG_MODE, layout picker, sailing guides, playtest dev UI
@@ -58,6 +67,7 @@ Edit [config/config.js](config/config.js).
 | `SAILING_LAYOUT_PICKER` | Dev mode: click the sailing scene to log `SAILING_LAYOUT` values to the browser console (see `docs/sailing-layout-krita.md`) |
 | `ANSWER_FEEDBACK_MS` | Delay after answer click feedback |
 | `LOSE_SCREEN_IMAGE` | Shared full-screen background for every wrong answer |
+| `QUESTION_BACKGROUND_IMAGE` | Fallback island sprite when a category omits `islandImage` in `assets.js` |
 | `DEBUG_MODE` | Shows correct answers and a skip button; keep `false` for final presentation |
 | `DIFFICULTY_LEVELS` | Difficulty labels plus image/question counts |
 | `REQUIRED_MAP_CATEGORY` | Category that must appear on every generated map |
@@ -81,6 +91,7 @@ Each category in `ASSET_CATEGORIES` has:
 {
   question1: "איזה דגל הופיע במפה?",
   question2: "צבע הבד של הדגל?",
+  islandImage: "assets/islands/mountain_05.png",
   islandEmoji: "🚩",
   islandTitle: "שאלת הדגלים",
   characterEmoji: "⚓",

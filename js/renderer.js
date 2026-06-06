@@ -297,6 +297,36 @@ function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function appendDestinationIsland(scene, layout, islandImage) {
+  const islandWrap = createElement("div", "sailing-circle destination-island sailing-image-slot");
+  applyCircleLayout(islandWrap, layout.island, true);
+  const islandPlaceholder = createElement("span", "sailing-circle-fill destination-island-emoji", "🏝️");
+  appendVisual(
+    islandWrap,
+    islandImage || CONFIG.QUESTION_BACKGROUND_IMAGE,
+    islandPlaceholder,
+    "sailing-circle-fill destination-island-img",
+    ""
+  );
+  scene.appendChild(islandWrap);
+  return islandWrap;
+}
+
+function appendDockedShip(scene, layout) {
+  const shipWrap = createElement("div", "sailing-circle sailing-ship sailing-image-slot");
+  applyCircleLayout(shipWrap, layout.dock, true);
+  const shipPlaceholder = createElement("span", "sailing-circle-fill sailing-ship-emoji", "⛵");
+  appendVisual(
+    shipWrap,
+    CONFIG.SAILING_SHIP_IMAGE,
+    shipPlaceholder,
+    "sailing-circle-fill sailing-ship-img",
+    ""
+  );
+  scene.appendChild(shipWrap);
+  return shipWrap;
+}
+
 function sailShipTo(shipEl, x, y, travelMs, onComplete) {
   if (prefersReducedMotion()) {
     shipEl.style.transition = "none";
@@ -329,7 +359,7 @@ function sailShipTo(shipEl, x, y, travelMs, onComplete) {
   setTimeout(finish, travelMs + 80);
 }
 
-function renderSailing(questionNumber, totalQuestions, callback) {
+function renderSailing(questionNumber, totalQuestions, islandImage, callback) {
   const root = clearScreen();
   setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen sailing-screen fade-in");
@@ -347,17 +377,7 @@ function renderSailing(questionNumber, totalQuestions, callback) {
   applyRectLayout(seaHitbox, layout.sea);
   scene.appendChild(seaHitbox);
 
-  const islandWrap = createElement("div", "sailing-circle destination-island sailing-image-slot");
-  applyCircleLayout(islandWrap, layout.island, true);
-  const islandPlaceholder = createElement("span", "sailing-circle-fill destination-island-emoji", "🏝️");
-  appendVisual(
-    islandWrap,
-    CONFIG.SAILING_DESTINATION_ISLAND_IMAGE,
-    islandPlaceholder,
-    "sailing-circle-fill destination-island-img",
-    ""
-  );
-  scene.appendChild(islandWrap);
+  const islandWrap = appendDestinationIsland(scene, layout, islandImage);
 
   const shipWrap = createElement("div", "sailing-circle sailing-ship sailing-image-slot");
   applyCircleLayout(shipWrap, layout.ship, true);
@@ -417,15 +437,21 @@ function renderSailing(questionNumber, totalQuestions, callback) {
 // ---- Island question screen ----
 function renderIsland(questionData, questionIndex, totalQuestions) {
   const root = clearScreen();
-  setScreenBackground(CONFIG.QUESTION_BACKGROUND_IMAGE);
+  setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen island-screen fade-in");
+  const layout = getSailingLayout();
 
+  const scene = createElement("div", "sailing-scene island-scene-static");
+  appendDestinationIsland(scene, layout, questionData.islandImage);
+  appendDockedShip(scene, layout);
+  screen.appendChild(scene);
+
+  const ui = createElement("div", "island-ui");
   const questionNumber = questionIndex + 1;
-  screen.appendChild(
+  ui.appendChild(
     createElement("p", "progress", "שאלה " + questionNumber + " מתוך " + totalQuestions)
   );
-  screen.appendChild(createElement("div", "big-emoji", questionData.islandEmoji));
-  screen.appendChild(createElement("h2", "island-title", questionData.islandTitle));
+  ui.appendChild(createElement("h2", "island-title", questionData.islandTitle));
 
   // The question card gets a small entrance animation so the next question arrives clearly.
   const character = createElement("div", "character-box character-enter");
@@ -443,7 +469,7 @@ function renderIsland(questionData, questionIndex, totalQuestions) {
   );
   character.appendChild(createElement("p", "character-name", questionData.characterName));
   character.appendChild(createElement("p", "question", questionData.question));
-  screen.appendChild(character);
+  ui.appendChild(character);
 
   // Build options preserving the original index, then shuffle the display.
   const options = buildShuffledOptions(questionData.options);
@@ -477,9 +503,10 @@ function renderIsland(questionData, questionIndex, totalQuestions) {
 
     optionsBox.appendChild(button);
   });
-  screen.appendChild(optionsBox);
+  ui.appendChild(optionsBox);
 
-  appendIslandDebugPanel(screen);
+  appendIslandDebugPanel(ui);
+  screen.appendChild(ui);
 
   root.appendChild(screen);
 }

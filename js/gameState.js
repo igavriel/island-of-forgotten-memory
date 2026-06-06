@@ -69,9 +69,15 @@ function blowMapAway() {
 // Sailing animation, then show the current question.
 function sailToCurrentIsland() {
   const questionNumber = gameState.currentQuestionIndex + 1;
-  renderSailing(questionNumber, gameState.selectedQuestions.length, function () {
-    showCurrentIsland();
-  });
+  const currentQuestion = gameState.selectedQuestions[gameState.currentQuestionIndex];
+  renderSailing(
+    questionNumber,
+    gameState.selectedQuestions.length,
+    currentQuestion.islandImage,
+    function () {
+      showCurrentIsland();
+    }
+  );
 }
 
 // Show the current question screen.

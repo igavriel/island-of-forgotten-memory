@@ -1,0 +1,99 @@
+/* test.css — styles for test.html only */
+
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #0f172a;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 1.5rem;
+}
+
+.test-intro {
+  margin: 0 0 20px;
+  color: #94a3b8;
+  max-width: 52rem;
+}
+
+.test-actions {
+  margin-bottom: 20px;
+}
+
+.test-button {
+  border: 1px solid #475569;
+  background: #1e293b;
+  color: #f8fafc;
+  border-radius: 8px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.test-button:hover {
+  background: #334155;
+}
+
+.test-summary {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.test-summary.pass {
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.45);
+  color: #86efac;
+}
+
+.test-summary.fail {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.45);
+  color: #fca5a5;
+}
+
+#test-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 52rem;
+}
+
+#test-results li {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88rem;
+}
+
+.test-pass {
+  color: #86efac;
+}
+
+.test-fail {
+  color: #fca5a5;
+}
+
+.test-detail {
+  color: #cbd5e1;
+}
+
+.test-running .test-summary {
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #93c5fd;
+}
+
+#game-viewport.test-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

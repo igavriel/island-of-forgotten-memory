@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smoke tests — Island of the Lost Memory</title>
+    <link rel="stylesheet" href="css/test.css" />
+  </head>
+  <body>
+    <div id="test-root">
+      <h1>Smoke tests</h1>
+      <p class="test-intro">
+        Automated checks for geometry, question routing, config, module globals, game start,
+        and static asset loading. Open this file directly (<code>file://</code>) or via a static
+        host. Results also appear in the browser console.
+      </p>
+
+      <div class="test-actions">
+        <button type="button" class="test-button" id="rerun-tests">Run again</button>
+      </div>
+
+      <p id="test-summary" class="test-summary test-running">Running tests…</p>
+      <ul id="test-results" aria-live="polite"></ul>
+    </div>
+
+    <!-- Hidden viewport so renderer/gameState integration tests can run safely. -->
+    <main id="app">
+      <section id="game-viewport" class="test-hidden" aria-hidden="true">
+        <div id="screen-bg" class="screen-bg fullscreen-art-background"></div>
+        <section id="screen" class="screen-root"></section>
+      </section>
+    </main>
+
+    <!-- Same load order as index.html, except smokeTests.js replaces main.js bootstrap. -->
+    <script src="config/config.js"></script>
+    <script src="config/assets.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/layoutGeometry.js"></script>
+    <script src="js/gameLogic.js"></script>
+    <script src="js/devTools.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/gameState.js"></script>
+    <script src="js/smokeTests.js"></script>
+  </body>
+</html>

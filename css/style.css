@@ -811,9 +811,57 @@ button,
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
 }
 
-/* The question and lose screens can also sit over a full-screen background, so they get
-   the same translucent panel for readability. */
-.island-screen,
+/* Question screen: sea + island scene behind; question panel centered like before. */
+.island-screen {
+  position: absolute;
+  inset: 0;
+  max-width: none;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.island-scene-static {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  cursor: default;
+}
+
+.island-ui {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: min(640px, 92%);
+  max-height: 92%;
+  overflow-y: auto;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  padding: 24px 22px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+}
+
+.island-ui .character-box {
+  margin: 12px 0;
+}
+
+.island-ui .island-title {
+  margin: 0 0 8px;
+  font-size: clamp(1.1rem, 2.6vmin, 1.6rem);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+.island-ui .progress {
+  margin: 0 0 6px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85);
+}
+
+/* Lose screen sits over a full-screen background with a translucent panel. */
 .lose-screen {
   background: rgba(0, 0, 0, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.16);

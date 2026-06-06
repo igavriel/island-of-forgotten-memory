@@ -2,6 +2,8 @@
 
 ## 2026-06-05
 
+- Added `test.html` and `js/smokeTests.js`: browser smoke-test page for geometry, question routing, config, module globals, `startGame`, and static asset probes. Styled by `css/test.css`.
+- Per-category `islandImage` in `ASSET_CATEGORIES` (`assets.js`); removed random `ISLAND_IMAGES` pool from config.
 - Removed `CONFIG.SHOW_CORRECT_ANSWER_ON_LOSS`; the lose screen always shows the correct answer.
 - Extracted debug and dev tooling to `js/devTools.js` and `css/devTools.css`: `DEBUG_MODE` island panel, sailing layout picker/guides, playtest debug line. `renderer.js` delegates via thin hooks; `debugAnswerCorrectly` moved from `gameState.js`.
 - Split JS modules on branch `refactor/module-boundaries`: `js/gameLogic.js` (map/question route), `js/layoutGeometry.js` (percent rect math). `js/utils.js` keeps generic helpers only. Removed dead `isInsideCircle` / `clampPointToCircle`; merged sailing `appendCircleImage` into `appendVisual`. Script load order updated in `index.html`. See [refactor-module-boundaries-plan.md](refactor-module-boundaries-plan.md).

@@ -67,7 +67,7 @@ Avoid clever one-liners and unnecessary classes.
 - `config/assets.js` is the active data source.
 - Difficulty controls how many random map assets are selected and how many generated questions are asked.
 - A selected map asset may create both `question1` and `question2` when the difficulty asks for more questions than displayed images.
-- Each category should define `question1`, `question2`, `islandEmoji`, `islandTitle`, `characterEmoji`, `characterName`, `failTitle`, and `assets`.
+- Each category should define `question1`, `question2`, `islandImage`, `islandEmoji`, `islandTitle`, `characterEmoji`, `characterName`, `failTitle`, and `assets`.
 - Each asset should define `category`, `path`, `answer1`, and `answer2`.
 - The game engine must not hardcode specific asset content.
 

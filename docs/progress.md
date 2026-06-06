@@ -2,7 +2,7 @@
 
 ## Current status
 
-Polished playable prototype. The full loop works end to end with emoji/text placeholders, and the UX/animation polish phase is done.
+Polished playable prototype. The full loop works end to end with emoji/text placeholders, and the UX/animation polish phase is done. Automated smoke tests live in `test.html` (`js/smokeTests.js`).
 
 **Branch `refactor/dev-tools`:** Debug/layout picker moved to `devTools.js` + `devTools.css`. Builds on module-boundaries split (`utils`, `gameLogic`, `layoutGeometry`, `renderer`). Manual browser regression pending before merge.
 
