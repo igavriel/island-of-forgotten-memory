@@ -4,7 +4,7 @@
 
 Polished playable prototype. The full loop works end to end with emoji/text placeholders, and the UX/animation polish phase is done.
 
-**Branch `refactor/module-boundaries`:** JS split into `utils.js`, `gameLogic.js`, `layoutGeometry.js`, `renderer.js`. Automated smoke passed; manual browser regression pending before merge.
+**Branch `refactor/dev-tools`:** Debug/layout picker moved to `devTools.js` + `devTools.css`. Builds on module-boundaries split (`utils`, `gameLogic`, `layoutGeometry`, `renderer`). Manual browser regression pending before merge.
 
 ## What already works (verified)
 

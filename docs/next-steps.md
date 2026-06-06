@@ -50,12 +50,10 @@ Goal: replace or approve placeholder-style assets before final presentation.
 - Review map image and whether category assets are readable on it.
 - Replace temporary/static placeholders with final art where needed. See `docs/assets.md`.
 
-## Priority 4: module boundary refactor (branch only)
+## Priority 4: refactor branches (not merged to main yet)
 
-Goal: split `utils.js` / `renderer.js` without changing gameplay or visuals.
-
-- Branch: `refactor/module-boundaries` — code split done; run manual browser checklist in [refactor-module-boundaries-plan.md](refactor-module-boundaries-plan.md) before merge to `main`.
-- Automated smoke: [refactor-test-log-after.txt](refactor-test-log-after.txt).
+- `refactor/module-boundaries` — utils / gameLogic / layoutGeometry split. Smoke: [refactor-test-log-after.txt](refactor-test-log-after.txt).
+- `refactor/dev-tools` — `devTools.js` + `devTools.css` for DEBUG_MODE, picker, guides. Smoke: [devtools-test-log-after.txt](devtools-test-log-after.txt). Run manual browser checks before merge.
 
 ## Priority 5: optional polish
 
