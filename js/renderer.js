@@ -417,7 +417,7 @@ function renderSailing(questionNumber, totalQuestions, callback) {
 // ---- Island question screen ----
 function renderIsland(questionData, questionIndex, totalQuestions) {
   const root = clearScreen();
-  setScreenBackground(CONFIG.SAILING_BACKGROUND_IMAGE);
+  setScreenBackground(CONFIG.QUESTION_BACKGROUND_IMAGE);
   const screen = createElement("section", "screen island-screen fade-in");
 
   const questionNumber = questionIndex + 1;

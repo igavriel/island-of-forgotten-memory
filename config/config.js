@@ -20,9 +20,10 @@ const CONFIG = {
     MAP_FLY_FRAME_MS: 500,
     LOSE_SCREEN_IMAGE: "assets/endings/lose_ending_screen.png",
     VICTORY_IMAGE: "assets/endings/win_ending_screen.png",
+    QUESTION_BACKGROUND_IMAGE: "assets/ui/island_background.png",
     SAILING_BACKGROUND_IMAGE: "assets/ui/sailing_background.png",
     SAILING_SHIP_IMAGE: "assets/ui/sailing_ship.png",
-    SAILING_DESTINATION_ISLAND_IMAGE: "assets/ui/destination_island.png",
+    SAILING_DESTINATION_ISLAND_IMAGE: "assets/ui/island-01.png",
 
     // Dashed guides for tuning sailing layout. Hidden during normal play.
     SAILING_SHOW_LAYOUT_GUIDES: false,
@@ -36,7 +37,7 @@ const CONFIG = {
     // island / ship / dock: center + sizePercent (diameter as % of scene width).
     SAILING_LAYOUT: {
         sea: { x: 50, y: 80, widthPercent: 95, heightPercent: 40 },
-        island: { x: 15, y: 65, sizePercent: 30 },
+        island: { x: 20, y: 60, sizePercent: 32 },
         ship: { x: 95, y: 80, sizePercent: 18 },
         dock: { x: 25, y: 80, sizePercent: 12 },
     },
