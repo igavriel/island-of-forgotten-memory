@@ -2,6 +2,10 @@
 
 ## 2026-06-05
 
+- README: added Mermaid gameplay flowchart to the Game flow section.
+- README: agentic workflow corrected to Plan mode → review → correction → implementation → results review (Cursor Plan + Agent mode).
+- README: documented Cursor Agent mode workflow (`AGENTS.md`, `.cursor/rules/`, skills, incremental docs/commits, smoke tests). Linked from `docs/README.md`.
+- Reworked root `README.md` for lecturer review: game summary, technologies table, architecture, documentation links, and clearer game flow. Expanded `docs/README.md` as a documentation index.
 - Added `test.html` and `js/smokeTests.js`: browser smoke-test page for geometry, question routing, config, module globals, `startGame`, and static asset probes. Styled by `css/test.css`.
 - Per-category `islandImage` in `ASSET_CATEGORIES` (`assets.js`); removed random `ISLAND_IMAGES` pool from config.
 - Removed `CONFIG.SHOW_CORRECT_ANSWER_ON_LOSS`; the lose screen always shows the correct answer.

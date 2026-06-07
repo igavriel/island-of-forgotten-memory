@@ -93,6 +93,7 @@ Use simple CSS animations:
 Do not over-engineer animations.
 
 ## Workflow
+- Meaningful changes follow: Plan mode (written plan) → human review → plan correction → Agent mode (implementation) → results review. Restart from planning if results review finds gaps.
 - Work in small, scoped steps and preserve existing behavior unless asked to change it.
 - Do not rewrite the whole project unless explicitly requested.
 - Maintain `docs/progress.md`, `docs/decisions.md`, `docs/next-steps.md`, and `docs/changelog.md` as part of every meaningful implementation step.
